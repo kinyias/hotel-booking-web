@@ -44,15 +44,7 @@ export class AuthService {
     return this.signToken(user.id, user.email);
   }
 
-  async login(dto: {
-    email: string;
-    password: string;
-    confirmPassword: string;
-  }) {
-    if (dto.password !== dto.confirmPassword) {
-      throw new BadRequestException('Passwords do not match');
-    }
-
+  async login(dto: { email: string; password: string }) {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });

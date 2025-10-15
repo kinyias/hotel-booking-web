@@ -1,5 +1,11 @@
 // src/auth/dto/register.dto.ts
-import { IsEmail, IsNotEmpty, MinLength, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  Matches,
+  IsStrongPassword,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsEmail()
@@ -11,9 +17,9 @@ export class RegisterDto {
   @IsNotEmpty()
   lastName: string;
 
-  @MinLength(6)
+  @IsStrongPassword()
   password: string;
 
-  @MinLength(6)
+  @IsNotEmpty()
   confirmPassword: string;
 }
