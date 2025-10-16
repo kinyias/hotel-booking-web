@@ -9,7 +9,7 @@ import { UsersModule } from './modules/users/users.module';
 import { envSchema } from 'src/config/env';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { APP_PIPE } from '@nestjs/core';
-import { SafeZodValidationPipe } from 'src/common/pipes/safe-zod.pipe';
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { SafeZodValidationPipe } from 'src/common/pipes/safe-zod.pipe';
   providers: [
     AppService,
     PrismaService,
-    { provide: APP_PIPE, useClass: SafeZodValidationPipe },
+    { provide: APP_PIPE, useClass: ZodValidationPipe },
   ],
 })
 export class AppModule {}

@@ -2,11 +2,14 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PrismaExceptionFilter } from 'src/common/filters/prisma-exception.filter';
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(new PrismaExceptionFilter());
+  app.useGlobalPipes(new ZodValidationPipe());
+
   app.setGlobalPrefix('api/v1');
 
   const port = process.env.PORT ?? 3000;

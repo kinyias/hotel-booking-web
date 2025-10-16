@@ -5,18 +5,24 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from 'src/modules/auth/auth.controller';
 import { AuthService } from 'src/modules/auth/auth.service';
-import { JwtStrategy } from 'src/modules/auth/strategy/jwt.strategy';
 import { UsersModule } from 'src/modules/users/users.module';
 import { PrismaModule } from 'src/modules/prisma/prisma.module';
 import { MailModule } from 'src/modules/mail/mail.module';
 import { UsersService } from 'src/modules/users/users.service';
 import { MailService } from 'src/modules/mail/mail.service';
+import { JwtAccessStrategy } from 'src/modules/auth/strategy/jwt-access.strategy';
 
 @Module({
   imports: [
     ConfigModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule, UsersModule, PrismaModule, MailModule, JwtModule],
+      imports: [
+        ConfigModule,
+        UsersModule,
+        PrismaModule,
+        MailModule,
+        JwtModule.register({}),
+      ],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
@@ -25,6 +31,12 @@ import { MailService } from 'src/modules/mail/mail.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, JwtService, UsersService, MailService],
+  providers: [
+    AuthService,
+    PrismaService,
+    JwtAccessStrategy,
+    UsersService,
+    MailService,
+  ],
 })
 export class AuthModule {}

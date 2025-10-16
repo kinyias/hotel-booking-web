@@ -31,13 +31,20 @@ model User {
 }
 
 model AuthSession {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userAgent String?
-  ip        String?
-  createdAt DateTime @default(now())
-  revokedAt DateTime?
+  id           String   @id @default(cuid())
+  userId       String
+  jti          String   @unique
+  refreshHash  String
+  userAgent    String?
+  ip           String?
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  revokedBy    String?
+  reason       String?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model EmailVerifyToken {

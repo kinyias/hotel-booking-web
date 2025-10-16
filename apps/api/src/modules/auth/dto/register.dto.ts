@@ -1,7 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import { z } from 'zod';
 
-export const RegisterDto = z
+export const RegisterZ = z
   .object({
     email: z
       .string()
@@ -38,8 +38,4 @@ export const RegisterDto = z
     message: 'Passwords do not match.',
   });
 
-  export const VerifyEmailDto = z.object({ token: z.string().min(20) });
-
-export class RegisterDtoType extends createZodDto(RegisterDto) {}
-
-export class VerifyEmailDtoType extends createZodDto(VerifyEmailDto) {}
+export class RegisterDto extends createZodDto(RegisterZ) {}
