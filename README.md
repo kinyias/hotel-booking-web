@@ -24,7 +24,7 @@ Dự án **đặt phòng khách sạn trực tuyến** được xây dựng vớ
 
 ```bash
 git clone https://github.com/kinyias/hotel-booking-web
-cd hotel-booking
+cd hotel-booking-web
 ```
 ### 2️⃣ Cài đặt dependencies
 ```bash
