@@ -27,6 +27,7 @@ export class MailService {
   }
 
   async sendPasswordResetEmail(to: string, resetUrl: string) {
+    console.log('Working ...');
     const brand = process.env.BRAND_NAME ?? 'Stayra';
     const from = process.env.MAIL_FROM ?? 'no-reply@stayra.com';
     const html = `

@@ -14,10 +14,11 @@ import { MailService } from 'src/modules/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
 import { addMinutes, isAfter } from 'date-fns';
 import { generateToken, sha256 } from 'src/shared/utils';
-import { createHash, randomUUID } from 'crypto';
+import * as crypto from 'crypto';
 import * as dayjs from 'dayjs';
 
 type TokenPair = { accessToken: string; refreshToken: string; jti: string };
+const RESET_TTL_MINUTES = 30;
 
 @Injectable()
 export class AuthService {
@@ -56,7 +57,7 @@ export class AuthService {
   }
 
   private hash(value: string) {
-    return createHash('sha256').update(value, 'utf8').digest('hex');
+    return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
   }
 
   async issueTokens(
@@ -64,7 +65,7 @@ export class AuthService {
     ua?: string,
     ip?: string,
   ): Promise<TokenPair> {
-    const jti = randomUUID();
+    const jti = crypto.randomUUID();
     const refreshToken = await this.signRefreshToken(userId, jti);
     const accessToken = await this.signAccessToken(userId, jti);
 
@@ -203,6 +204,75 @@ export class AuthService {
         data: { usedAt: new Date() },
       }),
     ]);
+
+    return { ok: true };
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    // Trả về 202 luôn để tránh lộ user enumeration
+    if (!user) return;
+
+    // Xoá token cũ (nếu có) của user để tránh spam
+    await this.prisma.passwordResetToken.deleteMany({
+      where: { userId: user.id, usedAt: null },
+    });
+
+    // tạo token thô + hash
+    const raw = crypto.randomBytes(32).toString('hex'); // 64 hex chars
+    const tokenHash = crypto.createHash('sha256').update(raw).digest('hex');
+
+    const expiresAt = new Date(Date.now() + RESET_TTL_MINUTES * 60_000);
+    await this.prisma.passwordResetToken.create({
+      data: { userId: user.id, tokenHash, expiresAt },
+    });
+
+    // link về FE
+    const resetUrl = `${process.env.PUBLIC_WEB_URL}/auth/reset?token=${raw}`;
+    await this.mail.sendPasswordResetEmail(user.email, resetUrl);
+  }
+
+  async resetPassword(
+    rawToken: string,
+    newPassword: string,
+    ip?: string,
+    ua?: string,
+  ) {
+    const tokenHash = crypto
+      .createHash('sha256')
+      .update(rawToken)
+      .digest('hex');
+
+    const token = await this.prisma.passwordResetToken.findFirst({
+      where: { tokenHash },
+      include: { user: true },
+    });
+    if (!token) throw new UnauthorizedException('Invalid or expired token');
+    if (token.usedAt) throw new UnauthorizedException('Token already used');
+    if (token.expiresAt.getTime() < Date.now())
+      throw new UnauthorizedException('Token expired');
+
+    // hash pwd
+    const passwordHash = await argon2.hash(newPassword, {
+      type: argon2.argon2id,
+    });
+    // update user
+    await this.prisma.user.update({
+      where: { id: token.userId },
+      data: { passwordHash },
+    });
+
+    // mark token used
+    await this.prisma.passwordResetToken.update({
+      where: { id: token.id },
+      data: { usedAt: new Date() },
+    });
+
+    // revoke all sessions of user
+    await this.prisma.authSession.deleteMany({
+      where: { userId: token.userId },
+    });
+    // Optional: push jti vào Redis blocklist nếu bạn đang giữ refresh jti ở đâu đó
 
     return { ok: true };
   }

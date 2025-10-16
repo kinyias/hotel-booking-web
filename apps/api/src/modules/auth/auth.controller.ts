@@ -7,6 +7,7 @@ import {
   Post,
   Req,
   UseGuards,
+  Headers,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { VerifyEmailDto } from 'src/modules/auth/dto/verify-email.dto';
@@ -15,6 +16,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { LogoutDto } from 'src/modules/auth/dto/logout.dto';
 import { RefreshDto } from 'src/modules/auth/dto/refresh.dto';
 import { LoginDto } from 'src/modules/auth/dto/login.dto';
+import { ForgotPasswordDto } from 'src/modules/auth/dto/forgot-password.dto';
+import { ResetPasswordDto } from 'src/modules/auth/dto/reset-password.dto';
+import { minutes, Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -70,5 +74,24 @@ export class AuthController {
         'user logout',
       );
     return;
+  }
+
+  @Throttle({ default: { limit: 5, ttl: minutes(10) } })
+  @Post('forgot-password')
+  @HttpCode(202)
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
+    await this.authService.forgotPassword(body.email);
+    return { ok: true };
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body()
+    body: ResetPasswordDto,
+    @Ip() ip: string,
+    @Headers('user-agent') ua: string,
+  ) {
+    await this.authService.resetPassword(body.token, body.newPassword, ip, ua);
+    return { ok: true };
   }
 }

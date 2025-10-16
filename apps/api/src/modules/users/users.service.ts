@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon2 from 'argon2';
 
@@ -26,5 +26,30 @@ export class UsersService {
   }
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
+  }
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user?.passwordHash)
+      throw new BadRequestException('Password auth not available');
+
+    const ok = await argon2.verify(user.passwordHash, currentPassword);
+    if (!ok) throw new BadRequestException('Current password is incorrect');
+
+    const passwordHash = await argon2.hash(newPassword, {
+      type: argon2.argon2id,
+    });
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+    });
+
+    // revoke other sessions (giữ lại phiên hiện tại tuỳ policy; ở đây revoke tất)
+    await this.prisma.authSession.deleteMany({ where: { userId } });
+
+    return { ok: true };
   }
 }
