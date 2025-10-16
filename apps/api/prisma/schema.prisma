@@ -15,14 +15,53 @@ datasource db {
 
 
 model User {
-  id                   String   @id @default(uuid())
-  email                String   @unique
-  password             String
-  firstName            String
-  lastName             String
-  emailVerified        Boolean  @default(false)
-  verifyToken          String?  // dùng cho email verification
-  verifyTokenExpiresAt DateTime?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  passwordHash  String?
+  firstName     String?
+  lastName      String?
+  role          String   @default("USER")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions      AuthSession[]
+  verifyTokens  EmailVerifyToken[]
+  resetTokens   PasswordResetToken[]
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ip        String?
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
+}
+
+model EmailVerifyToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([tokenHash])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
 }

@@ -1,0 +1,28 @@
+import { Injectable } from '@nestjs/common';
+import { MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
+
+@Injectable()
+export class MailService {
+  constructor(
+    private readonly mailer: MailerService,
+    private readonly cfg: ConfigService,
+  ) {}
+  async sendVerifyEmail(to: string, link: string) {
+    const logo = this.cfg.get<string>('BRAND_LOGO_URL');
+    const html = `
+      <div style="font-family:Inter,Arial,sans-serif;line-height:1.6">
+        <img src="${logo}" alt="Stayra" height="40"/>
+        <h2>Verify your email</h2>
+        <p>Thanks for signing up. Click the button below to verify your email:</p>
+        <p><a href="${link}" style="display:inline-block;padding:10px 16px;border-radius:8px;text-decoration:none;background:#111;color:#fff">Verify Email</a></p>
+        <p>This link expires in 30 minutes.</p>
+        <hr/><small>If you did not sign up, please ignore this.</small>
+      </div>`;
+    await this.mailer.sendMail({
+      to,
+      subject: 'Verify your email – Stayra',
+      html,
+    });
+  }
+}
