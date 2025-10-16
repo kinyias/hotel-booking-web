@@ -1,8 +1,12 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import { z } from 'zod';
+import { IsEmail, IsString, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
 
-export const LoginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
-});
-export class LoginDto extends createZodDto(LoginSchema) {}
+export class LoginDto {
+  @Transform(({ value }) => String(value).trim().toLowerCase())
+  @IsEmail()
+  email!: string;
+
+  @IsString()
+  @MinLength(1)
+  password!: string;
+}

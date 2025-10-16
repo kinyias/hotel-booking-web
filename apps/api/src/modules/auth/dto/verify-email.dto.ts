@@ -1,6 +1,7 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import z from 'zod';
+import { IsString, MinLength } from 'class-validator';
 
-export const VerifyEmailZ = z.object({ token: z.string().min(20) });
-
-export class VerifyEmailDto extends createZodDto(VerifyEmailZ) {}
+export class VerifyEmailDto {
+  @IsString()
+  @MinLength(20)
+  token!: string;
+}

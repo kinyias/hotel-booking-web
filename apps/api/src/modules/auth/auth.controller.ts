@@ -30,8 +30,7 @@ export class AuthController {
 
   @Post('register')
   register(@Body() body: RegisterDto) {
-    const { email, password, firstName, lastName } = body;
-    return this.authService.register({ email, password, firstName, lastName });
+    return this.authService.register(body);
   }
 
   @Post('verify-email')

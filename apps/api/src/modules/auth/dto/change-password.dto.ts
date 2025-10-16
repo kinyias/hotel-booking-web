@@ -1,21 +1,38 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import { z } from 'zod';
+import { IsString, MinLength, Matches } from 'class-validator';
+import { Transform } from 'class-transformer';
 
-const strong = z
-  .string()
-  .min(8)
-  .regex(/[A-Za-z]/)
-  .regex(/\d/);
+// Mật khẩu mạnh: >= 8 ký tự, có hoa, thường, số, và ký tự đặc biệt
+const PW_MIN = 8;
+const UPPER = /[A-Z]/;
+const LOWER = /[a-z]/;
+const DIGIT = /[0-9]/;
+const SPECIAL = /[!@#$%^&*]/;
 
-export const ChangePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(1),
-    newPassword: strong,
-    confirmPassword: strong,
+export class ChangePasswordDto {
+  @IsString()
+  @MinLength(1)
+  currentPassword!: string;
+
+  @IsString()
+  @MinLength(PW_MIN, {
+    message: `Password must be at least ${PW_MIN} characters long.`,
   })
-  .refine((d) => d.newPassword === d.confirmPassword, {
-    message: 'Confirm password does not match',
-    path: ['confirmPassword'],
-  });
+  @Matches(UPPER, {
+    message: 'Password must contain at least one uppercase letter (A–Z).',
+  })
+  @Matches(LOWER, {
+    message: 'Password must contain at least one lowercase letter (a–z).',
+  })
+  @Matches(DIGIT, {
+    message: 'Password must contain at least one number (0–9).',
+  })
+  @Matches(SPECIAL, {
+    message:
+      'Password must contain at least one special character (!, @, #, $, %, ^, &, *).',
+  })
+  newPassword!: string;
 
-export class ChangePasswordDto extends createZodDto(ChangePasswordSchema) {}
+  @IsString()
+  @MinLength(PW_MIN)
+  confirmPassword!: string;
+}

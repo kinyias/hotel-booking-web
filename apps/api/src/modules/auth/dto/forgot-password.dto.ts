@@ -1,7 +1,8 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import { z } from 'zod';
+import { IsEmail } from 'class-validator';
+import { Transform } from 'class-transformer';
 
-export const ForgotPasswordSchema = z.object({
-  email: z.string().email(),
-});
-export class ForgotPasswordDto extends createZodDto(ForgotPasswordSchema) {}
+export class ForgotPasswordDto {
+  @Transform(({ value }) => String(value).trim().toLowerCase())
+  @IsEmail()
+  email!: string;
+}

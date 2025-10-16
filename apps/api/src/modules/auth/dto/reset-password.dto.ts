@@ -1,21 +1,26 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import { z } from 'zod';
+import { IsString, MinLength, Matches } from 'class-validator';
 
-const strong = z
-  .string()
-  .min(8, 'Password must be at least 8 characters')
-  .regex(/[A-Za-z]/, 'Password must contain letters')
-  .regex(/\d/, 'Password must contain numbers');
+const PW_MIN = 8;
+const UPPER = /[A-Z]/;
+const LOWER = /[a-z]/;
+const DIGIT = /[0-9]/;
+const SPECIAL = /[!@#$%^&*]/;
 
-export const ResetPasswordSchema = z
-  .object({
-    token: z.string().min(1),
-    newPassword: strong,
-    confirmPassword: strong,
-  })
-  .refine((d) => d.newPassword === d.confirmPassword, {
-    message: 'Confirm password does not match',
-    path: ['confirmPassword'],
-  });
+export class ResetPasswordDto {
+  @IsString()
+  @MinLength(1)
+  token!: string;
 
-export class ResetPasswordDto extends createZodDto(ResetPasswordSchema) {}
+  @IsString()
+  @MinLength(PW_MIN, { message: 'Password must be at least 8 characters' })
+  @Matches(/[A-Za-z]/, { message: 'Password must contain letters' })
+  @Matches(/\d/, { message: 'Password must contain numbers' })
+  @Matches(UPPER, { message: 'Password must contain at least one uppercase letter (A–Z).' })
+  @Matches(LOWER, { message: 'Password must contain at least one lowercase letter (a–z).' })
+  @Matches(SPECIAL, { message: 'Password must contain at least one special character (!, @, #, $, %, ^, &, *).' })
+  newPassword!: string;
+
+  @IsString()
+  @MinLength(PW_MIN)
+  confirmPassword!: string;
+}

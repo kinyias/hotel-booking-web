@@ -17,6 +17,7 @@ import { generateToken, sha256 } from 'src/shared/utils';
 import * as crypto from 'crypto';
 import * as dayjs from 'dayjs';
 import { AuthProvider } from '@prisma/client';
+import { RegisterDto } from 'src/modules/auth/dto/register.dto';
 
 type TokenPair = { accessToken: string; refreshToken: string; jti: string };
 const RESET_TTL_MINUTES = 30;
@@ -162,19 +163,16 @@ export class AuthService {
     });
   }
 
-  async register(input: {
-    email: string;
-    password: string;
-    firstName?: string;
-    lastName?: string;
-  }) {
+  async register(input: RegisterDto) {
     const user = await this.users.createLocalUser(
       input.email.toLowerCase().trim(),
       input.password,
       input.firstName,
       input.lastName,
     );
-
+    if (input.password !== input.confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
     // Tạo token thô + hash
     const token = generateToken(32);
     const tokenHash = sha256(token);
@@ -250,9 +248,13 @@ export class AuthService {
   async resetPassword(
     rawToken: string,
     newPassword: string,
+    confirmPassword: string,
     ip?: string,
     ua?: string,
   ) {
+    if (newPassword !== confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
     const tokenHash = crypto
       .createHash('sha256')
       .update(rawToken)

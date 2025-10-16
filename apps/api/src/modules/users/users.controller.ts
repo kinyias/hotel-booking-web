@@ -14,11 +14,7 @@ export class UsersController {
     @Body()
     body: ChangePasswordDto,
   ) {
-    await this.users.changePassword(
-      req.user.id,
-      body.currentPassword,
-      body.newPassword,
-    );
+    await this.users.changePassword(req.user.id, body);
     return { ok: true };
   }
 }

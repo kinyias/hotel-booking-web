@@ -1,7 +1,7 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import z from 'zod';
+import { IsString, MinLength } from 'class-validator';
 
-export const RefreshSchema = z.object({
-  refreshToken: z.string().min(10),
-});
-export class RefreshDto extends createZodDto(RefreshSchema) {}
+export class RefreshDto {
+  @IsString()
+  @MinLength(10)
+  refreshToken!: string;
+}

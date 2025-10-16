@@ -1,7 +1,7 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import z from 'zod';
+import { IsOptional, IsUUID } from 'class-validator';
 
-export const LogoutSchema = z.object({
-  jti: z.string().uuid().optional(),
-});
-export class LogoutDto extends createZodDto(LogoutSchema) {}
+export class LogoutDto {
+  @IsOptional()
+  @IsUUID()
+  jti?: string;
+}

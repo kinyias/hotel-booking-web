@@ -1,6 +1,11 @@
-import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon2 from 'argon2';
+import { ChangePasswordDto } from 'src/modules/auth/dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -27,19 +32,18 @@ export class UsersService {
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
-  async changePassword(
-    userId: string,
-    currentPassword: string,
-    newPassword: string,
-  ) {
+  async changePassword(userId: string, dto: ChangePasswordDto) {
+    if (dto.newPassword !== dto.confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user?.passwordHash)
       throw new BadRequestException('Password auth not available');
 
-    const ok = await argon2.verify(user.passwordHash, currentPassword);
+    const ok = await argon2.verify(user.passwordHash, dto.currentPassword);
     if (!ok) throw new BadRequestException('Current password is incorrect');
 
-    const passwordHash = await argon2.hash(newPassword, {
+    const passwordHash = await argon2.hash(dto.newPassword, {
       type: argon2.argon2id,
     });
     await this.prisma.user.update({
