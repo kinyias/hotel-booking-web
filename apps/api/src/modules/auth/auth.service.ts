@@ -16,6 +16,7 @@ import { addMinutes, isAfter } from 'date-fns';
 import { generateToken, sha256 } from 'src/shared/utils';
 import * as crypto from 'crypto';
 import * as dayjs from 'dayjs';
+import { AuthProvider } from '@prisma/client';
 
 type TokenPair = { accessToken: string; refreshToken: string; jti: string };
 const RESET_TTL_MINUTES = 30;
@@ -56,29 +57,43 @@ export class AuthService {
     );
   }
 
-  private hash(value: string) {
-    return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
-  }
-
   async issueTokens(
     userId: string,
-    ua?: string,
-    ip?: string,
+    ctx?: { ua?: string; ip?: string; provider?: AuthProvider },
   ): Promise<TokenPair> {
+    // 1) Xác định provider hợp lý
+    let provider: AuthProvider | undefined = ctx?.provider;
+    if (!provider) {
+      const u = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: { provider: true },
+      });
+      provider = u?.provider ?? AuthProvider.LOCAL;
+    }
+
+    // 2) Ký token với jti riêng
     const jti = crypto.randomUUID();
     const refreshToken = await this.signRefreshToken(userId, jti);
     const accessToken = await this.signAccessToken(userId, jti);
 
-    const payload = this.jwt.decode(refreshToken) as any;
+    // 3) Tính expiresAt từ refresh (exp là seconds)
+    const payload = this.jwt.decode(refreshToken) as { exp: number } | null;
+    if (!payload?.exp) {
+      // Phòng hờ cấu hình JWT sai
+      throw new Error('Failed to decode refresh token exp');
+    }
     const expiresAt = dayjs.unix(payload.exp).toDate();
 
+    // 4) Lưu phiên với provider đúng nguồn
+    const refreshHash = await argon2.hash(refreshToken);
     await this.prisma.authSession.create({
       data: {
         userId,
         jti,
-        refreshHash: this.hash(refreshToken),
-        userAgent: ua,
-        ip,
+        provider,
+        refreshHash,
+        userAgent: ctx?.ua,
+        ip: ctx?.ip,
         expiresAt,
       },
     });
@@ -118,19 +133,19 @@ export class AuthService {
       throw new UnauthorizedException('Session revoked');
 
     // 3) Kiểm tra reuse (hash không khớp) ⇒ revoke toàn bộ phiên của user
-    const matches = session.refreshHash === this.hash(oldRefresh);
-    if (!matches) {
+    const valid = await argon2.verify(session.refreshHash, oldRefresh);
+    if (!valid) {
       await this.revokeAllUserSessions(userId, 'Refresh token reuse detected');
       throw new UnauthorizedException('Token reuse detected');
     }
 
     // 4) Rotation: revoke phiên cũ, phát hành phiên mới
-    await this.prisma.authSession.update({
-      where: { jti },
-      data: { revokedAt: new Date(), reason: 'rotated' },
-    });
+    await this.revokeSessionByJti(jti, userId, 'rotated');
 
-    return this.issueTokens(userId, ua, ip);
+    return this.issueTokens(userId, {
+      ua,
+      ip,
+    });
   }
 
   async revokeSessionByJti(jti: string, by?: string, reason?: string) {
@@ -275,5 +290,84 @@ export class AuthService {
     // Optional: push jti vào Redis blocklist nếu bạn đang giữ refresh jti ở đâu đó
 
     return { ok: true };
+  }
+
+  async loginWithGoogle(
+    googleUser: {
+      providerId: string;
+      email: string | null;
+      name: string;
+      avatar?: string | null;
+    },
+    ctx: { ip?: string; userAgent?: string },
+  ) {
+    const { providerId, email } = googleUser;
+
+    // 1) Kiếm user bằng providerId
+    let user = await this.prisma.user.findUnique({ where: { providerId } });
+
+    // 2) Nếu chưa có, cân nhắc email
+    if (!user) {
+      if (email) {
+        const existingByEmail = await this.prisma.user.findUnique({
+          where: { email },
+        });
+        if (existingByEmail && existingByEmail.provider === 'LOCAL') {
+          // KHÔNG tự động gộp để tránh takeover.
+          // Có thể trả về 409 và yêu cầu liên kết thủ công trong trang bảo mật.
+          throw new UnauthorizedException(
+            'Email already registered. Please login with password, then link Google in account settings.',
+          );
+        }
+      }
+
+      user = await this.prisma.user.create({
+        data: {
+          email: email ?? `${providerId}@google.local`, // fallback
+          provider: 'GOOGLE',
+          providerId,
+          emailVerified: true, // Google đã xác minh email → có thể đặt true nếu email != null
+          // name/avatar… nếu schema có
+        },
+      });
+    }
+
+    // 3) Tạo phiên + refresh rotation
+    const jti = crypto.randomUUID();
+    const accessToken = await this.signAccessToken(user.id, jti);
+    const refreshToken = await this.signRefreshToken(user.id, jti);
+    const refreshHash = await argon2.hash(refreshToken);
+
+    const expiresAt = dayjs().add(30, 'day').toDate(); // hoặc dùng TTL env
+    await this.prisma.authSession.create({
+      data: {
+        userId: user.id,
+        jti,
+        provider: 'GOOGLE',
+        ip: ctx.ip,
+        userAgent: ctx.userAgent,
+        refreshHash,
+        expiresAt,
+      },
+    });
+
+    return { accessToken, refreshToken, user };
+  }
+
+  async getSessions(userId: string) {
+    const sessions = await this.prisma.authSession.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        jti: true,
+        provider: true,
+        ip: true,
+        userAgent: true,
+        createdAt: true,
+        expiresAt: true,
+        revokedAt: true,
+      },
+    });
+    return sessions;
   }
 }

@@ -25,6 +25,9 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  provider     AuthProvider @default(LOCAL)
+  providerId   String?  @unique
+
   sessions      AuthSession[]
   verifyTokens  EmailVerifyToken[]
   resetTokens   PasswordResetToken[]
@@ -35,6 +38,8 @@ model AuthSession {
   userId       String
   jti          String   @unique
   refreshHash  String
+  provider      AuthProvider @default(LOCAL)
+
   userAgent    String?
   ip           String?
   createdAt    DateTime @default(now())
@@ -72,4 +77,9 @@ model PasswordResetToken {
   @@index([userId])
   @@index([tokenHash])
   @@index([expiresAt])
+}
+
+enum AuthProvider {
+  LOCAL
+  GOOGLE
 }

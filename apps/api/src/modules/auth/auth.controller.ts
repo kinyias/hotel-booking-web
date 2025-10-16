@@ -8,6 +8,8 @@ import {
   Req,
   UseGuards,
   Headers,
+  Get,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { VerifyEmailDto } from 'src/modules/auth/dto/verify-email.dto';
@@ -19,6 +21,8 @@ import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { ForgotPasswordDto } from 'src/modules/auth/dto/forgot-password.dto';
 import { ResetPasswordDto } from 'src/modules/auth/dto/reset-password.dto';
 import { minutes, Throttle } from '@nestjs/throttler';
+import type { Response, Request } from 'express';
+import { AuthProvider } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
@@ -36,51 +40,97 @@ export class AuthController {
   }
   @Post('login')
   @HttpCode(200)
-  async login(@Body() dto: LoginDto, @Req() req: any, @Ip() ip: string) {
+  async login(
+    @Body() dto: LoginDto,
+    @Req() req: any,
+    @Ip() ip: string,
+    @Res({ passthrough: true }) res: any,
+  ) {
     const user = await this.authService.validateUserByEmailPassword(
       dto.email,
       dto.password,
     );
     const { accessToken, refreshToken, jti } =
-      await this.authService.issueTokens(
-        user.id,
-        req.headers['user-agent'],
+      await this.authService.issueTokens(user.id, {
+        ua: req.headers['user-agent'],
         ip,
-      );
-    return { accessToken, refreshToken, jti, tokenType: 'Bearer' };
+        provider: AuthProvider.LOCAL,
+      });
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
+    return { accessToken, jti, tokenType: 'Bearer' };
   }
 
   @Post('refresh')
   @HttpCode(200)
-  async refresh(@Body() dto: RefreshDto, @Req() req: any, @Ip() ip: string) {
+  async refresh(
+    @Req() req: any,
+    @Ip() ip: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const old = req.cookies?.['refresh_token'];
+    console.log(old);
     const { accessToken, refreshToken, jti } =
       await this.authService.rotateRefreshToken(
-        dto.refreshToken,
+        old,
         req.headers['user-agent'],
         ip,
       );
-    return { accessToken, refreshToken, jti, tokenType: 'Bearer' };
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
+    return { accessToken, jti, tokenType: 'Bearer' };
   }
 
   @Post('logout')
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(204)
-  async logout(@Body() dto: LogoutDto, @Req() req: any) {
+  async logout(
+    @Body() dto: LogoutDto,
+    @Req() req: any,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const jti = dto.jti ?? req.user?.jti;
-    if (jti)
+    if (jti) {
       await this.authService.revokeSessionByJti(
         jti,
-        req.user?.id,
+        req.user?.sub,
         'user logout',
       );
+    }
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+    });
     return;
   }
 
-  @Throttle({ default: { limit: 5, ttl: minutes(10) } })
-  @Post('forgot-password')
-  @HttpCode(202)
-  async forgotPassword(@Body() body: ForgotPasswordDto) {
-    await this.authService.forgotPassword(body.email);
+  @Post('logout-all')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(200)
+  async logoutAll(@Req() req: any, @Res({ passthrough: true }) res: Response) {
+    await this.authService.revokeAllUserSessions(
+      req.user.sub,
+      'User logout all',
+    );
+
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+    });
     return { ok: true };
   }
 
@@ -93,5 +143,39 @@ export class AuthController {
   ) {
     await this.authService.resetPassword(body.token, body.newPassword, ip, ua);
     return { ok: true };
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleCallback(@Req() req: Request, @Res() res: Response) {
+    const { accessToken, refreshToken } =
+      await this.authService.loginWithGoogle(req.user as any, {
+        ip: req.ip,
+        userAgent: req.headers['user-agent'] ?? '',
+      });
+
+    const web = process.env.PUBLIC_WEB_URL!;
+
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 ngày
+    });
+    return res.redirect(
+      `${web}/auth/callback#access_token=${encodeURIComponent(accessToken)}`,
+    );
+  }
+  @Get('sessions')
+  @UseGuards(AuthGuard('jwt'))
+  async mySessions(@Req() req: any) {
+    const userId = req.user.id;
+    const sessions = await this.authService.getSessions(userId);
+    return { items: sessions };
   }
 }

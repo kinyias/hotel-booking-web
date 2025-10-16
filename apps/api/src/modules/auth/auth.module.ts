@@ -11,6 +11,8 @@ import { MailModule } from 'src/modules/mail/mail.module';
 import { UsersService } from 'src/modules/users/users.service';
 import { MailService } from 'src/modules/mail/mail.service';
 import { JwtAccessStrategy } from 'src/modules/auth/strategy/jwt-access.strategy';
+import { PassportModule } from '@nestjs/passport';
+import { GoogleStrategy } from 'src/modules/auth/strategy/google.strategy';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { JwtAccessStrategy } from 'src/modules/auth/strategy/jwt-access.strategy
         PrismaModule,
         MailModule,
         JwtModule.register({}),
+        PassportModule.register({ session: false }),
       ],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -35,6 +38,7 @@ import { JwtAccessStrategy } from 'src/modules/auth/strategy/jwt-access.strategy
     AuthService,
     PrismaService,
     JwtAccessStrategy,
+    GoogleStrategy,
     UsersService,
     MailService,
   ],
