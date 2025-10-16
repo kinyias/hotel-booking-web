@@ -25,4 +25,26 @@ export class MailService {
       html,
     });
   }
+
+  async sendPasswordResetEmail(to: string, resetUrl: string) {
+    const brand = process.env.BRAND_NAME ?? 'Stayra';
+    const from = process.env.MAIL_FROM ?? 'no-reply@stayra.com';
+    const html = `
+      <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto">
+        <h2>${brand} password reset</h2>
+        <p>We received a request to reset your password.</p>
+        <p>This link will expire in 30 minutes.</p>
+        <p><a href="${resetUrl}" style="display:inline-block;padding:10px 16px;text-decoration:none;border:1px solid #333">
+          Reset your password
+        </a></p>
+        <p>If you didn’t request this, please ignore this email.</p>
+      </div>
+    `;
+    await this.mailer.sendMail({
+      to,
+      from,
+      subject: `${brand} - Reset your password`,
+      html,
+    });
+  }
 }

@@ -61,14 +61,15 @@ model EmailVerifyToken {
 }
 
 model PasswordResetToken {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
-  expiresAt DateTime
-  usedAt    DateTime?
-  createdAt DateTime @default(now())
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash    String   @db.VarChar(64)
+  usedAt       DateTime?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
 
   @@index([userId])
-  @@index([token])
+  @@index([tokenHash])
+  @@index([expiresAt])
 }
