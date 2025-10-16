@@ -1,4 +1,5 @@
 import { IsString, MinLength, Matches } from 'class-validator';
+import { Match } from 'src/validators/match.decorator';
 
 const PW_MIN = 8;
 const UPPER = /[A-Z]/;
@@ -15,12 +16,20 @@ export class ResetPasswordDto {
   @MinLength(PW_MIN, { message: 'Password must be at least 8 characters' })
   @Matches(/[A-Za-z]/, { message: 'Password must contain letters' })
   @Matches(/\d/, { message: 'Password must contain numbers' })
-  @Matches(UPPER, { message: 'Password must contain at least one uppercase letter (A–Z).' })
-  @Matches(LOWER, { message: 'Password must contain at least one lowercase letter (a–z).' })
-  @Matches(SPECIAL, { message: 'Password must contain at least one special character (!, @, #, $, %, ^, &, *).' })
+  @Matches(UPPER, {
+    message: 'Password must contain at least one uppercase letter (A–Z).',
+  })
+  @Matches(LOWER, {
+    message: 'Password must contain at least one lowercase letter (a–z).',
+  })
+  @Matches(SPECIAL, {
+    message:
+      'Password must contain at least one special character (!, @, #, $, %, ^, &, *).',
+  })
   newPassword!: string;
 
   @IsString()
   @MinLength(PW_MIN)
+  @Match('password')
   confirmPassword!: string;
 }

@@ -13,9 +13,9 @@ async function bootstrap() {
   app.useGlobalFilters(new PrismaExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, 
-      forbidNonWhitelisted: true, 
-      transform: true, 
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
       transformOptions: { enableImplicitConversion: true },
     }),
   );
