@@ -15,7 +15,7 @@ import { ConfigService } from '@nestjs/config';
 import { addMinutes, isAfter } from 'date-fns';
 import { generateToken, sha256 } from 'src/shared/utils';
 import * as crypto from 'crypto';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { AuthProvider } from '@prisma/client';
 import { RegisterDto } from 'src/modules/auth/dto/register.dto';
 
