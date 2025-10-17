@@ -3,16 +3,16 @@ import { Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthController } from 'src/modules/auth/auth.controller';
-import { AuthService } from 'src/modules/auth/auth.service';
-import { UsersModule } from 'src/modules/users/users.module';
-import { PrismaModule } from 'src/modules/prisma/prisma.module';
-import { MailModule } from 'src/modules/mail/mail.module';
-import { UsersService } from 'src/modules/users/users.service';
-import { MailService } from 'src/modules/mail/mail.service';
-import { JwtAccessStrategy } from 'src/modules/auth/strategy/jwt-access.strategy';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { UsersModule } from '../users/users.module';
+import { PrismaModule } from '../prisma/prisma.module';
+import { MailModule } from '../mail/mail.module';
+import { UsersService } from '../users/users.service';
+import { MailService } from '../mail/mail.service';
+import { JwtAccessStrategy } from '../auth/strategy/jwt-access.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { GoogleStrategy } from 'src/modules/auth/strategy/google.strategy';
+import { GoogleStrategy } from '../auth/strategy/google.strategy';
 
 @Module({
   imports: [
