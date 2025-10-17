@@ -1,8 +1,7 @@
 import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ChangePasswordDto } from 'src/modules/auth/dto/change-password.dto';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { ChangePasswordDto } from '../auth/dto/change-password.dto';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)

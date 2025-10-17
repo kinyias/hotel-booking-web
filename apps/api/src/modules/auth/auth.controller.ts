@@ -12,14 +12,14 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { VerifyEmailDto } from 'src/modules/auth/dto/verify-email.dto';
-import { RegisterDto } from 'src/modules/auth/dto/register.dto';
+import { VerifyEmailDto } from '../auth/dto/verify-email.dto';
+import { RegisterDto } from '../auth/dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { LogoutDto } from 'src/modules/auth/dto/logout.dto';
-import { RefreshDto } from 'src/modules/auth/dto/refresh.dto';
-import { LoginDto } from 'src/modules/auth/dto/login.dto';
-import { ForgotPasswordDto } from 'src/modules/auth/dto/forgot-password.dto';
-import { ResetPasswordDto } from 'src/modules/auth/dto/reset-password.dto';
+import { LogoutDto } from '../auth/dto/logout.dto';
+import { RefreshDto } from '../auth/dto/refresh.dto';
+import { LoginDto } from '../auth/dto/login.dto';
+import { ForgotPasswordDto } from '../auth/dto/forgot-password.dto';
+import { ResetPasswordDto } from '../auth/dto/reset-password.dto';
 import { minutes, Throttle } from '@nestjs/throttler';
 import type { Response, Request } from 'express';
 import { AuthProvider } from '@prisma/client';

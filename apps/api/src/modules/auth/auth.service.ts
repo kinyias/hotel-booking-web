@@ -9,15 +9,15 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
-import { UsersService } from 'src/modules/users/users.service';
-import { MailService } from 'src/modules/mail/mail.service';
+import { UsersService } from '../users/users.service';
+import { MailService } from '../mail/mail.service';
 import { ConfigService } from '@nestjs/config';
 import { addMinutes, isAfter } from 'date-fns';
-import { generateToken, sha256 } from 'src/shared/utils';
+import { generateToken, sha256 } from '../../shared/utils';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
 import { AuthProvider } from '@prisma/client';
-import { RegisterDto } from 'src/modules/auth/dto/register.dto';
+import { RegisterDto } from '../auth/dto/register.dto';
 
 type TokenPair = { accessToken: string; refreshToken: string; jti: string };
 const RESET_TTL_MINUTES = 30;

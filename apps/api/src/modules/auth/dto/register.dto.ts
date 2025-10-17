@@ -7,7 +7,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { Match } from 'src/validators/match.decorator';
+import { Match } from '../../../validators/match.decorator';
 
 const PW_MIN = 8;
 const PW_MAX = 20;

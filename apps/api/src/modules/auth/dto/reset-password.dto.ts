@@ -1,5 +1,5 @@
 import { IsString, MinLength, Matches } from 'class-validator';
-import { Match } from 'src/validators/match.decorator';
+import { Match } from '../../../validators/match.decorator';
 
 const PW_MIN = 8;
 const UPPER = /[A-Z]/;
