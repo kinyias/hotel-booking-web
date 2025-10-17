@@ -10,11 +10,11 @@ import {
 import { ActionsService } from './actions.service';
 import { UpsertActionDto } from './dto/upsert-action.dto';
 import { SetActionPermissionsDto } from './dto/set-action-permissions.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
-import { PermissionsGuard } from 'src/modules/auth/guards/permissions.guard';
-import { Roles } from 'src/modules/auth/decorator/roles.decorator';
-import { Permissions } from 'src/modules/auth/decorator/permissions.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { PermissionsGuard } from '../auth/guards/permissions.guard';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { Permissions } from '../auth/decorator/permissions.decorator';
 
 @Controller('actions')
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)

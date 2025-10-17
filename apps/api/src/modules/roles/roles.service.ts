@@ -6,8 +6,8 @@ import {
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { AssignRolesToUserDto } from './dto/assign-roles-to-user.dto';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { AssignPermissionsDto } from 'src/modules/permissions/dto/assign-permissions.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { AssignPermissionsDto } from '../permissions/dto/assign-permissions.dto';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

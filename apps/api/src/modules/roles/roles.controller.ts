@@ -13,13 +13,13 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { AssignRolesToUserDto } from './dto/assign-roles-to-user.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
-import { PermissionsGuard } from 'src/modules/auth/guards/permissions.guard';
-import { Roles as RolesDecorator } from 'src/modules/auth/decorator/roles.decorator';
-import { Permissions } from 'src/modules/auth/decorator/permissions.decorator';
-import { AssignPermissionsDto } from 'src/modules/permissions/dto/assign-permissions.dto';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { PermissionsGuard } from '../auth/guards/permissions.guard';
+import { Roles as RolesDecorator } from '../auth/decorator/roles.decorator';
+import { Permissions } from '../auth/decorator/permissions.decorator';
+import { AssignPermissionsDto } from '../permissions/dto/assign-permissions.dto';
+import { Action } from '../auth/decorator/action.decorator';
 
 @Controller('roles')
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)

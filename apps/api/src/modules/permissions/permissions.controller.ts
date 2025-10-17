@@ -12,11 +12,11 @@ import {
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-import { PermissionsGuard } from 'src/modules/auth/guards/permissions.guard';
-import { Permissions } from 'src/modules/auth/decorator/permissions.decorator';
-import { MANAGE_USER } from 'src/modules/permissions/permissions.constant';
+import { PermissionsGuard } from '../auth/guards/permissions.guard';
+import { Permissions } from '../auth/decorator/permissions.decorator';
+import { MANAGE_USER } from '../permissions/permissions.constant';
 
 @Controller('permissions')
 @UseGuards(JwtAuthGuard, PermissionsGuard)

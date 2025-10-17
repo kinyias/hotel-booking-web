@@ -9,8 +9,8 @@ import { Reflector } from '@nestjs/core';
 // (Tùy chọn) dùng Redis cho cache:
 import * as crypto from 'crypto';
 import { createClient } from 'redis';
-import { ACTION_KEY } from 'src/modules/auth/decorator/action.decorator';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { ACTION_KEY } from '../../auth/decorator/action.decorator';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class ActionGuard implements CanActivate {
