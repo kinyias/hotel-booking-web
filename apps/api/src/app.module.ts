@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaModule } from 'src/modules/prisma/prisma.module';
-import { AuthModule } from 'src/modules/auth/auth.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { UsersModule } from './modules/users/users.module';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from './modules/prisma/prisma.service';
 
 @Module({
   imports: [
