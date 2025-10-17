@@ -7,6 +7,9 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { UsersModule } from './modules/users/users.module';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PermissionsModule } from './modules/permissions/permissions.module';
+import { RolesModule } from './modules/roles/roles.module';
+import { ActionsModule } from 'src/modules/actions/actions.module';
 
 @Module({
   imports: [
@@ -17,6 +20,9 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
     AuthModule,
     MailModule,
     UsersModule,
+    PermissionsModule,
+    RolesModule,
+    ActionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

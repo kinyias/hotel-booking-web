@@ -170,9 +170,6 @@ export class AuthService {
       input.firstName,
       input.lastName,
     );
-    if (input.password !== input.confirmPassword) {
-      throw new BadRequestException('Passwords do not match');
-    }
     // Tạo token thô + hash
     const token = generateToken(32);
     const tokenHash = sha256(token);

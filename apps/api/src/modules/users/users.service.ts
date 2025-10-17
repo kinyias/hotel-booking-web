@@ -56,4 +56,8 @@ export class UsersService {
 
     return { ok: true };
   }
+
+  async listUser() {
+    return await this.prisma.user.findMany();
+  }
 }

@@ -21,9 +21,10 @@ model User {
   passwordHash  String?
   firstName     String?
   lastName      String?
-  role          String   @default("USER")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  roles         UserRole[]
 
   provider     AuthProvider @default(LOCAL)
   providerId   String?  @unique
@@ -31,6 +32,38 @@ model User {
   sessions      AuthSession[]
   verifyTokens  EmailVerifyToken[]
   resetTokens   PasswordResetToken[]
+}
+
+model Role {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  description String?
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  description String?
+  roles       RolePermission[]
+  apiPolicies ApiActionPolicy[]
+}
+
+model UserRole {
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  role    Role     @relation(fields: [roleId], references: [id])
+  roleId  String
+  @@id([userId, roleId])
+}
+
+model RolePermission {
+  role          Role         @relation(fields: [roleId], references: [id])
+  roleId        String
+  permission    Permission   @relation(fields: [permissionId], references: [id])
+  permissionId  String
+  @@id([roleId, permissionId]) 
 }
 
 model AuthSession {
@@ -79,7 +112,31 @@ model PasswordResetToken {
   @@index([expiresAt])
 }
 
+model ApiAction {
+  id          String            @id @default(cuid())
+  key         String            @unique   // ví dụ: "hotel.update"
+  description String?
+  enabled     Boolean           @default(true)
+  mode        PolicyMode        @default(ANY)
+  policies    ApiActionPolicy[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model ApiActionPolicy {
+  action        ApiAction    @relation(fields: [actionId], references: [id])
+  actionId      String
+  permission    Permission   @relation(fields: [permissionId], references: [id])
+  permissionId  String
+  @@id([actionId, permissionId])
+}
+
 enum AuthProvider {
   LOCAL
   GOOGLE
+}
+
+enum PolicyMode {
+  ANY    // chỉ cần 1 quyền trong danh sách
+  ALL    // cần đủ toàn bộ quyền
 }

@@ -1,14 +1,15 @@
-import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ChangePasswordDto } from 'src/modules/auth/dto/change-password.dto';
+import { Action } from 'src/modules/auth/decorator/action.decorator';
 
-@Controller('v1/users/me')
+@Controller('users')
 @UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private users: UsersService) {}
 
-  @Post('change-password')
+  @Post('me/change-password')
   async changePassword(
     @Req() req: any,
     @Body()
@@ -16,5 +17,10 @@ export class UsersController {
   ) {
     await this.users.changePassword(req.user.id, body);
     return { ok: true };
+  }
+
+  @Get()
+  async listUser() {
+    return await this.users.listUser();
   }
 }
