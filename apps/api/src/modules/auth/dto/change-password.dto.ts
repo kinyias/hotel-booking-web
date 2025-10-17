@@ -1,6 +1,6 @@
 import { IsString, MinLength, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { Match } from 'src/validators/match.decorator';
+import { Match } from '../../../validators/match.decorator';
 
 // Mật khẩu mạnh: >= 8 ký tự, có hoa, thường, số, và ký tự đặc biệt
 const PW_MIN = 8;

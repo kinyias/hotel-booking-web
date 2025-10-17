@@ -13,7 +13,7 @@ import { UsersService } from '../users/users.service';
 import { MailService } from '../mail/mail.service';
 import { ConfigService } from '@nestjs/config';
 import { addMinutes, isAfter } from 'date-fns';
-import { generateToken, sha256 } from 'src/shared/utils';
+import { generateToken, sha256 } from '../../shared/utils';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
 import { AuthProvider } from '@prisma/client';
