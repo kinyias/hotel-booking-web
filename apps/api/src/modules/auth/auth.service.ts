@@ -368,4 +368,51 @@ export class AuthService {
     });
     return sessions;
   }
+
+  async resendVerificationEmail(email: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      include: {
+        verifyTokens: {
+          where: { usedAt: null },
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+        },
+      },
+    });
+
+    if (!user) return;
+
+    if (user.emailVerified) {
+      throw new BadRequestException('Email already verified');
+    }
+    const lastToken = user.verifyTokens[0];
+    if (lastToken && dayjs(lastToken.expiresAt).isAfter(dayjs())) {
+      const createdAgoSec = dayjs().diff(dayjs(lastToken.createdAt), 'second');
+      if (createdAgoSec < 60) {
+        throw new BadRequestException('Please wait a minute before resending.');
+      }
+    }
+
+    const token = generateToken();
+    const tokenHash = sha256(token);
+    const expiresAt = addMinutes(new Date(), 30);
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.emailVerifyToken.deleteMany({
+        where: { userId: user.id, usedAt: null },
+      });
+
+      // Tạo token mới
+      await tx.emailVerifyToken.create({
+        data: {
+          userId: user.id,
+          tokenHash,
+          expiresAt,
+        },
+      });
+    });
+
+    await this.mail.sendVerifyEmail(user.email, token);
+  }
 }

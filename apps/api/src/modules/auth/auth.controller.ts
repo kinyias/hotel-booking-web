@@ -9,6 +9,7 @@ import {
   Headers,
   Get,
   Res,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { VerifyEmailDto } from '../auth/dto/verify-email.dto';
@@ -22,6 +23,7 @@ import { ResetPasswordDto } from '../auth/dto/reset-password.dto';
 import { minutes, Throttle } from '@nestjs/throttler';
 import type { Response, Request } from 'express';
 import { AuthProvider } from '@prisma/client';
+import { ResendEmailDto } from 'src/modules/auth/dto/resend-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -169,11 +171,23 @@ export class AuthController {
       `${web}/auth/callback#access_token=${encodeURIComponent(accessToken)}`,
     );
   }
+
   @Get('sessions')
   @UseGuards(AuthGuard('jwt'))
   async mySessions(@Req() req: any) {
     const userId = req.user.id;
     const sessions = await this.authService.getSessions(userId);
     return { items: sessions };
+  }
+
+  @Throttle({ default: { limit: 5, ttl: minutes(10) } })
+  @Post('resend')
+  @HttpCode(HttpStatus.OK)
+  async resend(@Body() dto: ResendEmailDto) {
+    await this.authService.resendVerificationEmail(dto.email);
+    return {
+      message:
+        'If this email exists and is not verified, a link has been sent.',
+    };
   }
 }

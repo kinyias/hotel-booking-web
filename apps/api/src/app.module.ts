@@ -12,11 +12,21 @@ import { RolesModule } from './modules/roles/roles.module';
 import { ActionsModule } from './modules/actions/actions.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { ImageService } from 'src/modules/image/image.service';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
     }),
     PrismaModule,
     AuthModule,
@@ -28,6 +38,14 @@ import { ImageService } from 'src/modules/image/image.service';
     CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, ImageService],
+  providers: [
+    AppService,
+    PrismaService,
+    ImageService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
