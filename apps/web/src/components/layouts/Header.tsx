@@ -1,9 +1,20 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { Menu, Phone, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ROUTES } from '@/constants';
+import { useAuth } from '@/providers/AuthProvider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 const navigationItems = [
   {
     name: 'TRANG CHỦ',
@@ -34,6 +45,7 @@ function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       // Change background when scrolled more than 50px
@@ -234,13 +246,57 @@ function Header() {
                 )}
               </div>
             </div>
-            <Button
-              variant="default"
-              className="relative overflow-hidden font-semibold text-white bg-primary rounded-none group px-8 py-6"
-            >
-              <span className="relative z-10">ĐĂNG NHẬP</span>
-              <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className='cursor-pointer'>
+                    <AvatarImage src={user.avatar} />
+                    <AvatarFallback><div className='bg-primary text-white w-full h-full flex justify-center items-center'>{user.firstName.charAt(0)}</div></AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user.firstName} {user.lastName}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href="/me">Tài khoản</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/me/booking">Đặt phòng của tôi</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/me/sale">Ưu đãi</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <button
+                      className="cursor-pointer w-full h-full text-start"
+                      onClick={logout}
+                    >
+                      Đăng xuất
+                    </button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href={ROUTES.LOGIN}>
+                <Button
+                  variant="default"
+                  className="relative overflow-hidden font-semibold text-white bg-primary rounded-none group px-8 py-6"
+                >
+                  <span className="relative z-10">ĐĂNG NHẬP</span>
+                  <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </Button>
+              </Link>
+            )}
           </div>
           {/* Mobile Menu Button */}
           <button
@@ -255,82 +311,82 @@ function Header() {
             )}
           </button>
         </div>
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden mt-4 pb-4 border-t border-white/10 pt-4">
-              {/* Mobile Navigation */}
-              <nav className="flex flex-col gap-3 mb-4">
-                {navigationItems.map((item) => (
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+            {/* Mobile Navigation */}
+            <nav className="flex flex-col gap-3 mb-4">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="px-4 py-2 text-sm font-medium hover:bg-white/10 rounded-md transition-colors"
+                  onClick={closeMobileMenu}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Mobile Contact & Actions */}
+            <div className="border-t border-white/10 pt-4 space-y-3">
+              {/* Mobile Language & Currency */}
+              <div className="px-4 py-2 space-y-2">
+                <div className="text-xs font-semibold text-black uppercase">
+                  Language
+                </div>
+                <div className="flex gap-2">
                   <Link
-                    key={item.name}
-                    href={item.href}
-                    className="px-4 py-2 text-sm font-medium hover:bg-white/10 rounded-md transition-colors"
+                    href="/"
+                    className="flex items-center gap-2 text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
                     onClick={closeMobileMenu}
                   >
-                    {item.name}
+                    <Image
+                      src="/vn-flag.webp"
+                      alt="Vietnamese"
+                      width={20}
+                      height={20}
+                    />
+                    <span>VN</span>
                   </Link>
-                ))}
-              </nav>
-
-              {/* Mobile Contact & Actions */}
-              <div className="border-t border-white/10 pt-4 space-y-3">
-                {/* Mobile Language & Currency */}
-                <div className="px-4 py-2 space-y-2">
-                  <div className="text-xs font-semibold text-black uppercase">
-                    Language
-                  </div>
-                  <div className="flex gap-2">
-                    <Link
-                      href="/"
-                      className="flex items-center gap-2 text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                      onClick={closeMobileMenu}
-                    >
-                      <Image
-                        src="/vn-flag.webp"
-                        alt="Vietnamese"
-                        width={20}
-                        height={20}
-                      />
-                      <span>VN</span>
-                    </Link>
-                    <Link
-                      href="/"
-                      className="flex items-center gap-2 text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                      onClick={closeMobileMenu}
-                    >
-                      <Image
-                        src="/en-flag.webp"
-                        alt="English"
-                        width={20}
-                        height={20}
-                      />
-                      <span>EN</span>
-                    </Link>
-                  </div>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2 text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <Image
+                      src="/en-flag.webp"
+                      alt="English"
+                      width={20}
+                      height={20}
+                    />
+                    <span>EN</span>
+                  </Link>
                 </div>
+              </div>
 
-                <div className="px-4 py-2 space-y-2">
-                  <div className="text-xs font-semibold text-black uppercase">
-                    Currency
-                  </div>
-                  <div className="flex gap-2">
-                    <Link
-                      href="/"
-                      className="text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                      onClick={closeMobileMenu}
-                    >
-                      VND
-                    </Link>
-                    <Link
-                      href="/"
-                      className="text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                      onClick={closeMobileMenu}
-                    >
-                      USD
-                    </Link>
-                  </div>
+              <div className="px-4 py-2 space-y-2">
+                <div className="text-xs font-semibold text-black uppercase">
+                  Currency
                 </div>
-
+                <div className="flex gap-2">
+                  <Link
+                    href="/"
+                    className="text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    VND
+                  </Link>
+                  <Link
+                    href="/"
+                    className="text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    USD
+                  </Link>
+                </div>
+              </div>
+              <Link href={ROUTES.LOGIN}>
                 <Button
                   variant="default"
                   className="w-full relative overflow-hidden font-semibold text-white bg-primary rounded-none group py-5 text-sm"
@@ -339,9 +395,10 @@ function Header() {
                   <span className="relative z-10">ĐĂNG NHẬP</span>
                   <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                 </Button>
-              </div>
+              </Link>
             </div>
-          )}
+          </div>
+        )}
       </div>
     </header>
   );
