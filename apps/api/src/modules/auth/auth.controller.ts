@@ -190,7 +190,7 @@ export class AuthController {
         'If this email exists and is not verified, a link has been sent.',
     };
   }
-  
+
   @Throttle({ default: { limit: 5, ttl: minutes(10) } })
   @Post('forgot-password')
   @HttpCode(202)

@@ -248,9 +248,6 @@ export class AuthService {
     ip?: string,
     ua?: string,
   ) {
-    if (newPassword !== confirmPassword) {
-      throw new BadRequestException('Passwords do not match');
-    }
     const tokenHash = crypto
       .createHash('sha256')
       .update(rawToken)
