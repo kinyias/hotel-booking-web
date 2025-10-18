@@ -1,21 +1,18 @@
-import Footer from '@/components/layouts/Footer'
-import Header from '@/components/layouts/Header'
-import React from 'react'
+import Footer from '@/components/layouts/Footer';
+import Header from '@/components/layouts/Header';
+import { AuthProvider } from '@/providers/AuthProvider';
+import React from 'react';
 
-function HomeLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='min-h-screen'>
+    <AuthProvider>
+      <div className="min-h-screen">
         <Header />
-        <main className="flex-1">
-            {children}
-        </main>
+        <main className="flex-1">{children}</main>
         <Footer />
-    </div>
-  )
+      </div>
+    </AuthProvider>
+  );
 }
 
-export default HomeLayout
+export default HomeLayout;

@@ -1,13 +1,15 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { AuthTokens } from '@/types';
+import { API_BASE_URL, API_ENDPOINTS } from '@/constants';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 // Request interceptor to add auth token
@@ -21,25 +23,24 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
+const AUTH_WHITELIST = [
+  API_ENDPOINTS.AUTH.LOGIN,
+  API_ENDPOINTS.AUTH.REFRESH_TOKEN,
+  API_ENDPOINTS.AUTH.REGISTER,
+];
 // Response interceptor to refresh token
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const requestUrl = originalRequest.url;
+    const isAuthEndpoint = AUTH_WHITELIST.some((url) => requestUrl?.includes(url));
+    if (error.response?.status === 401 && !isAuthEndpoint && !originalRequest._retry) {
       originalRequest._retry = true;
       
       try {
-        const refreshToken = Cookies.get('refreshToken');
-        if (!refreshToken) {
-          throw new Error('No refresh token available');
-        }
         
-        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/refresh-token`, {
-          refreshToken,
-        });
+        const { data } = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`);
         
         // Save the new tokens
         setAuthTokens(data);
@@ -50,8 +51,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // If refresh fails, logout the user
         Cookies.remove('accessToken');
-        Cookies.remove('refreshToken');
-        window.location.href = '/auth/login?session=expired';
+        window.location.href = `${API_ENDPOINTS.AUTH.LOGIN}?session=expired`;
         return Promise.reject(refreshError);
       }
     }
@@ -62,11 +62,10 @@ api.interceptors.response.use(
 
 // Helper function to set auth tokens
 export const setAuthTokens = (tokens: AuthTokens) => {
-  const { accessToken, refreshToken } = tokens;
+  const { accessToken } = tokens;
   
   // Store tokens in cookies
   Cookies.set('accessToken', accessToken, {expires: 7, secure: true, sameSite: 'strict' });
-  Cookies.set('refreshToken', refreshToken, {expires: 7, secure: true, sameSite: 'strict' });
   
   // Update axios headers
   api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -75,7 +74,6 @@ export const setAuthTokens = (tokens: AuthTokens) => {
 // Helper function to clear auth tokens
 export const clearAuthTokens = () => {
   Cookies.remove('accessToken');
-  Cookies.remove('refreshToken');
   delete api.defaults.headers.common.Authorization;
 };
 
