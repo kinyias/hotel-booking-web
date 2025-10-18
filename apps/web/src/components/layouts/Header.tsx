@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { Menu, X } from 'lucide-react';
+import { Book, LogOut, Menu, Ticket, User, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ROUTES } from '@/constants';
@@ -249,9 +249,13 @@ function Header() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Avatar className='cursor-pointer'>
+                  <Avatar className="cursor-pointer">
                     <AvatarImage src={user.avatar} />
-                    <AvatarFallback><div className='bg-primary text-white w-full h-full flex justify-center items-center'>{user.firstName.charAt(0)}</div></AvatarFallback>
+                    <AvatarFallback>
+                      <div className="bg-primary text-white w-full h-full flex justify-center items-center">
+                        {user.firstName.charAt(0)}
+                      </div>
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -386,16 +390,68 @@ function Header() {
                   </Link>
                 </div>
               </div>
-              <Link href={ROUTES.LOGIN}>
-                <Button
-                  variant="default"
-                  className="w-full relative overflow-hidden font-semibold text-white bg-primary rounded-none group py-5 text-sm"
-                  onClick={closeMobileMenu}
-                >
-                  <span className="relative z-10">ĐĂNG NHẬP</span>
-                  <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
-                </Button>
-              </Link>
+              {user ? (
+                <div className="border-t border-white/10 pt-3 space-y-2">
+                  <div className="px-4 py-2 flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full">
+                      <Avatar className="cursor-pointer">
+                        <AvatarImage src={user.avatar} />
+                        <AvatarFallback>
+                          <div className="bg-primary text-white w-full h-full flex justify-center items-center">
+                            {user.firstName.charAt(0)}
+                          </div>
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <span className="text-sm font-medium">{user.firstName}{user.lastName}</span>
+                  </div>
+                  <Link
+                    href={ROUTES.PROFILE}
+                    className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-white/10 rounded-md transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <User className="w-4 h-4" />
+                    Tài khoản
+                  </Link>
+                   <Link
+                    href={ROUTES.PROFILE}
+                    className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-white/10 rounded-md transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <Book className="w-4 h-4" />
+                    Đặt phòng của tôi
+                  </Link>
+                   <Link
+                    href={ROUTES.PROFILE}
+                    className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-white/10 rounded-md transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <Ticket className="w-4 h-4" />
+                    Ưu đãi
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      closeMobileMenu();
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-white/10 rounded-md transition-colors text-left"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <Link href={ROUTES.LOGIN}>
+                  <Button
+                    variant="default"
+                    className="w-full relative overflow-hidden font-semibold text-white bg-primary rounded-none group py-5 text-sm"
+                    onClick={closeMobileMenu}
+                  >
+                    <span className="relative z-10">ĐĂNG NHẬP</span>
+                    <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         )}
