@@ -30,6 +30,6 @@ export class ResetPasswordDto {
 
   @IsString()
   @MinLength(PW_MIN)
-  @Match('password')
+  @Match('newPassword')
   confirmPassword!: string;
 }
