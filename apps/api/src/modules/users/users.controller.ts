@@ -2,6 +2,7 @@ import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ChangePasswordDto } from '../auth/dto/change-password.dto';
+import { Request } from 'express';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -18,8 +19,9 @@ export class UsersController {
     return { ok: true };
   }
 
-  @Get()
-  async listUser() {
-    return await this.users.listUser();
+  @Get('me')
+  async me(@Req() req: Request) {
+    const user = req.user as any;
+    return await this.users.me(user.id);
   }
 }

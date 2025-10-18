@@ -57,7 +57,32 @@ export class UsersService {
     return { ok: true };
   }
 
-  async listUser() {
-    return await this.prisma.user.findMany();
+  async me(userId: string) {
+    const result = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        createdAt: true,
+        updatedAt: true,
+        roles: {
+          select: {
+            role: true,
+          },
+        },
+        avatar: {
+          select: {
+            id: true,
+            secureUrl: true,
+            publicId: true,
+          },
+        },
+      },
+    });
+    return {
+      user: result,
+    };
   }
 }
