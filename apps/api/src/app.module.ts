@@ -10,6 +10,8 @@ import { PrismaService } from './modules/prisma/prisma.service';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { ActionsModule } from './modules/actions/actions.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { ImageService } from 'src/modules/image/image.service';
 
 @Module({
   imports: [
@@ -23,8 +25,9 @@ import { ActionsModule } from './modules/actions/actions.module';
     PermissionsModule,
     RolesModule,
     ActionsModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, ImageService],
 })
 export class AppModule {}

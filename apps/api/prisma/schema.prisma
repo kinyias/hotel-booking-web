@@ -26,6 +26,9 @@ model User {
 
   roles         UserRole[]
 
+  avatarId      String?     
+  avatar        ImageAsset? @relation("UserAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
+
   provider     AuthProvider @default(LOCAL)
   providerId   String?  @unique
 
@@ -131,6 +134,24 @@ model ApiActionPolicy {
   @@id([actionId, permissionId])
 }
 
+model ImageAsset {
+  id            String   @id @default(cuid())
+  // publicId là định danh xoá trên Cloudinary (bắt buộc để delete)
+  publicId      String   @unique
+  url           String
+  secureUrl     String
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Liên kết 1-1 cho avatar user (optional)
+  userAvatarOf  User[]   @relation("UserAvatar")
+
+  // Liên kết N-N có payload cho Hotel/RoomType/Location qua các bảng nối
+}
+
+
+// ==================== ENUM ====================
 enum AuthProvider {
   LOCAL
   GOOGLE
@@ -139,4 +160,11 @@ enum AuthProvider {
 enum PolicyMode {
   ANY    // chỉ cần 1 quyền trong danh sách
   ALL    // cần đủ toàn bộ quyền
+}
+
+enum ImageKind {
+  AVATAR     // avatar user
+  COVER      // ảnh bìa/cover
+  GALLERY    // ảnh trong bộ sưu tập
+  DOC        // tài liệu/biên lai nếu cần
 }
