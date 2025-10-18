@@ -253,7 +253,7 @@ function Header() {
                     <AvatarImage src={user.avatar} />
                     <AvatarFallback>
                       <div className="bg-primary text-white w-full h-full flex justify-center items-center">
-                        {user.firstName.charAt(0)}
+                        {user.firstName?.charAt(0) || '?'}
                       </div>
                     </AvatarFallback>
                   </Avatar>
@@ -262,7 +262,7 @@ function Header() {
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
-                        {user.firstName} {user.lastName}
+                        {user.firstName || '?'} {user.lastName || '?'}
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {user.email}

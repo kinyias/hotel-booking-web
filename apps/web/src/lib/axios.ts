@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { AuthTokens } from '@/types';
 import { API_BASE_URL, API_ENDPOINTS } from '@/constants';
 
 // Create axios instance
@@ -43,7 +42,7 @@ api.interceptors.response.use(
         const { data } = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`);
         
         // Save the new tokens
-        setAuthTokens(data);
+        setAuthTokens(data.accessToken);
         
         // Retry the original request
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
@@ -61,8 +60,7 @@ api.interceptors.response.use(
 );
 
 // Helper function to set auth tokens
-export const setAuthTokens = (tokens: AuthTokens) => {
-  const { accessToken } = tokens;
+export const setAuthTokens = (accessToken: string) => {
   
   // Store tokens in cookies
   Cookies.set('accessToken', accessToken, {expires: 7, secure: true, sameSite: 'strict' });
