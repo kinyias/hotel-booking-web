@@ -14,13 +14,15 @@ import Link from 'next/link';
 import { GoogleIcon } from '@/components/icons/GoogleIcon';
 import { MailCheckIcon, ArrowRight } from 'lucide-react';
 import PageTitle from '@/components/sections/PageTitle';
-import { ROUTES } from '@/constants';
+import { API_BASE_URL, ROUTES } from '@/constants';
 import RegisterForm from '@/features/auth/components/RegisterForm';
 
 export default function RegisterPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [email, setEmail] = useState('');
-
+  const googleLogin = () => {
+    window.location.href = `${API_BASE_URL}/auth/google`;
+  };
   return (
     <>
       <PageTitle
@@ -59,7 +61,7 @@ export default function RegisterPage() {
                   </span>
                 </div>
               </div>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={googleLogin}>
                 <GoogleIcon />
                 Tiếp tục với Google
               </Button>
@@ -67,7 +69,10 @@ export default function RegisterPage() {
             <CardFooter className="flex justify-center">
               <p className="text-sm text-gray-600">
                 Đã có tài khoản?{' '}
-                <Link href="/auth/login" className="text-primary hover:underline">
+                <Link
+                  href="/auth/login"
+                  className="text-primary hover:underline"
+                >
                   Đăng nhập
                 </Link>
               </p>

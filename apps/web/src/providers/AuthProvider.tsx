@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         password,
       });
-      setAuthTokens(data);
+      setAuthTokens(data.accessToken);
       await loadUser();
       toast.success(MESSAGES.AUTH.LOGIN_SUCCESS);
       router.push(ROUTES.PROFILE);

@@ -19,6 +19,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { loginSchema } from '@/features/auth';
 import type * as z from 'zod';
 import { GoogleIcon } from '@/components/icons/GoogleIcon';
+import { API_BASE_URL } from '@/constants';
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -41,7 +42,9 @@ export function LoginForm() {
       console.error('Login error:', error);
     }
   };
-
+  const googleLogin = () => {
+    window.location.href = `${API_BASE_URL}/auth/google`;
+  }
   return (
     <>
       <Form {...form}>
@@ -146,7 +149,7 @@ export function LoginForm() {
       <Button
         variant="outline"
         className="w-full"
-        // onClick={googleLogin}
+        onClick={googleLogin}
         disabled={loading}
       >
         <GoogleIcon />
