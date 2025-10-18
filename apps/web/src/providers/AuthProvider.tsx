@@ -20,6 +20,12 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   loadUser: () => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (
+    token: string,
+    password: string,
+    confirmPassword: string
+  ) => Promise<void>;
   register: (registerData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -106,9 +112,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       throw error;
     }
   };
+
+  const forgotPassword = async (email: string) => {
+    try {
+      setLoading(true);
+      await api.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
+      toast.success(MESSAGES.AUTH.FORGOT_PASSWORD_SENT);
+      setLoading(false);
+      router.push(ROUTES.LOGIN);
+    } catch (err) {
+      const error = err as ApiError;
+      const message =
+        error.response?.data?.message || MESSAGES.AUTH.FORGOT_PASSWORD_FAILED;
+      toast.error(message);
+      setLoading(false);
+      throw error;
+    }
+  };
+  const resetPassword = async (
+    token: string,
+    password: string,
+    confirmPassword: string
+  ) => {
+    try {
+      setLoading(true);
+      await api.post(API_ENDPOINTS.AUTH.RESET_PASSWORD, {
+        token,
+        newPassword: password,
+        confirmPassword,
+      });
+      toast.success(MESSAGES.AUTH.RESET_PASSWORD_SUCCESS);
+      setLoading(false);
+      router.push(ROUTES.LOGIN);
+    } catch (err) {
+      const error = err as ApiError;
+      const message =
+        error.response?.data?.message || MESSAGES.AUTH.RESET_PASSWORD_FAILED;
+      toast.error(message);
+      setLoading(false);
+      throw error;
+    }
+  };
   return (
     <AuthContext.Provider
-      value={{ user, loading, loadUser, login, register, logout }}
+      value={{
+        user,
+        loading,
+        forgotPassword,
+        resetPassword,
+        loadUser,
+        login,
+        register,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

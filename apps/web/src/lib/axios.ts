@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { API_BASE_URL, API_ENDPOINTS } from '@/constants';
+import { API_BASE_URL, API_ENDPOINTS, ROUTES } from '@/constants';
 
 // Create axios instance
 const api = axios.create({
@@ -50,7 +50,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // If refresh fails, logout the user
         Cookies.remove('accessToken');
-        window.location.href = `${API_ENDPOINTS.AUTH.LOGIN}?session=expired`;
+        window.location.href = `${ROUTES.LOGIN}?session=expired`;
         return Promise.reject(refreshError);
       }
     }

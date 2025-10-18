@@ -70,7 +70,7 @@ export default function RegisterPage() {
               <p className="text-sm text-gray-600">
                 Đã có tài khoản?{' '}
                 <Link
-                  href="/auth/login"
+                  href={ROUTES.LOGIN}
                   className="text-primary hover:underline"
                 >
                   Đăng nhập

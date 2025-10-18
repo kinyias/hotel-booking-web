@@ -19,7 +19,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { loginSchema } from '@/features/auth';
 import type * as z from 'zod';
 import { GoogleIcon } from '@/components/icons/GoogleIcon';
-import { API_BASE_URL } from '@/constants';
+import { API_BASE_URL, ROUTES } from '@/constants';
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -81,7 +81,7 @@ export function LoginForm() {
                 <FormLabel className="flex items-center justify-between">
                   <span>Mật khẩu</span>
                   <Link
-                    href="/auth/forgot-password"
+                    href={ROUTES.FORGOT_PASSWORD}
                     className="text-sm text-primary hover:underline"
                   >
                     Quên mật khẩu?
