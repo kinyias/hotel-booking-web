@@ -2,33 +2,37 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
-
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
-async function bootstrap() {
+let cachedApp: any = null;
+
+async function createApp() {
+  if (cachedApp) return cachedApp;
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
-
   app.useGlobalFilters(new PrismaExceptionFilter());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-    }),
-  );
-  app.enableCors({
-    origin: [process.env.PUBLIC_WEB_URL ?? 'http://localhost:3000'], // FE domain
-    credentials: true, // Quan trọng để gửi cookie
-  });
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.enableCors({ origin: ['http://localhost:3000'], credentials: true });
   app.setGlobalPrefix('api/v1');
+  await app.init();
 
-  const port = process.env.PORT ?? 3000;
-  await app.listen(port);
-
-  // Log để biết API đang chạy trên đâu
-  console.log(`🚀 API is running on: http://localhost:${port}`);
+  cachedApp = app.getHttpAdapter().getInstance();
+  return cachedApp;
 }
-bootstrap();
+
+const handler = async (req: any, res: any) => {
+  const app = await createApp();
+  return app(req, res);
+};
+
+// ✅ Tự động start server khi chạy dev (Node environment)
+if (process.env.NODE_ENV !== 'production') {
+  createApp().then(app => {
+    const port = process.env.PORT ?? 3000;
+    app.listen(port, () => console.log(`🚀 Dev server running on http://localhost:${port}`));
+  });
+}
+
+// Export default cho Vercel
+export default handler;
