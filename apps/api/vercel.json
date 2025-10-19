@@ -1,8 +1,7 @@
 {
   "functions": {
     "api/index.ts": {
-      "runtime": "nodejs20.x",
-      "entrypoint": "apps/api/src/vercel.ts"
+      "runtime": "nodejs20.x"
     }
   }
 }
