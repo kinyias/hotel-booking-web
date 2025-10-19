@@ -21,6 +21,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    "types": ["node", "Multer"]
+    "types": ["node", "express", "multer"]
   }
 }
