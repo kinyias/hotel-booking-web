@@ -1,9 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Readable } from 'stream';
 import { v2 as Cloudinary } from 'cloudinary';
-import { CloudinaryService } from 'src/modules/cloudinary/cloudinary.service';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { ImageService } from 'src/modules/image/image.service';
+import { PrismaService } from '../../../modules/prisma/prisma.service';
 
 @Injectable()
 export class UserAvatarService {
