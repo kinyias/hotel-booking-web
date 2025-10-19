@@ -79,12 +79,12 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between">
-                  <span>Mật khẩu</span>
+                  <span>Password</span>
                   <Link
                     href={ROUTES.FORGOT_PASSWORD}
                     className="text-sm text-primary hover:underline"
                   >
-                    Quên mật khẩu?
+                    Forgot password?
                   </Link>
                 </FormLabel>
                 <div className="relative">
@@ -92,7 +92,7 @@ export function LoginForm() {
                   <FormControl>
                     <Input
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Nhập mật khẩu"
+                      placeholder="Enter your password"
                       className="pl-10"
                       disabled={loading}
                       {...field}
@@ -130,10 +130,10 @@ export function LoginForm() {
             {loading ? (
               <>
                 <Loader className="animate-spin mr-2 h-4 w-4" />
-                Đang đăng nhập...
+                Logging...
               </>
             ) : (
-              'Đăng nhập'
+              'Login'
             )}
           </Button>
         </form>
@@ -143,7 +143,7 @@ export function LoginForm() {
           <div className="w-full border-t border-gray-300"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-card text-gray-500">Hoặc tiếp tục với</span>
+          <span className="px-2 bg-card text-gray-500">Or continue with</span>
         </div>
       </div>
       <Button
@@ -153,7 +153,7 @@ export function LoginForm() {
         disabled={loading}
       >
         <GoogleIcon />
-        Tiếp tục với Google
+        Login with Google
       </Button>
     </>
   );

@@ -17,25 +17,25 @@ import {
 } from '../ui/dropdown-menu';
 const navigationItems = [
   {
-    name: 'TRANG CHỦ',
+    name: 'HOME',
     href: '/',
     hasDropdown: false,
     subcategories: [],
   },
   {
-    name: 'HỆ THỐNG KHÁCH SẠN',
+    name: 'HOTELS',
     href: '/',
     hasDropdown: false,
     subcategories: [],
   },
   {
-    name: 'HỖ TRỢ',
+    name: 'CONTACT',
     href: '/',
     hasDropdown: false,
     subcategories: [],
   },
   {
-    name: 'TIN TỨC',
+    name: 'NEWS',
     href: '/tin-tuc',
     hasDropdown: false,
     subcategories: [],
@@ -162,50 +162,6 @@ function Header() {
                     className="mr-2"
                   />
                 </button>
-
-                {activeDropdown === 'language' && (
-                  <div
-                    className="absolute top-full left-0 mt-3 w-40 bg-white shadow-lg rounded-md overflow-hidden z-50 text-black"
-                    onMouseEnter={() => setActiveDropdown('language')}
-                    onMouseLeave={() => closeDropdowns()}
-                  >
-                    <div className="py-2">
-                      <Link
-                        href="/"
-                        className="block px-4 py-2 text-sm hover:bg-muted transition-colors"
-                        onClick={() => closeDropdowns()}
-                      >
-                        <div className="flex items-center">
-                          <Image
-                            src="/vn-flag.webp"
-                            alt="Vietnamese"
-                            width={24}
-                            height={24}
-                            className="mr-2"
-                          />
-                          Tiếng Việt
-                        </div>
-                      </Link>
-                      <Link
-                        href="/"
-                        className="block px-4 py-2 text-sm hover:bg-muted transition-colors"
-                        onClick={() => closeDropdowns()}
-                      >
-                        <div className="flex items-center">
-                          {' '}
-                          <Image
-                            src="/en-flag.webp"
-                            alt="Vietnamese"
-                            width={24}
-                            height={24}
-                            className="mr-2"
-                          />
-                          English
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                )}
               </div>
               <span>/</span>
               <div className="relative group">
@@ -271,13 +227,13 @@ function Header() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <Link href="/me">Tài khoản</Link>
+                    <Link href="/me">Account</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href="/me/booking">Đặt phòng của tôi</Link>
+                    <Link href="/me/booking">My Bookings</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href="/me/sale">Ưu đãi</Link>
+                    <Link href="/me/sale">My offers</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
@@ -285,7 +241,7 @@ function Header() {
                       className="cursor-pointer w-full h-full text-start"
                       onClick={logout}
                     >
-                      Đăng xuất
+                      Logout
                     </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -334,41 +290,7 @@ function Header() {
 
             {/* Mobile Contact & Actions */}
             <div className="border-t border-white/10 pt-4 space-y-3">
-              {/* Mobile Language & Currency */}
-              <div className="px-4 py-2 space-y-2">
-                <div className="text-xs font-semibold text-black uppercase">
-                  Language
-                </div>
-                <div className="flex gap-2">
-                  <Link
-                    href="/"
-                    className="flex items-center gap-2 text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    <Image
-                      src="/vn-flag.webp"
-                      alt="Vietnamese"
-                      width={20}
-                      height={20}
-                    />
-                    <span>VN</span>
-                  </Link>
-                  <Link
-                    href="/"
-                    className="flex items-center gap-2 text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    <Image
-                      src="/en-flag.webp"
-                      alt="English"
-                      width={20}
-                      height={20}
-                    />
-                    <span>EN</span>
-                  </Link>
-                </div>
-              </div>
-
+            
               <div className="px-4 py-2 space-y-2">
                 <div className="text-xs font-semibold text-black uppercase">
                   Currency
@@ -411,7 +333,7 @@ function Header() {
                     onClick={closeMobileMenu}
                   >
                     <User className="w-4 h-4" />
-                    Tài khoản
+                    Account
                   </Link>
                    <Link
                     href={ROUTES.PROFILE}
@@ -419,7 +341,7 @@ function Header() {
                     onClick={closeMobileMenu}
                   >
                     <Book className="w-4 h-4" />
-                    Đặt phòng của tôi
+                    My Bookings
                   </Link>
                    <Link
                     href={ROUTES.PROFILE}
@@ -427,7 +349,7 @@ function Header() {
                     onClick={closeMobileMenu}
                   >
                     <Ticket className="w-4 h-4" />
-                    Ưu đãi
+                    My Offers
                   </Link>
                   <button
                     onClick={() => {
@@ -437,7 +359,7 @@ function Header() {
                     className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-white/10 rounded-md transition-colors text-left"
                   >
                     <LogOut className="w-4 h-4" />
-                    Đăng xuất
+                    Logout
                   </button>
                 </div>
               ) : (
@@ -447,7 +369,7 @@ function Header() {
                     className="w-full relative overflow-hidden font-semibold text-white bg-primary rounded-none group py-5 text-sm"
                     onClick={closeMobileMenu}
                   >
-                    <span className="relative z-10">ĐĂNG NHẬP</span>
+                    <span className="relative z-10">LOGIN</span>
                     <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                   </Button>
                 </Link>

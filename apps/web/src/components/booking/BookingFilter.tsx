@@ -65,12 +65,12 @@ const BookingFilter = () => {
             <MapPin className="w-10 h-10 text-primary-foreground opacity-90 flex-shrink-0" />
             <div className="flex-1">
               <label htmlFor="location" className="text-primary-foreground text-sm font-medium mb-1 block">
-                Địa điểm
+                Location
               </label>
               <Input
                 id="location"
                 type="text"
-                placeholder="Bạn muốn đi đâu?"
+                placeholder="Where do you go?"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="bg-transparent border-0 border-b border-primary-foreground/30 rounded-none px-0 text-primary-foreground text-lg font-semibold placeholder:text-primary-foreground/50 focus-visible:ring-0 focus-visible:border-primary-foreground h-auto py-1"
@@ -98,7 +98,6 @@ const BookingFilter = () => {
                 onSelect={setDate}
                 numberOfMonths={2}
                 initialFocus
-                locale={vi}
                 className={cn("p-3 pointer-events-auto")}
               />
             </PopoverContent>
@@ -110,9 +109,9 @@ const BookingFilter = () => {
               <button className="flex items-center gap-4 text-left group cursor-pointer">
                 <User className="w-10 h-10 text-primary-foreground opacity-90" />
                 <div>
-                  <p className="text-primary-foreground text-sm font-medium mb-1">Khách</p>
+                  <p className="text-primary-foreground text-sm font-medium mb-1">Guests</p>
                   <p className="text-primary-foreground text-lg font-semibold">
-                    {rooms} Phòng {adults} Người lớn {children} Trẻ em
+                    {rooms} Rooms {adults} Adults {children} children
                   </p>
                 </div>
               </button>
@@ -120,7 +119,7 @@ const BookingFilter = () => {
             <PopoverContent className="w-80 pointer-events-auto" align="start">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Phòng</span>
+                  <span className="text-sm font-medium">Room</span>
                   <div className="flex items-center gap-3">
                     <Button
                       variant="outline"
@@ -143,7 +142,7 @@ const BookingFilter = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Người lớn</span>
+                  <span className="text-sm font-medium">Adults</span>
                   <div className="flex items-center gap-3">
                     <Button
                       variant="outline"
@@ -166,7 +165,7 @@ const BookingFilter = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Trẻ em</span>
+                  <span className="text-sm font-medium">Children</span>
                   <div className="flex items-center gap-3">
                     <Button
                       variant="outline"
@@ -192,7 +191,7 @@ const BookingFilter = () => {
                   onClick={handleApplyGuests}
                   className="w-full bg-gold hover:bg-gold-light text-primary"
                 >
-                  Hoàn thành
+                  Apply
                 </Button>
               </div>
             </PopoverContent>
@@ -203,7 +202,7 @@ const BookingFilter = () => {
             size="lg"
             className="bg-background hover:bg-background/90 text-primary border-0 h-auto py-4 md:py-6 text-base font-semibold group"
           >
-            Tìm phòng
+            Check Now
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>

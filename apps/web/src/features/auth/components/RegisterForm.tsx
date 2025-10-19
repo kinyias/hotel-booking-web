@@ -54,12 +54,12 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Họ</FormLabel>
+                <FormLabel>First name</FormLabel>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <FormControl>
                     <Input
-                      placeholder="Nguyen"
+                      placeholder="John"
                       className="pl-10"
                       disabled={loading}
                       {...field}
@@ -75,12 +75,12 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
             name="lastName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tên</FormLabel>
+                <FormLabel>Last name</FormLabel>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <FormControl>
                     <Input
-                      placeholder="Van An"
+                      placeholder="Doe"
                       className="pl-10"
                       disabled={loading}
                       {...field}
@@ -121,7 +121,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mật khẩu</FormLabel>
+              <FormLabel>Password</FormLabel>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <FormControl>
@@ -144,7 +144,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Xác nhận mật khẩu</FormLabel>
+              <FormLabel>Confirm password</FormLabel>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <FormControl>
@@ -163,7 +163,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         />
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? <Loader className="animate-spin" /> : 'Đăng ký'}
+          {loading ? <Loader className="animate-spin" /> : 'Sign Up'}
         </Button>
       </form>
     </Form>

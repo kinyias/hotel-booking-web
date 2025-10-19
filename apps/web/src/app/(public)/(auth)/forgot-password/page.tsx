@@ -26,7 +26,12 @@ export default function ForgotPasswordPage() {
 
   return (
     <>
-      <PageTitle title="Quên mật khẩu" breadcrumbs={[]} description="Đặt lại mật khẩu của bạn" />
+      <PageTitle
+        title="Forgot Password"
+        breadcrumbs={[]}
+        description="Reset your password"
+      />
+
       {!isSubmitted ? (
         <div className="py-20 flex items-center justify-center">
           <ForgotPasswordForm onSubmit={handleSubmit} loading={loading} />

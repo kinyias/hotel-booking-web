@@ -14,19 +14,23 @@ import PageTitle from '@/components/sections/PageTitle';
 export default function ResetPasswordPage() {
   return (
     <>
-        <PageTitle title="Đặt lại mật khẩu" breadcrumbs={[]} description="Tạo mật khẩu mới cho tài khoản của bạn" />
-      <div className="py-20 flex items-center justify-center ">
+      <PageTitle
+        title="Reset Password"
+        breadcrumbs={[]}
+        description="Create a new password for your account"
+      />
+      <div className="py-20 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
-              Đặt lại mật khẩu mới
+              Set a New Password
             </CardTitle>
             <CardDescription className="text-center">
-              Mật khẩu của bạn phải khác mật khẩu cũ
+              Your new password must be different from the old one
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Suspense fallback={<div>Đang tải...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
               <ResetPasswordForm />
             </Suspense>
           </CardContent>

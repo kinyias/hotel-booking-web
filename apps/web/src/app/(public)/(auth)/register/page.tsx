@@ -26,10 +26,10 @@ export default function RegisterPage() {
   return (
     <>
       <PageTitle
-        title="Đăng ký"
+        title="Sign Up"
         breadcrumbs={[
-          { label: 'Trang chủ', href: ROUTES.HOME },
-          { label: 'Đăng ký', href: ROUTES.REGISTER },
+          { label: 'Home', href: ROUTES.HOME },
+          { label: 'Sign Up', href: ROUTES.REGISTER },
         ]}
       />
 
@@ -38,12 +38,13 @@ export default function RegisterPage() {
           <Card className="w-full max-w-xl">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-center">
-                Tạo tài khoản
+                Create an Account
               </CardTitle>
               <CardDescription className="text-center">
-                Đăng nhập với tài khoản mới
+                Sign in with your new account
               </CardDescription>
             </CardHeader>
+
             <CardContent>
               <RegisterForm
                 onSuccess={(email) => {
@@ -57,23 +58,27 @@ export default function RegisterPage() {
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-card text-gray-500">
-                    Hoặc tiếp tục với
+                    Or continue with
                   </span>
                 </div>
               </div>
-              <Button variant="outline" className="w-full" onClick={googleLogin}>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={googleLogin}
+              >
                 <GoogleIcon />
-                Tiếp tục với Google
+                Login with Google
               </Button>
             </CardContent>
             <CardFooter className="flex justify-center">
               <p className="text-sm text-gray-600">
-                Đã có tài khoản?{' '}
+                Already have an account?{' '}
                 <Link
                   href={ROUTES.LOGIN}
                   className="text-primary hover:underline"
                 >
-                  Đăng nhập
+                  Log in
                 </Link>
               </p>
             </CardFooter>
@@ -82,13 +87,13 @@ export default function RegisterPage() {
       ) : (
         <div className="w-full h-[80vh] flex flex-col gap-2 items-center justify-center rounded-md">
           <MailCheckIcon size="48px" className="animate-bounce" />
-          <h2 className="text-xl font-bold">Kiểm tra email của bạn</h2>
+          <h2 className="text-xl font-bold">Check your email</h2>
           <p className="mb-2 text-center text-sm text-muted-foreground">
-            Chúng tôi đã gửi link xác nhận email tới <strong>{email}</strong>.
+            We’ve sent a verification link to <strong>{email}</strong>.
           </p>
           <Link href={ROUTES.LOGIN}>
             <Button className="h-[40px]">
-              Tiếp tục đăng nhập <ArrowRight />
+              Continue to Login <ArrowRight />
             </Button>
           </Link>
         </div>

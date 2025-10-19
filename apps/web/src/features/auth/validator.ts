@@ -1,101 +1,103 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z
     .string()
     .email({
-      message: 'Vui lòng điền email hợp lệ',
+      message: "Please enter a valid email address",
     })
-    .nonempty('Email không được để trống'),
+    .nonempty("Email cannot be empty"),
   password: z
     .string()
     .min(8, {
-      message: 'Mật khẩu phải có ít nhất 8 kí tự',
+      message: "Password must be at least 8 characters long",
     })
     .regex(/[a-z]/, {
-      message: 'Mật khẩu phải có ít nhất một chữ cái thường (a-z)',
+      message: "Password must contain at least one lowercase letter (a-z)",
     })
     .regex(/[A-Z]/, {
-      message: 'Mật khẩu phải có ít nhất một chữ cái hoa (A-Z)',
+      message: "Password must contain at least one uppercase letter (A-Z)",
     })
     .regex(/[0-9]/, {
-      message: 'Mật khẩu phải có ít nhất một chữ số (0-9)',
+      message: "Password must contain at least one number (0-9)",
     })
     .regex(/[!@#$%^&*]/, {
       message:
-        'Mật khẩu phải có ít nhất một ký tự đặc biệt (!, @, #, $, %, ^, &, *)',
+        "Password must contain at least one special character (!, @, #, $, %, ^, &, *)",
     })
-    .nonempty('Mật khẩu không được để trống'),
+    .nonempty("Password cannot be empty"),
 });
 
 export const registerSchema = z
   .object({
-    firstName: z.string().nonempty('Họ không được để trống'),
-    lastName: z.string().nonempty('Tên không được để trống'),
+    firstName: z.string().nonempty("First name cannot be empty"),
+    lastName: z.string().nonempty("Last name cannot be empty"),
     email: z
       .string()
       .email({
-        message: 'Vui lòng điền email hợp lệ',
+        message: "Please enter a valid email address",
       })
-      .nonempty('Email không được để trống'),
+      .nonempty("Email cannot be empty"),
     password: z
       .string()
       .min(8, {
-        message: 'Mật khẩu phải có ít nhất 8 kí tự',
+        message: "Password must be at least 8 characters long",
       })
       .regex(/[a-z]/, {
-        message: 'Mật khẩu phải có ít nhất một chữ cái thường (a-z)',
+        message: "Password must contain at least one lowercase letter (a-z)",
       })
       .regex(/[A-Z]/, {
-        message: 'Mật khẩu phải có ít nhất một chữ cái hoa (A-Z)',
+        message: "Password must contain at least one uppercase letter (A-Z)",
       })
       .regex(/[0-9]/, {
-        message: 'Mật khẩu phải có ít nhất một chữ số (0-9)',
+        message: "Password must contain at least one number (0-9)",
       })
       .regex(/[!@#$%^&*]/, {
         message:
-          'Mật khẩu phải có ít nhất một ký tự đặc biệt (!, @, #, $, %, ^, &, *)',
+          "Password must contain at least one special character (!, @, #, $, %, ^, &, *)",
       })
-      .nonempty('Mật khẩu không được để trống'),
+      .nonempty("Password cannot be empty"),
     confirmPassword: z
       .string()
-      .nonempty('Xác nhận mật khẩu không được để trống'),
+      .nonempty("Confirm password cannot be empty"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Mật khẩu xác nhận không khớp',
-    path: ['confirmPassword'],
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
+
 export const forgotPasswordSchema = z.object({
   email: z.string().email({
-    message: 'Vui lòng điền email hợp lệ',
+    message: "Please enter a valid email address",
   }),
 });
+
 export const resetPasswordSchema = z
   .object({
     password: z
       .string()
       .min(8, {
-        message: 'Mật khẩu phải có ít nhất 8 kí tự',
+        message: "Password must be at least 8 characters long",
       })
       .regex(/[a-z]/, {
-        message: 'Mật khẩu phải có ít nhất một chữ cái thường (a-z)',
+        message: "Password must contain at least one lowercase letter (a-z)",
       })
       .regex(/[A-Z]/, {
-        message: 'Mật khẩu phải có ít nhất một chữ cái hoa (A-Z)',
+        message: "Password must contain at least one uppercase letter (A-Z)",
       })
       .regex(/[0-9]/, {
-        message: 'Mật khẩu phải có ít nhất một chữ số (0-9)',
+        message: "Password must contain at least one number (0-9)",
       })
       .regex(/[!@#$%^&*]/, {
         message:
-          'Mật khẩu phải có ít nhất một ký tự đặc biệt (!, @, #, $, %, ^, &, *)',
+          "Password must contain at least one special character (!, @, #, $, %, ^, &, *)",
       })
-      .nonempty('Mật khẩu không được để trống'),
+      .nonempty("Password cannot be empty"),
     confirmPassword: z
       .string()
-      .nonempty('Xác nhận mật khẩu không được để trống'),
+      .nonempty("Confirm password cannot be empty"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Mật khẩu xác nhận không khớp',
-    path: ['confirmPassword'],
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });

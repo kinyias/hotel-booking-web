@@ -33,7 +33,10 @@ interface ForgotPasswordFormProps {
   loading: boolean;
 }
 
-export default function ForgotPasswordForm({ onSubmit, loading }: ForgotPasswordFormProps) {
+export default function ForgotPasswordForm({
+  onSubmit,
+  loading,
+}: ForgotPasswordFormProps) {
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -49,11 +52,11 @@ export default function ForgotPasswordForm({ onSubmit, loading }: ForgotPassword
     <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">
-          Đặt lại mật khẩu
+          Reset Your Password
         </CardTitle>
         <CardDescription className="text-center">
-          Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn hướng dẫn
-          để đặt lại mật khẩu của bạn.
+          Enter your email address and we’ll send you instructions to reset your
+          password.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -72,7 +75,7 @@ export default function ForgotPasswordForm({ onSubmit, loading }: ForgotPassword
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <FormControl>
                       <Input
-                        placeholder="Nhập email"
+                        placeholder="Email"
                         className="pl-10"
                         disabled={loading}
                         {...field}
@@ -87,10 +90,10 @@ export default function ForgotPasswordForm({ onSubmit, loading }: ForgotPassword
               {loading ? (
                 <>
                   <Loader className="animate-spin mr-2" />
-                  Đang gửi...
+                  Sending...
                 </>
               ) : (
-                'Gửi yêu cầu đặt lại mật khẩu'
+                'Send password reset request'
               )}
             </Button>
           </form>
@@ -98,12 +101,9 @@ export default function ForgotPasswordForm({ onSubmit, loading }: ForgotPassword
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-gray-600">
-          Nhớ mật khẩu?{' '}
-          <Link
-            href={ROUTES.LOGIN}
-            className="text-primary hover:underline"
-          >
-            Đăng nhập
+          Remember password?{' '}
+          <Link href={ROUTES.LOGIN} className="text-primary hover:underline">
+            Back to login
           </Link>
         </p>
       </CardFooter>

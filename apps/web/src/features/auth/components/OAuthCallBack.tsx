@@ -40,13 +40,13 @@ export default function OAuthCallBack() {
     <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-md">
       <div className="flex flex-col items-center justify-center text-center">
         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-          Đang tiến hành đăng nhập
+          Logging you in...
         </h2>
         <div className="mt-8">
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
         </div>
         <p className="mt-4 text-sm text-gray-600">
-          Đợi một chút quá trình đăng nhập sẽ hoàn thành trong giây lát...
+          Please wait while we log you in using OAuth...
         </p>
       </div>
     </div>

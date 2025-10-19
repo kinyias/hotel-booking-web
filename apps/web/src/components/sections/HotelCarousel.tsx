@@ -65,12 +65,12 @@ const HotelCarousel = () => {
             variant="outline"
             className="mb-4 border-primary text-primary uppercase tracking-wider"
           >
-            Dịch vụ & Ưu đãi
+            Services & Offers
           </Badge>
           <h2 className="text-3xl md:text-4xl lg:text-5xl text-foreground font-bold">
-            Khám phá những ưu đãi theo mùa
+            Discover the Latest
             <br />
-            Mới nhất dành riêng cho bạn
+            Seasonal Offers Just for You
           </h2>
         </div>
 
@@ -126,7 +126,7 @@ const HotelCarousel = () => {
                       })}
                     </div>
 
-                    <PrimaryButton>ĐẶT NGAY</PrimaryButton>
+                    <PrimaryButton>BOOK NOW</PrimaryButton>
                   </Card>
                 </div>
               </CarouselItem>

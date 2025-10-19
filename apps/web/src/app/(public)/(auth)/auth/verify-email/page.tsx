@@ -15,24 +15,21 @@ export default function ConfirmAccount() {
   return (
     <>
       <PageTitle
-        title="Xác minh email"
-        breadcrumbs={[
-          { label: 'Trang chủ', href: ROUTES.HOME },
-        ]}
+        title="Verify Email"
+        breadcrumbs={[{ label: 'Home', href: ROUTES.HOME }]}
       />
-      <div className="py-20 flex items-center justify-center ">
+      <div className="py-20 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
-              Xác minh tài khoản
+              Verify Account
             </CardTitle>
             <CardDescription className="text-center">
-              Xác minh tài khoản của bạn để bắt đầu sử dụng dịch vụ của chúng
-              tôi.
+              Verify your account to start using our services.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Suspense fallback={<div>Đang tải...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
               <VerifyEmail />
             </Suspense>
           </CardContent>

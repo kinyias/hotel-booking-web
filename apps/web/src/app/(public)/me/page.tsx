@@ -5,10 +5,10 @@ function MePage() {
   return (
     <div>
       <PageTitle
-        title="Tài khoản của tôi"
+        title="Account"
         breadcrumbs={[
-          { label: 'Trang chủ', href: '/' },
-          { label: 'Tài khoản', href: '/me' },
+          { label: 'Home', href: '/' },
+          { label: 'Account', href: '/me' },
         ]}
       />
       MePage

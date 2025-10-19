@@ -1,4 +1,11 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import PageTitle from '@/components/sections/PageTitle';
 import Link from 'next/link';
@@ -8,10 +15,10 @@ export default function LoginPage() {
   return (
     <>
       <PageTitle
-        title="Đăng nhập"
+        title="Login"
         breadcrumbs={[
-          { label: 'Trang chủ', href: ROUTES.HOME },
-          { label: 'Đăng nhập', href: ROUTES.LOGIN },
+          { label: 'Home', href: ROUTES.HOME },
+          { label: 'Login', href: ROUTES.LOGIN },
         ]}
       />
 
@@ -19,11 +26,9 @@ export default function LoginPage() {
         <Card className="w-full max-w-lg">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
-              Chào mừng trở lại
+              Welcome Back!
             </CardTitle>
-            <CardDescription className="text-center">
-              Đăng nhập tài khoản
-            </CardDescription>
+            <CardDescription className="text-center">Login</CardDescription>
           </CardHeader>
 
           <CardContent>
@@ -32,9 +37,12 @@ export default function LoginPage() {
 
           <CardFooter className="flex justify-center">
             <p className="text-sm text-gray-600">
-              Chưa có tài khoản?{' '}
-              <Link href={ROUTES.REGISTER} className="text-primary hover:underline">
-                Đăng ký
+              Don’t have an account?{' '}
+              <Link
+                href={ROUTES.REGISTER}
+                className="text-primary hover:underline"
+              >
+                Sign up
               </Link>
             </p>
           </CardFooter>

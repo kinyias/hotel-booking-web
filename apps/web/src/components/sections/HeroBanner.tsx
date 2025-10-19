@@ -212,10 +212,10 @@ function HeroBanner() {
           animate="visible"
         >
           <motion.span className="block" variants={lineVariants}>
-            CHỌN PHÒNG LÝ TƯỞNG
+            YOUR NEXT BOOKING
           </motion.span>
           <motion.span className="block" variants={lineVariants}>
-            TẬN HƯỞNG BÌNH YÊN
+            LUXURY HOTEL
           </motion.span>
         </motion.h1>
 
@@ -231,7 +231,7 @@ function HeroBanner() {
             variant="default"
             className="relative overflow-hidden font-semibold text-white bg-primary rounded-none group px-8 py-6 mb-5 md:mb-20"
           >
-            <span className="relative z-10 text-md md:text-xl">XEM HỆ THỐNG KHÁCH SẠN</span>
+            <span className="relative z-10 text-md md:text-xl">VIEW MORE</span>
             <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
           </Button>
         </motion.div>

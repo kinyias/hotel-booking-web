@@ -53,7 +53,7 @@ export default function ResetPasswordForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mật khẩu</FormLabel>
+              <FormLabel>Password</FormLabel>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <FormControl>
@@ -92,7 +92,7 @@ export default function ResetPasswordForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Xác nhận nhận mật khẩu</FormLabel>
+              <FormLabel>Confirm password</FormLabel>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <FormControl>
@@ -128,9 +128,9 @@ export default function ResetPasswordForm() {
         />
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? (
-            <Loader className="animate-spin"> Đang gửi... </Loader>
+            <Loader className="animate-spin"> Sending... </Loader>
           ) : (
-            'Cập nhật mật khẩu'
+            'Reset Password'
           )}
         </Button>
       </form>

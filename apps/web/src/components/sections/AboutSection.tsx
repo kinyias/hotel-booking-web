@@ -8,23 +8,23 @@ function AboutSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-              Khách sạn cao cấp Stayra
+              Stayra Luxury Hotel
             </h2>
             <h3 className="text-2xl font-semibold mb-6 text-foreground">
-              Cách trở về tuyệt vời nhất
+              The best way to return home
               <br />
-              Chính là bằng những chuyến tàu
+              Is through the journeys you take
             </h3>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Trải nghiệm đỉnh cao của sự sang trọng và thoải mái tại Stayra.
-              Với cơ sở vật chất đẳng cấp quốc tế, dịch vụ tận tâm và vị trí
-              hoàn hảo, chúng tôi là lựa chọn lý tưởng cho những du khách sành
-              điệu tìm kiếm một kỳ nghỉ đáng nhớ.
+              Experience the pinnacle of luxury and comfort at Stayra. With
+              world-class facilities, dedicated service, and a perfect location,
+              we are the ideal choice for discerning travelers seeking an
+              unforgettable stay.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Từ những căn phòng được thiết kế tinh tế đến các tiện nghi hiện
-              đại bậc nhất, mọi chi tiết đều được chăm chút tỉ mỉ để mang đến sự
-              hài lòng và thoải mái tuyệt đối cho bạn.
+              From elegantly designed rooms to state-of-the-art amenities, every
+              detail is meticulously crafted to bring you absolute satisfaction
+              and comfort.
             </p>
           </div>
 
