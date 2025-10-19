@@ -23,7 +23,7 @@ import { ResetPasswordDto } from '../auth/dto/reset-password.dto';
 import { minutes, Throttle } from '@nestjs/throttler';
 import type { Response, Request } from 'express';
 import { AuthProvider } from '@prisma/client';
-import { ResendEmailDto } from '@/modules/auth/dto/resend-email.dto';
+import { ResendEmailDto } from '../auth/dto/resend-email.dto';
 
 @Controller('auth')
 export class AuthController {
