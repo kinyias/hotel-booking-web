@@ -60,7 +60,7 @@ export function LoginForm() {
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <FormControl>
                     <Input
-                      placeholder="Nhập email"
+                      placeholder="Email"
                       className="pl-10"
                       disabled={loading}
                       {...field}

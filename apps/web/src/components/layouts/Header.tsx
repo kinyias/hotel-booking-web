@@ -146,24 +146,7 @@ function Header() {
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-2">
               {/* Language & Currency Dropdowns */}
-              <div className="relative group">
-                <button
-                  className="flex items-center text-md font-medium transition-colors hover:text-primary relative group cursor-pointer"
-                  onClick={() => toggleDropdown('language')}
-                  onMouseEnter={() => setActiveDropdown('language')}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <div className="absolute left-0 top-5 z-50 w-full h-full"></div>
-                  <Image
-                    src="/vn-flag.webp"
-                    alt="Vietnamese"
-                    width={24}
-                    height={24}
-                    className="mr-2"
-                  />
-                </button>
-              </div>
-              <span>/</span>
+             
               <div className="relative group">
                 <button
                   className="flex items-center text-md font-medium transition-colors hover:text-primary relative group cursor-pointer"
@@ -252,7 +235,7 @@ function Header() {
                   variant="default"
                   className="relative overflow-hidden font-semibold text-white bg-primary rounded-none group px-8 py-6"
                 >
-                  <span className="relative z-10">ĐĂNG NHẬP</span>
+                  <span className="relative z-10">LOGIN</span>
                   <span className="absolute inset-0 bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                 </Button>
               </Link>

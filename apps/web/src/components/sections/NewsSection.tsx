@@ -32,9 +32,7 @@ function NewsSection() {
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground text-balance">
-            Tin tức & Sự kiện
-            <br />
-            Gần bạn
+            News & Events
           </h2>
         </div>
 
