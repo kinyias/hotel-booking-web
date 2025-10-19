@@ -244,7 +244,6 @@ export class AuthService {
   async resetPassword(
     rawToken: string,
     newPassword: string,
-    confirmPassword: string,
     ip?: string,
     ua?: string,
   ) {
