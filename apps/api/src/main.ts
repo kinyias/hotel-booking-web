@@ -4,11 +4,12 @@ import { AppModule } from './app.module';
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
-import serverlessExpress from '@vendia/serverless-express';
 
-let server: any;
+let cachedApp: any = null;
 
-async function bootstrap() {
+async function createApp() {
+  if (cachedApp) return cachedApp;
+
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.useGlobalFilters(new PrismaExceptionFilter());
@@ -20,20 +21,23 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+
   app.enableCors({
     origin: [process.env.PUBLIC_WEB_URL ?? 'http://localhost:3000'],
     credentials: true,
   });
+
   app.setGlobalPrefix('api/v1');
   await app.init();
 
-  const expressApp = app.getHttpAdapter().getInstance();
-  server = serverlessExpress({ app: expressApp });
-  return server;
+  cachedApp = app.getHttpAdapter().getInstance();
+  return cachedApp;
 }
 
-// 👇 Export cho Vercel/AWS Lambda
-export const handler = async (event: any, context: any, callback: any) => {
-  server = server ?? (await bootstrap());
-  return server(event, context, callback);
+// 👇 Export default cho Vercel (bắt buộc)
+const handler = async (req: any, res: any) => {
+  const app = await createApp();
+  return app(req, res);
 };
+
+export default handler;
