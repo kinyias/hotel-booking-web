@@ -1,7 +1,7 @@
 export const MESSAGES = {
   AUTH: {
     LOGIN_SUCCESS: "Login successful!",
-    LOGIN_FAILED: "Incorrect username or password.",
+    LOGIN_FAILED: "Login failed an error occurred",
     REGISTER_FAILED: "Registration failed.",
     REGISTER_SUCCESS: "Registration successful! Please check your email to verify your account.",
     LOGOUT_SUCCESS: "Logged out successfully.",
