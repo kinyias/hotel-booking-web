@@ -11,8 +11,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserAvatarService } from './user-avatar.service';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { imageMulterOptions } from 'src/common/upload/multer.options';
-import { makeImageParsePipe } from 'src/common/upload/image-parse.pipe';
+import { imageMulterOptions } from '../../../common/upload/multer.options';
+import { makeImageParsePipe } from '../../../common/upload/image-parse.pipe';
 
 @Controller('users/me/avatar')
 @UseGuards(JwtAuthGuard)

@@ -11,7 +11,7 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { ActionsModule } from './modules/actions/actions.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
-import { ImageService } from 'src/modules/image/image.service';
+import { ImageService } from './modules/image/image.service';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 

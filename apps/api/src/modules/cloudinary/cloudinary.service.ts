@@ -4,7 +4,6 @@ import {
   UploadApiResponse,
   UploadApiErrorResponse,
 } from 'cloudinary';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { Readable } from 'stream';
 
 @Injectable()
