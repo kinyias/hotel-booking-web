@@ -186,6 +186,6 @@ export class UsersService {
       this.prisma.user.count({ where }),
     ]);
 
-    return { items, total, limit, offset };
+    return { items, total, meta: { limit, offset } };
   }
 }

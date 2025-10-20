@@ -20,7 +20,6 @@ export class PublicUserDto {
   @Expose() 
   lastName?: string | null;
 
-  // Email chỉ expose nếu đã bật cờ ở service (xem users.service.ts)
   @Expose({ groups: ['private'] })
   email: string;
 

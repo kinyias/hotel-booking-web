@@ -36,7 +36,10 @@ export class UsersController {
   @Get('me')
   async me(@Req() req: Request) {
     const user = req.user as any;
-    return await this.users.me(user.id);
+    const userInfo = await this.users.me(user.id);
+    return {
+      data: userInfo,
+    };
   }
 
   @Patch('me')
@@ -65,10 +68,9 @@ export class UsersController {
   @Get()
   async list(@Query() query: ListUsersQuery) {
     const data = await this.users.listUsers(query);
-    // List do admin/manager xem -> giữ email
     return {
       ...data,
-      items: data.items.map((u) =>
+      data: data.items.map((u) =>
         plainToInstance(PublicUserDto, u, {
           groups: ['private'],
           excludeExtraneousValues: true,
