@@ -87,9 +87,7 @@ export class UsersService {
       where: { id: userId },
       select: userPublicSelect,
     });
-    return {
-      user: result,
-    };
+    return result;
   }
 
   async updateMe(userId: string, dto: UpdateMeDto) {

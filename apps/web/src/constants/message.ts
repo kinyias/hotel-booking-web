@@ -12,6 +12,7 @@ export const MESSAGES = {
     RESET_PASSWORD_SUCCESS:
       "Password reset successful! You can now log in with your new password.",
     RESET_PASSWORD_FAILED: "Password reset failed.",
+    VERIFY_EMAIL_EXPIRED: "Token expired"
   },
   BOOKING: {
     CREATE_SUCCESS: "Booking successful!",

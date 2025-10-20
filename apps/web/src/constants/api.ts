@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     GOOGLE_OAUTH: "/auth/google",
     SESSIONS: "/auth/sessions",
     VERIFY_EMAIL: "/auth/verify-email",
+    RESEND_VERIFICATION_EMAIL: "/auth/resend",
   },
   USER:{
      PROFILE: "/users/me",
