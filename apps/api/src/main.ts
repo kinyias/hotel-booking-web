@@ -13,7 +13,10 @@ async function createApp() {
   app.use(cookieParser());
   app.useGlobalFilters(new PrismaExceptionFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.enableCors({ origin: ['http://localhost:3000'], credentials: true });
+  app.enableCors({
+    origin: [process.env.PUBLIC_WEB_URL],
+    credentials: true,
+  });
   app.setGlobalPrefix('api/v1');
   await app.init();
 
@@ -28,9 +31,11 @@ const handler = async (req: any, res: any) => {
 
 // ✅ Tự động start server khi chạy dev (Node environment)
 if (process.env.NODE_ENV !== 'production') {
-  createApp().then(app => {
+  createApp().then((app) => {
     const port = process.env.PORT ?? 3000;
-    app.listen(port, () => console.log(`🚀 Dev server running on http://localhost:${port}`));
+    app.listen(port, () =>
+      console.log(`🚀 Dev server running on http://localhost:${port}`),
+    );
   });
 }
 
