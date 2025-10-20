@@ -67,15 +67,15 @@ export class UsersController {
   // ====== LIST (ADMIN/MANAGER) ======
   @Get()
   async list(@Query() query: ListUsersQuery) {
-    const data = await this.users.listUsers(query);
+    const { items, meta } = await this.users.listUsers(query);
     return {
-      ...data,
-      data: data.items.map((u) =>
+      data: items.map((u) =>
         plainToInstance(PublicUserDto, u, {
           groups: ['private'],
           excludeExtraneousValues: true,
         }),
       ),
+      meta,
     };
   }
 }
