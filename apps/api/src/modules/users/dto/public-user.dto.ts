@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 class PublicImageDto {
   @Expose() id: string;
@@ -22,9 +22,9 @@ export class PublicUserDto {
 
   @Expose({ groups: ['private'] })
   email: string;
-
-  @Type(() => PublicRoleDto)
   @Expose()
+  @Type(() => PublicRoleDto)
+  @Transform(({ obj }) => obj.roles?.map((ur: any) => ur.role) ?? [], { toClassOnly: true })
   roles?: PublicRoleDto[];
 
   @Expose()

@@ -19,7 +19,9 @@ const userPublicSelect = {
   updatedAt: true,
   roles: {
     select: {
-      role: true,
+      role: {
+        select: { id: true, name: true },
+      },
     },
   },
   avatar: {
