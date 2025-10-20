@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     try {
       const { data } = await api.get(API_ENDPOINTS.USER.PROFILE);
-      setUser(data.user);
+      setUser(data.data);
       setLoading(false);
     } catch (error) {
       console.error('Tải dữ liệu người dùng thất bại:', error);
