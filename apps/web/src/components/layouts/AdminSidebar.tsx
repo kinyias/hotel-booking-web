@@ -66,6 +66,12 @@ export const navItems: NavItem[] = [
     title: 'Users',
     href: ROUTES.ADMIN_USERS,
     icon: Users,
+    submenu: [
+      { title: 'Users', href: ROUTES.ADMIN_USERS },
+      { title: 'Roles', href: ROUTES.ADMIN_ROLES },
+      { title: 'Permissions', href: ROUTES.ADMIN_PERMISSIONS },
+      { title: 'Actions', href: ROUTES.ADMIN_ACTIONS },
+    ]
   },
   {
     title: 'Settings',

@@ -189,7 +189,7 @@ function Header() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
-                    <AvatarImage src={user.avatar} />
+                    <AvatarImage src={user?.avatar?.secureUrl} />
                     <AvatarFallback>
                       <div className="bg-primary text-white w-full h-full flex justify-center items-center">
                         {user.firstName?.charAt(0) || '?'}
@@ -300,7 +300,7 @@ function Header() {
                   <div className="px-4 py-2 flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full">
                       <Avatar className="cursor-pointer">
-                        <AvatarImage src={user.avatar} />
+                        <AvatarImage src={user?.avatar?.secureUrl} />
                         <AvatarFallback>
                           <div className="bg-primary text-white w-full h-full flex justify-center items-center">
                             {user.firstName.charAt(0)}

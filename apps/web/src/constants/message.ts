@@ -14,12 +14,19 @@ export const MESSAGES = {
     RESET_PASSWORD_FAILED: "Password reset failed.",
     VERIFY_EMAIL_EXPIRED: "Token expired"
   },
+  USER: {
+    UPDATE_PROFILE_SUCCESS: "Profile updated successfully.",
+    UPDATE_PROFILE_FAILED: "Failed to update profile.",
+    CHANGE_PASSWORD_SUCCESS: "Password changed successfully.",
+    CHANGE_PASSWORD_FAILED: "Failed to change password.",
+  },
   BOOKING: {
     CREATE_SUCCESS: "Booking successful!",
     CANCEL_SUCCESS: "Booking canceled successfully.",
     ERROR: "Unable to process your booking request.",
   },
   SYSTEM: {
+    FORM_FAILED: "Failed to submit form. Please try again",
     ERROR: "An error occurred. Please try again later.",
   },
 };

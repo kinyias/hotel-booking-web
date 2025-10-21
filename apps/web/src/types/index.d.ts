@@ -5,3 +5,13 @@ export interface ApiErrorResponse {
 }
 
 export type ApiError = AxiosError<ApiErrorResponse>;
+export interface PaginationMeta {
+  limit: number;
+  offset: number;
+  total: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: PaginationMeta;
+}

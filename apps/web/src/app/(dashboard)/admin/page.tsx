@@ -12,7 +12,7 @@ import { NewestBooking } from '@/components/dashboard/NewestBooking';
 import { CustomerReviews } from '@/components/dashboard/CustomerReviews';
 function DashboardPage() {
   return (
-    <div className='"m-4 md:m-6'>
+    <div className='m-4 md:m-6'>
       <DashboardStats />
       <div className="block pb-5">
               <Card className="col-span-4">

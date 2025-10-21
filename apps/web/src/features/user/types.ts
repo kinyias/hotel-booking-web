@@ -1,8 +1,19 @@
+export interface Avatar {
+  id: string;
+  secureUrl: string;
+  publicId: string;
+}
+export interface Role {
+  id: string;
+  name: string;
+}
 export interface User {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
-  role: Array<string>;
-  avatar: string;
+  roles: Role[];
+  createdAt: string;
+  updatedAt: string;
+  avatar: Avatar;
 }

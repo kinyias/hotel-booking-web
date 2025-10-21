@@ -11,4 +11,7 @@ export const ROUTES = {
   ADMIN_SETTINGS: '/admin/settings',
   ADMIN_NEWS: '/admin/news',
   ADMIN_REVIEWS: '/admin/reviews',
+  ADMIN_ROLES: '/admin/users/roles',
+  ADMIN_PERMISSIONS: '/admin/users/permissions',
+  ADMIN_ACTIONS: '/admin/users/actions',
 };
