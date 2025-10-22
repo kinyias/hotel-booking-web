@@ -8,5 +8,25 @@
    - Environments: .env
 
  ✓ Starting...
- ✓ Compiled middleware in 435ms
- ✓ Ready in 3.3s
+ ✓ Compiled middleware in 409ms
+ ✓ Ready in 4.8s
+ ○ Compiling / ...
+ ✓ Compiled / in 9.3s
+ GET /admin 200 in 9382ms
+ ✓ Compiled /_not-found/page in 335ms
+ GET /admin/users/actions 404 in 582ms
+ GET /admin/users/actions 404 in 206ms
+ GET /admin 200 in 658ms
+ ○ Compiling /admin/users/permissions ...
+ ✓ Compiled /admin/users/permissions in 1442ms
+ GET /admin/users/permissions 200 in 1694ms
+ ✓ Compiled in 289ms
+ ○ Compiling /admin/users ...
+ ✓ Compiled /admin/users in 768ms
+ GET /admin/users 200 in 916ms
+ ○ Compiling /admin/users/roles ...
+ ✓ Compiled /admin/users/roles in 685ms
+ GET /admin/users/roles 200 in 817ms
+ GET /admin/users/roles 200 in 170ms
+ GET /admin/users/permissions 200 in 341ms
+ GET /admin/users/actions 404 in 150ms
