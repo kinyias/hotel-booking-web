@@ -123,7 +123,7 @@ export default function AdminHeader() {
             </PopoverContent>
           </Popover>{' '}
           <Avatar>
-            <AvatarImage src={user?.avatar.secureUrl} />
+            <AvatarImage src={user?.avatar?.secureUrl} />
             <AvatarFallback>A</AvatarFallback>
           </Avatar>
           <div className="text-sm">

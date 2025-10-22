@@ -19,6 +19,8 @@ export const MESSAGES = {
     UPDATE_PROFILE_FAILED: "Failed to update profile.",
     CHANGE_PASSWORD_SUCCESS: "Password changed successfully.",
     CHANGE_PASSWORD_FAILED: "Failed to change password.",
+    UPDATE_ROLE_SUCCESS: "Role updated successfully",
+    UPDATE_ROLE_FAILED: "Failed to update role"
   },
   BOOKING: {
     CREATE_SUCCESS: "Booking successful!",

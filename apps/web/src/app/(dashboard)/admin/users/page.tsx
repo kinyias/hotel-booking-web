@@ -11,16 +11,6 @@ import React, { useState, useEffect } from 'react';
 import UserManagementTable from '@/features/user/components/UserManagementTable';
 import { toast } from 'react-hot-toast';
 import { User } from '@/features/user/types';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import EllipsisPagination from '@/components/ui/EllipsisPagination';
 import UserEditFormDialog from '@/features/user/components/UserEditFormDialog';
 import { MESSAGES } from '@/constants/message';
@@ -35,12 +25,6 @@ function UserManagementPage() {
   // Edit user dialog state
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState<User | null>(null);
-  const [editFormData, setEditFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    role: '',
-  });
 
   // Calculate offset based on page number
   const offset = (page - 1) * limit;
