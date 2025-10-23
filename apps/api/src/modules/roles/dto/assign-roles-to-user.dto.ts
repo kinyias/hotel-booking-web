@@ -7,5 +7,5 @@ export class AssignRolesToUserDto {
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true })
-  roleNames: string[];
+  roleIds: string[];
 }

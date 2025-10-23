@@ -31,17 +31,14 @@ export class PermissionsController {
 
   @Get()
   @Permissions(MANAGE_USER)
-  findAll(
-    @Query('search') search?: string,
-    @Query('skip') skip?: string,
-    @Query('take') take?: string,
-  ) {
-    return this.service.findAll({
-      search,
-      skip: skip ? Number(skip) : undefined,
-      take: take ? Number(take) : undefined,
-    });
-  }
+  findAll(q?: { search?: string; skip?: number; take?: number }) {
+  return this.service.listPermissions({
+    q: q?.search,
+    offset: q?.skip ?? 0,
+    limit: q?.take ?? 50,
+  });
+}
+
 
   @Get(':id')
   @Permissions(MANAGE_USER)

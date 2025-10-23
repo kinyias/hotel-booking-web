@@ -2,12 +2,13 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { AssignRolesToUserDto } from './dto/assign-roles-to-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { AssignPermissionsDto } from '../permissions/dto/assign-permissions.dto';
+import { AssignPermissionsDto } from './dto/assign-permissions.dto';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -75,70 +76,98 @@ export class RolesService {
     return this.prisma.role.delete({ where: { id } });
   }
 
-  /**
-   * Gán danh sách permission theo tên cho 1 role.
-   * Chiến lược: thay thế toàn bộ (reconcile) -> an toàn và đơn giản cho UI admin.
-   */
-  async setRolePermissions(roleId: string, dto: AssignPermissionsDto) {
-    // đảm bảo role tồn tại
-    await this.findOne(roleId);
 
-    // lấy permission ids theo tên
-    const perms = await this.prisma.permission.findMany({
-      where: { name: { in: dto.permissionNames } },
-      select: { id: true, name: true },
-    });
+async setRolePermissions(roleId: string, dto: AssignPermissionsDto) {
+  await this.findOne(roleId);
 
-    if (perms.length !== dto.permissionNames.length) {
-      const found = new Set(perms.map((p) => p.name));
-      const missing = dto.permissionNames.filter((n) => !found.has(n));
-      throw new NotFoundException(
-        `Permissions not found: ${missing.join(', ')}`,
-      );
-    }
+  const cleanIds = dto.permissionIds
+    .map((x) => (typeof x === 'string' ? x.trim() : ''))
+    .filter((x) => x.length > 0);
 
-    // transaction: xóa cũ -> thêm mới (reconcile)
-    return this.prisma.$transaction(async (tx) => {
-      await tx.rolePermission.deleteMany({ where: { roleId } });
-      await tx.rolePermission.createMany({
-        data: perms.map((p) => ({ roleId, permissionId: p.id })),
-      });
-      return tx.role.findUnique({
-        where: { id: roleId },
-        include: { permissions: { include: { permission: true } } },
-      });
-    });
+  if (cleanIds.length === 0) {
+    throw new BadRequestException('permissionIds contains no valid id');
   }
 
-  /**
-   * Gán danh sách role theo tên cho 1 user.
-   * Chiến lược: thay thế toàn bộ (reconcile)
-   */
-  async setUserRoles(dto: AssignRolesToUserDto) {
-    const user = await this.prisma.user.findUnique({
+  const seen = new Set<string>();
+  const dupes = new Set<string>();
+  for (const pid of cleanIds) {
+    if (seen.has(pid)) dupes.add(pid);
+    else seen.add(pid);
+  }
+  if (dupes.size > 0) {
+    throw new BadRequestException(`Duplicate permissionIds: ${[...dupes].join(', ')}`);
+  }
+
+  const perms = await this.prisma.permission.findMany({
+    where: { id: { in: cleanIds } },
+    select: { id: true, name: true },
+  });
+
+  const foundIds = new Set(perms.map((p) => p.id));
+  const missingIds = cleanIds.filter((pid) => !foundIds.has(pid));
+  if (missingIds.length > 0) {
+    throw new NotFoundException(`Permissions not found (by id): ${missingIds.join(', ')}`);
+  }
+
+  return this.prisma.$transaction(async (tx) => {
+    await tx.rolePermission.deleteMany({ where: { roleId } });
+    await tx.rolePermission.createMany({
+      data: cleanIds.map((permissionId) => ({ roleId, permissionId })),
+      skipDuplicates: true, // phòng race-condition
+    });
+
+    return tx.role.findUnique({
+      where: { id: roleId },
+      include: { permissions: { include: { permission: true } } },
+    });
+  });
+}
+
+
+async setUserRoles(dto: AssignRolesToUserDto) {
+  const user = await this.prisma.user.findUnique({ where: { id: dto?.userId } });
+  if (!user) throw new NotFoundException('User not found');
+
+
+  const cleanIds = dto.roleIds
+    .map((x) => (typeof x === 'string' ? x.trim() : ''))
+    .filter((x) => x.length > 0);
+
+  if (cleanIds.length === 0) {
+    throw new BadRequestException('roleIds contains no valid id');
+  }
+
+  const seen = new Set<string>();
+  const dupes = new Set<string>();
+  for (const rid of cleanIds) {
+    if (seen.has(rid)) dupes.add(rid);
+    else seen.add(rid);
+  }
+  if (dupes.size > 0) {
+    throw new BadRequestException(`Duplicate roleIds: ${[...dupes].join(', ')}`);
+  }
+
+  const roles = await this.prisma.role.findMany({
+    where: { id: { in: cleanIds } },
+    select: { id: true, name: true },
+  });
+
+  const foundIds = new Set(roles.map((r) => r.id));
+  const missingIds = cleanIds.filter((rid) => !foundIds.has(rid));
+  if (missingIds.length > 0) {
+    throw new NotFoundException(`Roles not found (by id): ${missingIds.join(', ')}`);
+  }
+
+  return this.prisma.$transaction(async (tx) => {
+    await tx.userRole.deleteMany({ where: { userId: dto.userId } });
+    await tx.userRole.createMany({
+      data: cleanIds.map((roleId) => ({ userId: dto.userId, roleId })),
+      skipDuplicates: true, 
+    });
+
+    return tx.user.findUnique({
       where: { id: dto.userId },
+      include: { roles: { include: { role: true } } },
     });
-    if (!user) throw new NotFoundException('User not found');
-
-    const roles = await this.prisma.role.findMany({
-      where: { name: { in: dto.roleNames } },
-      select: { id: true, name: true },
-    });
-    if (roles.length !== dto.roleNames.length) {
-      const found = new Set(roles.map((r) => r.name));
-      const missing = dto.roleNames.filter((n) => !found.has(n));
-      throw new NotFoundException(`Roles not found: ${missing.join(', ')}`);
-    }
-
-    return this.prisma.$transaction(async (tx) => {
-      await tx.userRole.deleteMany({ where: { userId: dto.userId } });
-      await tx.userRole.createMany({
-        data: roles.map((r) => ({ userId: dto.userId, roleId: r.id })),
-      });
-      return tx.user.findUnique({
-        where: { id: dto.userId },
-        include: { roles: { include: { role: true } } },
-      });
-    });
-  }
+  });
 }

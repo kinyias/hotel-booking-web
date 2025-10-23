@@ -4,5 +4,5 @@ export class SetActionPermissionsDto {
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true })
-  permissionNames: string[]; // ví dụ: ["MANAGE_HOTEL","VIEW_HOTEL"]
+  permissionIds: string[]; 
 }

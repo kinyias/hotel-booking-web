@@ -38,8 +38,8 @@ export class ActionsController {
     return this.service.findOneByKey(key);
   }
 
-  @Patch(':key/permissions')
-  setPerms(@Param('key') key: string, @Body() dto: SetActionPermissionsDto) {
-    return this.service.setActionPermissions(key, dto.permissionNames);
+  @Patch(':id/permissions')
+  setPerms(@Param('id') id: string, @Body() dto: SetActionPermissionsDto) {
+    return this.service.setActionPermissions(id, dto.permissionIds);
   }
 }
