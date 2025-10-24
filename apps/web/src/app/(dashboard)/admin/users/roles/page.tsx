@@ -85,10 +85,10 @@ function RolesPage() {
     }
   };
   const handleAssignSave = async (data: PermissionAssignRoleFormValues) => {
-    if (data.roleId) {;
+    if (roleToEdit) {
            assignPermissionToRoleMutation.mutate(
         {
-          id: data.roleId,
+          id: roleToEdit.id,
           data,
         },
         {
@@ -107,6 +107,9 @@ function RolesPage() {
           },
         }
       );
+    }
+    else{
+      toast.error(MESSAGES.USER.MISSING_ROLE);
     }
   };
   const hanldeAssign = (role: Role) => {
@@ -169,7 +172,7 @@ function RolesPage() {
           <PermissionAssignRoleDialog
             open={openAssignDialog}
             onOpenChange={setOpenAssignDialog}
-            roleId={roleToEdit?.id || null}
+            role={roleToEdit || null}
             onSubmit={handleAssignSave}
             isSubmitting={assignPermissionToRoleMutation.isPending}
           />

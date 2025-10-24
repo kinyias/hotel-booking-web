@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
      PROFILE: "/users/me",
      USERS: "/users",
      ROLES: "/roles",
-     PERMISSIONS: "/permissions"
+     PERMISSIONS: "/permissions",
+     ACTIONS: "/actions"
   }
 };

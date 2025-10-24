@@ -11,8 +11,8 @@ import {
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  permissionAssignRoleFormSchema,
-  PermissionAssignRoleFormValues,
+  permissionAssignActionFormSchema,
+  PermissionAssignActionFormValues,
 } from '../validator';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,40 +28,36 @@ import { usePermissionsQuery } from '@/features/permissions';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from '@/components/ui/popover';
-import {
   Command,
-  CommandList,
-  CommandItem,
   CommandEmpty,
+  CommandItem,
+  CommandList,
 } from '@/components/ui/command';
-import { Role } from '../types';
 import toast from 'react-hot-toast';
+import { RoleAction } from '../types';
 
-interface PermissionAssignRoleDialogProps {
+interface PermissionAssignActionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  role: Role | null;
-  onSubmit: (values: PermissionAssignRoleFormValues) => void;
+  action: RoleAction | null;
+  onSubmit: (values: PermissionAssignActionFormValues) => void;
   isSubmitting: boolean;
 }
 
-function PermissionAssignRoleDialog({
+function PermissionAssignActionDialog({
   open,
   onOpenChange,
-  role,
+  action,
   onSubmit,
   isSubmitting,
-}: PermissionAssignRoleDialogProps) {
-  const form = useForm<PermissionAssignRoleFormValues>({
-    resolver: zodResolver(permissionAssignRoleFormSchema),
+}: PermissionAssignActionDialogProps) {
+  const form = useForm<PermissionAssignActionFormValues>({
+    resolver: zodResolver(permissionAssignActionFormSchema),
     defaultValues: {
-      permissionIds: role?.permissions.map((p) => p.permissionId) || [],
+      permissionIds: action?.policies.map((a) => a.permissionId) || [],
     },
   });
+
   const { data } = usePermissionsQuery();
   const [inputValue, setInputValue] = useState('');
   const [openPopover, setOpenPopover] = useState(false);
@@ -71,7 +67,7 @@ function PermissionAssignRoleDialog({
   const inputRef = useRef<HTMLInputElement>(null);
   const permissions = data?.data || [];
 
-  const handleSubmit = async (values: PermissionAssignRoleFormValues) => {
+  const handleSubmit = async (values: PermissionAssignActionFormValues) => {
     try {
       await onSubmit(values);
     } catch (error) {
@@ -80,18 +76,20 @@ function PermissionAssignRoleDialog({
   };
 
   useEffect(() => {
-    if (role) {
-      form.reset({ permissionIds: role?.permissions.map((p) => p.permissionId) || [] });
+    if (action) {
+      form.reset({
+        permissionIds: action?.policies.map((a) => a.permissionId) || [],
+      });
     }
-  }, [role]);
+  }, [action]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Assign Permissions to Role</DialogTitle>
+          <DialogTitle>Assign Permissions to Action</DialogTitle>
           <DialogDescription>
-            Search and select permissions to assign to this role.
+            Search and select permissions to assign to this action.
           </DialogDescription>
         </DialogHeader>
 
@@ -101,8 +99,8 @@ function PermissionAssignRoleDialog({
             className="space-y-6"
           >
             <div className="text-sm text-muted-foreground">
-              Role ID:{' '}
-              <span className="font-medium text-foreground">{role?.id}</span>
+              Action ID:{' '}
+              <span className="font-medium text-foreground">{action?.id}</span>
             </div>
 
             <FormField
@@ -111,7 +109,7 @@ function PermissionAssignRoleDialog({
               render={({ field }) => {
                 const selectedIds = [
                   ...(field.value ?? []),
-                  ...(role?.permissions
+                  ...(action?.policies
                     .map((p) => p.permissionId)
                     .filter((id) => !removedBasePermissions.includes(id)) ??
                     []),
@@ -134,10 +132,9 @@ function PermissionAssignRoleDialog({
                 };
 
                 const removePermission = (id: string) => {
-                  if (role?.permissions.some((p) => p.permissionId === id)) {
+                  if (action?.policies.some((p) => p.permissionId === id)) {
                     setRemovedBasePermissions((prev) => [...prev, id]);
                   }
-
                   field.onChange(
                     field.value?.filter((pid) => pid !== id) ?? []
                   );
@@ -175,12 +172,9 @@ function PermissionAssignRoleDialog({
                               setOpenPopover(e.target.value.length > 0);
                             }}
                             onFocus={() => {
-                              // if (inputValue.length > 0) {
                               setOpenPopover(true);
-                              // }
                             }}
                             onBlur={() => {
-                              // Delay to allow clicking on popover items
                               setTimeout(() => setOpenPopover(false), 200);
                             }}
                             onKeyDown={(e) => {
@@ -257,4 +251,4 @@ function PermissionAssignRoleDialog({
   );
 }
 
-export default PermissionAssignRoleDialog;
+export default PermissionAssignActionDialog;

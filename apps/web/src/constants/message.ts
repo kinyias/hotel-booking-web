@@ -26,6 +26,12 @@ export const MESSAGES = {
     UPDATE_PERMISSION_FAILED: 'Failed to update permission',
     DELETE_PERMISSION_SUCCESS: 'Delete permission successfully',
     DELETE_PERMISSION_FAILED: 'Delete permission failed',
+    MISSING_ROLE: 'Role is required',
+    MISSING_PERMISSION: 'Permission is required',
+    MISSING_ACTION: 'Action is required',
+    MISSING_ASSIGN_ROLE: 'Assign role is required',
+    UPDATE_ACTION_SUCCESS: 'Action updated successfully',
+    UPDATE_ACTION_FAILED: 'Failed to update action',
   },
   BOOKING: {
     CREATE_SUCCESS: 'Booking successful!',

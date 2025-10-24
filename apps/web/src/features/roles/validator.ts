@@ -5,7 +5,6 @@ export const roleFormSchema = z.object({
   description: z.string().optional(),
 });
 export const permissionAssignRoleFormSchema = z.object({
-  roleId: z.string().min(1, 'Role is required'),
   permissionIds: z.array(z.string()).min(1, 'At least one permission is required'),
 });
 export type PermissionAssignRoleFormValues = z.infer<typeof permissionAssignRoleFormSchema>;
