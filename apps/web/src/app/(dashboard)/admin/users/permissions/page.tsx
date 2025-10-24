@@ -29,7 +29,7 @@ function PermissionsPage() {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const permissions = data || [];
+  const permissions = data?.data || [];
 
   const updatePermissionMutation = useUpdatePermissionMutation();
   const createPermissionMutation = useCreatePermissionMutation();

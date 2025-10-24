@@ -17,3 +17,9 @@ export interface User {
   updatedAt: string;
   avatar: Avatar;
 }
+export interface UsersQueryParams {
+  limit?: number;
+  offset?: number;
+  q?: string;
+  role?: string;
+}

@@ -61,8 +61,6 @@ export class PermissionsService {
         id: true,
         name: true,
         description: true,
-        createdAt: true,
-        updatedAt: true,
       },
       orderBy: { [sanitizedSort]: sanitizedOrder },
       skip,

@@ -2,8 +2,9 @@ import { API_ENDPOINTS } from "@/constants";
 import api from "@/lib/axios";
 import { Permission } from "./types";
 import { PermissionFormValues } from "./validator";
-export const getPermissions = async (): Promise<Permission[]> => {
-  const response = await api.get(API_ENDPOINTS.USER.PERMISSIONS);
+import { PaginatedResponse } from "@/types";
+export const getPermissions = async (): Promise<PaginatedResponse<Permission>> => {
+  const response = await api.get<PaginatedResponse<Permission>>(API_ENDPOINTS.USER.PERMISSIONS);
   return response.data;
 }
 export const createPermission = async (data: PermissionFormValues)=>{

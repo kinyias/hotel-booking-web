@@ -1,12 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "./api";
-
-export interface UsersQueryParams {
-  limit?: number;
-  offset?: number;
-  q?: string;
-  role?: string;
-}
+import { UsersQueryParams } from "./types";
 
 export const useUsersQuery = (params?: UsersQueryParams) => {
   return useQuery({

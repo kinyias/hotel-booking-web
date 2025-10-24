@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from '@/constants';
 import api from '@/lib/axios';
 import { PaginatedResponse } from '@/types';
 import { User } from './types';
-import { UsersQueryParams } from './queries';
+import { UsersQueryParams } from './types';
 
 export const getUsers = async (params?: UsersQueryParams) => {
   const response = await api.get<PaginatedResponse<User>>(API_ENDPOINTS.USER.USERS, {params});

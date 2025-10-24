@@ -8,15 +8,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Edit2, Shield, Trash2 } from 'lucide-react';
+import { Edit2, Lock, Shield, Trash2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Role } from '../types';
 interface RoleTableProps {
   roles: Role[];
   onEdit: (role: Role) => void;
   onDelete: (id: string) => void;
+  onAssign: (role: Role) => void;
 }
-function RoleManagementTable({ roles, onEdit, onDelete }: RoleTableProps) {
+function RoleManagementTable({ roles, onEdit, onDelete, onAssign }: RoleTableProps) {
   return (
           <Card className="bg-card border-border overflow-hidden">
         <Table>
@@ -41,6 +42,14 @@ function RoleManagementTable({ roles, onEdit, onDelete }: RoleTableProps) {
                 <TableCell className="text-foreground font-medium">{role.permissions.map(permission => permission.permission.name).join(', ')}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
+                     <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-muted-foreground hover:text-foreground"
+                      onClick={() => onAssign(role)}
+                    >
+                      <Lock size={16} />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"

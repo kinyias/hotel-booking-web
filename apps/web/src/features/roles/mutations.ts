@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createRole, updateRole } from "./api";
+import { assignPermissionsToRole, createRole, updateRole } from "./api";
 import { Role } from "./types";
-import { RoleFormValues } from "./validator";
+import { PermissionAssignRoleFormValues, RoleFormValues } from "./validator";
 export const useUpdateRoleMutation = () => {
   const queryClient = useQueryClient();
   
@@ -19,6 +19,18 @@ export const useCreateRoleMutation = () => {
   return useMutation({
     mutationFn: ({ data }: { data: RoleFormValues }) => 
       createRole(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["roles"] });
+    },
+  });
+};
+
+export const useAssignPermissionToRole = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: PermissionAssignRoleFormValues }) => 
+      assignPermissionsToRole(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["roles"] });
     },

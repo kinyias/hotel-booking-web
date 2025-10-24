@@ -3,10 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { MESSAGES } from '@/constants/message';
-import { Role, RoleFormValues, useRolesQuery } from '@/features/roles';
+import { PermissionAssignRoleFormValues, Role, RoleFormValues, useRolesQuery } from '@/features/roles';
+import PermissionAssignRoleDialog from '@/features/roles/component/PermissionAssignRoleDialog';
 import RoleFormDialog from '@/features/roles/component/RoleFormDialog';
 import RoleManagementTable from '@/features/roles/component/RoleManagementTable';
 import {
+  useAssignPermissionToRole,
   useCreateRoleMutation,
   useUpdateRoleMutation,
 } from '@/features/roles/mutations';
@@ -20,10 +22,11 @@ function RolesPage() {
   const { data, isLoading, isError } = useRolesQuery();
   const [roleToEdit, setRoleToEdit] = useState<Role | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openAssignDialog, setOpenAssignDialog] = useState(false);
   const roles = data || [];
   const updateRoleMutation = useUpdateRoleMutation();
   const createRoleMutation = useCreateRoleMutation();
+  const assignPermissionToRoleMutation = useAssignPermissionToRole();
   const handleEdit = (role: Role) => {
     setRoleToEdit(role);
     setOpenDialog(true);
@@ -37,7 +40,6 @@ function RolesPage() {
   };
   const handleSave = async (data: RoleFormValues) => {
     if (roleToEdit) {
-      setIsSubmitting(true);
       updateRoleMutation.mutate(
         {
           id: roleToEdit.id,
@@ -47,7 +49,6 @@ function RolesPage() {
           onSuccess: () => {
             toast.success(MESSAGES.USER.UPDATE_ROLE_SUCCESS);
             setOpenDialog(false);
-            setIsSubmitting(false);
           },
           onError: (err) => {
             const error = err as ApiError;
@@ -56,12 +57,11 @@ function RolesPage() {
               error?.response?.data.message ||
                 MESSAGES.USER.UPDATE_ROLE_FAILED
             );
-            setIsSubmitting(false);
           },
         }
       );
     } else {
-      setIsSubmitting(true);
+
       createRoleMutation.mutate(
         {
           data,
@@ -70,7 +70,6 @@ function RolesPage() {
           onSuccess: () => {
             toast.success(MESSAGES.USER.UPDATE_ROLE_SUCCESS);
             setOpenDialog(false);
-            setIsSubmitting(false);
           },
           onError: (err) => {
             const error = err as ApiError;
@@ -79,13 +78,41 @@ function RolesPage() {
               error?.response?.data.message ||
                 MESSAGES.USER.UPDATE_ROLE_FAILED
             );
-            setIsSubmitting(false);
+            setOpenDialog(false);
           },
         }
       );
     }
   };
-
+  const handleAssignSave = async (data: PermissionAssignRoleFormValues) => {
+    if (data.roleId) {;
+           assignPermissionToRoleMutation.mutate(
+        {
+          id: data.roleId,
+          data,
+        },
+        {
+          onSuccess: () => {
+            toast.success(MESSAGES.USER.UPDATE_ROLE_SUCCESS);
+            setOpenAssignDialog(false);
+          },
+          onError: (err) => {
+            const error = err as ApiError;
+            console.error('Edit role error:', error);
+            toast.error(
+              error?.response?.data.message ||
+                MESSAGES.USER.UPDATE_ROLE_FAILED
+            );
+            setOpenAssignDialog(false);
+          },
+        }
+      );
+    }
+  };
+  const hanldeAssign = (role: Role) => {
+    setRoleToEdit(role);
+    setOpenAssignDialog(true);
+  };
   return (
     <div className="m-4 md:m-6 space-y-6">
       <div className="flex items-center justify-between">
@@ -126,6 +153,7 @@ function RolesPage() {
           <RoleManagementTable
             roles={roles}
             onEdit={handleEdit}
+            onAssign={hanldeAssign}
             onDelete={handleDelete}
           />
 
@@ -135,7 +163,15 @@ function RolesPage() {
             onOpenChange={setOpenDialog}
             role={roleToEdit}
             onSubmit={handleSave}
-            isSubmitting={isSubmitting}
+            isSubmitting={updateRoleMutation.isPending}
+          />
+          {/* Permission Assign Role Dialog */}
+          <PermissionAssignRoleDialog
+            open={openAssignDialog}
+            onOpenChange={setOpenAssignDialog}
+            roleId={roleToEdit?.id || null}
+            onSubmit={handleAssignSave}
+            isSubmitting={assignPermissionToRoleMutation.isPending}
           />
         </>
       )}
