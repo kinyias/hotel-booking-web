@@ -8,902 +8,934 @@
    - Environments: .env
 
  ✓ Starting...
- ✓ Compiled middleware in 474ms
- ✓ Ready in 4.7s
+ ✓ Compiled middleware in 417ms
+ ✓ Ready in 4.9s
  ○ Compiling / ...
- ✓ Compiled / in 7.5s
- GET / 200 in 9384ms
- ○ Compiling /admin ...
- ✓ Compiled /admin in 3s
- GET /admin 200 in 4178ms
- ○ Compiling /admin/users/roles ...
- ✓ Compiled /admin/users/roles in 1387ms
- GET /admin/users/roles 200 in 1551ms
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 252ms
- GET /admin/users/roles 200 in 1214ms
- ✓ Compiled /favicon.ico in 490ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 1003ms
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
- ✓ Compiled in 306ms
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
- ✓ Compiled in 229ms
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ⨯ ./apps/web/src/features/permissions/api.ts:5:1
-Module not found: Can't resolve '@/types'
-[0m [90m 3 |[39m [36mimport[39m { [33mPermission[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
- [90m 4 |[39m [36mimport[39m { [33mPermissionFormValues[39m } [36mfrom[39m [32m"./validator"[39m[33m;[39m
-[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mPaginatedResponse[39m } [36mfrom[39m [32m"@/types"[39m[33m;[39m
- [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
- [90m 6 |[39m [36mexport[39m [36mconst[39m getPermissions [33m=[39m [36masync[39m ()[33m:[39m [33mPromise[39m[33m<[39m[33mPermission[39m[][33m>[39m [33m=>[39m {
- [90m 7 |[39m   [36mconst[39m response [33m=[39m [36mawait[39m api[33m.[39m[36mget[39m[33m<[39m[33mPaginatedResponse[39m[33m<[39m([33mAPI_ENDPOINTS[39m[33m.[39m[33mUSER[39m[33m.[39m[33mPERMISSIONS[39m)[33m;[39m
- [90m 8 |[39m   [36mreturn[39m response[33m.[39mdata[33m;[39m[0m
-
-Import map: aliased to relative './src/types' inside of [project]/apps/web
-
-
-Import traces:
-  Client Component Browser:
-    ./apps/web/src/features/permissions/api.ts [Client Component Browser]
-    ./apps/web/src/features/permissions/queries.ts [Client Component Browser]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component Browser]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./apps/web/src/features/permissions/api.ts [Client Component SSR]
-    ./apps/web/src/features/permissions/queries.ts [Client Component SSR]
-    ./apps/web/src/features/roles/component/PermissionAssignRoleDialog.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Client Component SSR]
-    ./apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
- ✓ Compiled in 249ms
- ✓ Compiled /admin/users/roles in 161ms
- GET /admin/users/roles 200 in 473ms
- ✓ Compiled in 237ms
- ✓ Compiled in 295ms
- ✓ Compiled in 259ms
- ✓ Compiled in 300ms
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 297ms
- GET /admin/users/roles 200 in 899ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 412ms
- ✓ Compiled in 276ms
- ✓ Compiled in 260ms
- ✓ Compiled in 274ms
- ✓ Compiled in 289ms
+ ✓ Compiled / in 7.3s
+ GET / 200 in 9143ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 593ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1146ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 1813ms
+ GET /me 200 in 2110ms
+ ✓ Compiled in 320ms
+ ✓ Compiled in 292ms
  ✓ Compiled in 275ms
- ✓ Compiled in 305ms
- ✓ Compiled /admin/users/roles in 153ms
- GET /admin/users/roles 200 in 470ms
- ✓ Compiled in 262ms
- ✓ Compiled in 300ms
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 245ms
- GET /admin/users/roles 200 in 875ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 408ms
- ○ Compiling /login ...
- ✓ Compiled /login in 893ms
- GET /login?session=expired 200 in 1295ms
- GET /login?session=expired 200 in 743ms
- ✓ Compiled /me in 484ms
- GET /me 200 in 661ms
- GET / 200 in 630ms
- GET /admin 200 in 886ms
- GET /admin/users/roles 200 in 191ms
- ✓ Compiled in 277ms
- ✓ Compiled in 253ms
- ✓ Compiled in 254ms
- ✓ Compiled in 261ms
- ✓ Compiled in 253ms
+ ✓ Compiled in 410ms
+ ✓ Compiled in 438ms
+ ✓ Compiled in 378ms
+ ✓ Compiled in 379ms
+ ✓ Compiled in 294ms
+ ✓ Compiled in 252ms
+ ✓ Compiled in 312ms
+ ✓ Compiled in 252ms
+ ✓ Compiled in 387ms
+ ✓ Compiled in 412ms
+ ✓ Compiled in 511ms
+ ✓ Compiled in 472ms
+ ✓ Compiled in 320ms
  ✓ Compiled in 291ms
  ✓ Compiled in 281ms
- ✓ Compiled in 253ms
- ✓ Compiled in 255ms
- ✓ Compiled in 264ms
- ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
-[Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- GET /admin/users/roles 500 in 4099ms
- ✓ Compiled in 0ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 420ms
- GET /favicon.ico 200 in 967ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 895ms
- ✓ Compiled in 543ms
- ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
-[Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- GET /admin/users/roles 500 in 5946ms
- ✓ Compiled in 0ms
- ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
-[Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_1b8bbbd0._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(dashboard)/admin/users/roles/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(dashboard)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(dashboard)/admin/users/roles/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
-  digest: '98273519',
-  [cause]: SyntaxError: Missing initializer in const declaration
-      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_1b8bbbd0._.js:1881)
-}
- GET /admin/users/roles 500 in 5246ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 743ms
+ ✓ Compiled in 406ms
+ ✓ Compiled in 257ms
+ ✓ Compiled in 287ms
+ ✓ Compiled /me in 289ms
+ GET /me 200 in 921ms
  ✓ Compiled in 333ms
- ✓ Compiled in 239ms
- ✓ Compiled in 228ms
- ✓ Compiled /admin/users/roles in 173ms
- GET /admin/users/roles 200 in 923ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 453ms
- ✓ Compiled in 284ms
- ✓ Compiled in 282ms
+ ✓ Compiled in 353ms
+ ✓ Compiled in 267ms
+ ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:380)
+}
+[Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:380)
+}
+ ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:380)
+}
+ ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:380)
+}
+ GET /me 500 in 4044ms
+ ✓ Compiled in 0ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 690ms
+ GET /favicon.ico 500 in 727ms
+ GET /favicon.ico?favicon.0b3bf435.ico 500 in 418ms
+ ✓ Compiled in 265ms
+ ✓ Compiled /me in 187ms
+ GET /me 200 in 723ms
+ ✓ Compiled in 275ms
+ ✓ Compiled in 311ms
+ ✓ Compiled in 390ms
+ ✓ Compiled in 300ms
+ ✓ Compiled /me in 299ms
+ GET /me 200 in 984ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 265ms
+ ⨯ ReferenceError: userFormSchema is not defined
+    at Profile (src\app\(public)\me\page.tsx:44:27)
+  42 |   });
+  43 |   const profileForm = useForm<UserFormValues>({
+> 44 |     resolver: zodResolver(userFormSchema),
+     |                           ^
+  45 |     defaultValues: {
+  46 |       firstName: '',
+  47 |       lastName: '', {
+  digest: '1119238483'
+}
+ GET /me 500 in 1828ms
+ ✓ Compiled in 982ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1291ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /favicon.ico 200 in 1883ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:113:20)
+  111 |                 />
+  112 |                 <AvatarFallback className="bg-accent text-accent-foreground">
+> 113 |                   {formData.firstName[0]}
+      |                    ^
+  114 |                   {formData.lastName[0]}
+  115 |                 </AvatarFallback>
+  116 |               </Avatar> {
+  digest: '2608545763'
+}
+ GET /me 500 in 2305ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 791ms
+ GET /favicon.ico 200 in 749ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 292ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:109:20)
+  107 |                 />
+  108 |                 <AvatarFallback className="bg-accent text-accent-foreground">
+> 109 |                   {formData.firstName[0]}
+      |                    ^
+  110 |                   {formData.lastName[0]}
+  111 |                 </AvatarFallback>
+  112 |               </Avatar> {
+  digest: '2608545763'
+}
+ GET /me 500 in 1944ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1043ms
+ GET /favicon.ico 200 in 958ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 310ms
+ ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+[Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+ ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+ ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /me 500 in 5715ms
+ ✓ Compiled in 0ms
+ ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+[Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+ ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+ ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_e86e3ca5._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2384495214',
+  [cause]: SyntaxError: Missing initializer in destructuring declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_e86e3ca5._.js:450)
+}
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /me 500 in 5233ms
+ ✓ Compiled in 0ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 786ms
+ GET /favicon.ico 200 in 961ms
+ ✓ Compiled in 280ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 368ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 505ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:111:20)
+  109 |                 />
+  110 |                 <AvatarFallback className="bg-accent text-accent-foreground">
+> 111 |                   {formData.firstName[0]}
+      |                    ^
+  112 |                   {formData.lastName[0]}
+  113 |                 </AvatarFallback>
+  114 |               </Avatar> {
+  digest: '3901758090'
+}
+ GET /me 500 in 1710ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1074ms
+ GET /favicon.ico 200 in 1021ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 285ms
+ ⨯ TypeError: Cannot read properties of null (reading 'firstName')
+    at Profile (src\app\(public)\me\page.tsx:111:25)
+  109 |                 />
+  110 |                 <AvatarFallback className="bg-accent text-accent-foreground">
+> 111 |                   {user.firstName[0]}
+      |                         ^
+  112 |                   {formData.lastName[0]}
+  113 |                 </AvatarFallback>
+  114 |               </Avatar> {
+  digest: '2812510836'
+}
+ GET /me 500 in 1983ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1058ms
+ GET /favicon.ico 200 in 1211ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 277ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:125:18)
+  123 |             <div>
+  124 |               <h3 className="font-serif text-xl mb-1">
+> 125 |                 {formData.firstName} {formData.lastName}
+      |                  ^
+  126 |               </h3>
+  127 |               <p className="text-sm text-muted-foreground mb-1">
+  128 |                 john@gmail.com {
+  digest: '3901758090'
+}
+ GET /me 500 in 1753ms
+ GET /favicon.ico 200 in 1221ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1325ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
  ✓ Compiled in 269ms
- ✓ Compiled in 256ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:149:26)
+  147 |                   id="firstName"
+  148 |                   name="firstName"
+> 149 |                   value={formData.firstName}
+      |                          ^
+  150 |                   onChange={handleInputChange}
+  151 |                   placeholder="Enter your first name"
+  152 |                 /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2019ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1454ms
+ GET /favicon.ico 200 in 1451ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 438ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:149:26)
+  147 |                   id="firstName"
+  148 |                   name="firstName"
+> 149 |                   value={formData.firstName}
+      |                          ^
+  150 |                   onChange={handleInputChange}
+  151 |                   placeholder="Enter your first name"
+  152 |                 /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2114ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1209ms
+ GET /favicon.ico 200 in 1115ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 270ms
+ ⨯ TypeError: Cannot read properties of undefined (reading 'firstName')
+    at Profile (src\app\(public)\me\page.tsx:149:45)
+  147 |                   id="firstName"
+  148 |                   name="firstName"
+> 149 |                   value={profileForm.values.firstName}
+      |                                             ^
+  150 |                   onChange={profileForm.handleChange}
+  151 |                   placeholder="Enter your first name"
+  152 |                 /> {
+  digest: '2911775253'
+}
+ GET /me 500 in 1646ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1130ms
+ GET /favicon.ico 200 in 1108ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 366ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /me 200 in 2314ms
+ ✓ Compiled in 386ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1210ms
+ GET /favicon.ico 200 in 1213ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1274ms
+ ✓ Compiled in 420ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 274ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:150:26)
+  148 |                   id="firstName"
+  149 |                   name="firstName"
+> 150 |                   value={formData.firstName}
+      |                          ^
+  151 |                   onChange={handleInputChange}
+  152 |                   placeholder="Enter your first name"
+  153 |                 /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2062ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1458ms
+ GET /favicon.ico 200 in 1400ms
+ ✓ Compiled in 258ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 313ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 667ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:151:26)
+  149 |                   id="firstName"
+  150 |                   name="firstName"
+> 151 |                   value={formData.firstName}
+      |                          ^
+  152 |                   onChange={handleInputChange}
+  153 |                   placeholder="Enter your first name"
+  154 |                 /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2395ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 423ms
+ GET /favicon.ico 200 in 1617ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:152:26)
+  150 |                   id="firstName"
+  151 |                   name="firstName"
+> 152 |                   value={formData.firstName}
+      |                          ^
+  153 |                   onChange={handleInputChange}
+  154 |                   placeholder="Enter your first name"
+  155 |                 /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2758ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 451ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1882ms
+ GET /favicon.ico 200 in 1833ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:154:26)
+  152 |                   id="firstName"
+  153 |                   name="firstName"
+> 154 |                   value={formData.firstName}
+      |                          ^
+  155 |                   onChange={handleInputChange}
+  156 |                   placeholder="Enter your first name"
+  157 |                 /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 1839ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1484ms
+ GET /favicon.ico 200 in 1418ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 492ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /me 200 in 2382ms
+ ✓ Compiled in 0ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1585ms
+ ✓ Compiled in 445ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 391ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:152:28)
+  150 |                     id="firstName"
+  151 |                     name="firstName"
+> 152 |                     value={formData.firstName}
+      |                            ^
+  153 |                     onChange={handleInputChange}
+  154 |                     placeholder="Enter your first name"
+  155 |                   /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2705ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1317ms
+ GET /favicon.ico 200 in 1317ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 394ms
+ ⨯ ReferenceError: form is not defined
+    at Profile (src\app\(public)\me\page.tsx:142:29)
+  140 |           {/* Profile Form */}
+  141 |           <Form {...profileForm}>
+> 142 |             <form onSubmit={form.handleSubmit(handleSubmit)}>
+      |                             ^
+  143 |               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  144 |                 <div className="space-y-2">
+  145 |                   <Label htmlFor="firstName"> {
+  digest: '1743629754'
+}
+ GET /me 500 in 2308ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1594ms
+ GET /favicon.ico 200 in 1533ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 436ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:152:28)
+  150 |                     id="firstName"
+  151 |                     name="firstName"
+> 152 |                     value={formData.firstName}
+      |                            ^
+  153 |                     onChange={handleInputChange}
+  154 |                     placeholder="Enter your first name"
+  155 |                   /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 1998ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1424ms
+ GET /favicon.ico 200 in 1396ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 348ms
+ ⨯ ReferenceError: handleSubmit is not defined
+    at Profile (src\app\(public)\me\page.tsx:142:54)
+  140 |           {/* Profile Form */}
+  141 |           <Form {...profileForm}>
+> 142 |             <form onSubmit={profileForm.handleSubmit(handleSubmit)}>
+      |                                                      ^
+  143 |               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  144 |                 <div className="space-y-2">
+  145 |                   <Label htmlFor="firstName"> {
+  digest: '138434514'
+}
+ GET /me 500 in 2267ms
+ GET /favicon.ico 200 in 1621ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 408ms
+ ⨯ ReferenceError: handleSubmit is not defined
+    at Profile (src\app\(public)\me\page.tsx:142:54)
+  140 |           {/* Profile Form */}
+  141 |           <Form {...profileForm}>
+> 142 |             <form onSubmit={profileForm.handleSubmit(handleSubmit)}>
+      |                                                      ^
+  143 |               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  144 |                 <div className="space-y-2">
+  145 |                   <Label htmlFor="firstName"> {
+  digest: '138434514'
+}
+ GET /me 500 in 2203ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1829ms
+ ✓ Compiled in 493ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /favicon.ico 200 in 1999ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:152:28)
+  150 |                     id="firstName"
+  151 |                     name="firstName"
+> 152 |                     value={formData.firstName}
+      |                            ^
+  153 |                     onChange={handleInputChange}
+  154 |                     placeholder="Enter your first name"
+  155 |                   /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2085ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1431ms
+ GET /favicon.ico 200 in 1481ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 350ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:152:28)
+  150 |                     id="firstName"
+  151 |                     name="firstName"
+> 152 |                     value={formData.firstName}
+      |                            ^
+  153 |                     onChange={handleInputChange}
+  154 |                     placeholder="Enter your first name"
+  155 |                   /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2326ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1489ms
+ GET /favicon.ico 200 in 1463ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 334ms
+ ✓ Compiled in 560ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ReferenceError: form is not defined
+    at Profile (src\app\(public)\me\page.tsx:145:30)
+  143 |                 <div className="space-y-2">
+  144 |                   <FormField
+> 145 |                     control={form.control}
+      |                              ^
+  146 |                     name="firstName"
+  147 |                     render={({ field }) => (
+  148 |                       <div className="grid grid-cols-4 items-center gap-4"> {
+  digest: '1743629754'
+}
+ GET /me 500 in 2803ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 514ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 2008ms
+ GET /favicon.ico 200 in 1938ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:169:28)
+  167 |                     id="lastName"
+  168 |                     name="lastName"
+> 169 |                     value={formData.lastName}
+      |                            ^
+  170 |                     onChange={handleInputChange}
+  171 |                     placeholder="Enter your last name"
+  172 |                   /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2391ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1173ms
+ GET /favicon.ico 200 in 1214ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 325ms
+ ⨯ ReferenceError: form is not defined
+    at Profile (src\app\(public)\me\page.tsx:167:26)
+  165 |                   </Label>
+  166 |                  <FormField
+> 167 |                 control={form.control}
+      |                          ^
+  168 |                 name="lastName"
+  169 |                 render={({ field }) => (
+  170 |                   <div className="grid grid-cols-4 items-center gap-4"> {
+  digest: '1743629754'
+}
+ GET /me 500 in 2217ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1570ms
+ GET /favicon.ico 200 in 1533ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 324ms
+ ⨯ ReferenceError: formData is not defined
+    at Profile (src\app\(public)\me\page.tsx:169:28)
+  167 |                     id="lastName"
+  168 |                     name="lastName"
+> 169 |                     value={formData.lastName}
+      |                            ^
+  170 |                     onChange={handleInputChange}
+  171 |                     placeholder="Enter your last name"
+  172 |                   /> {
+  digest: '3901758090'
+}
+ GET /me 500 in 2444ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1744ms
+ GET /favicon.ico 200 in 1510ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 348ms
+ GET /me 200 in 2178ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1310ms
+ ✓ Compiled in 367ms
+ ✓ Compiled in 406ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 533ms
+ GET /me 200 in 1455ms
+ ✓ Compiled in 309ms
+ ✓ Compiled in 455ms
+ ✓ Compiled in 449ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 584ms
+ GET /me 200 in 1347ms
+ ✓ Compiled in 435ms
+ ✓ Compiled in 359ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 565ms
+ GET /me 200 in 1435ms
+ ✓ Compiled in 301ms
+ ✓ Compiled in 311ms
+ ✓ Compiled in 276ms
+ ✓ Compiled in 277ms
+ ✓ Compiled in 495ms
+ ✓ Compiled in 372ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 284ms
+ GET /me 200 in 1704ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 937ms
+ ✓ Compiled in 321ms
+ ✓ Compiled in 301ms
+ ✓ Compiled in 315ms
+ ✓ Compiled in 330ms
+ ✓ Compiled in 352ms
+ ✓ Compiled /me in 173ms
+ GET /me 200 in 570ms
+ ✓ Compiled in 272ms
+ ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:472)
+}
+[Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:472)
+}
+ ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:472)
+}
+ ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Missing initializer in const declaration
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:472)
+}
+ GET /me 500 in 5000ms
+ ✓ Compiled in 473ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 839ms
+ GET /favicon.ico 200 in 853ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 298ms
+ GET /me 200 in 1322ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 530ms
+ ✓ Compiled in 258ms
+ ✓ Compiled in 379ms
+ ✓ Compiled in 296ms
+ ✓ Compiled /me in 411ms
+ GET /me 200 in 1022ms
+ ✓ Compiled in 295ms
+ ✓ Compiled in 313ms
+ ✓ Compiled in 350ms
+ ✓ Compiled in 309ms
+ ✓ Compiled /me in 479ms
+ GET /me 200 in 1304ms
+ ✓ Compiled in 255ms
+ ✓ Compiled in 283ms
+ ✓ Compiled in 269ms
+ ✓ Compiled in 315ms
+ ✓ Compiled /me in 406ms
+ GET /me 200 in 971ms
+ ✓ Compiled in 413ms
+ ✓ Compiled in 300ms
+ ✓ Compiled in 354ms
+ ✓ Compiled in 328ms
+ ✓ Compiled in 283ms
+ ✓ Compiled in 281ms
+ ✓ Compiled in 287ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 282ms
+ GET /me 200 in 1711ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1028ms
+ ✓ Compiled in 415ms
+ ✓ Compiled in 315ms
+ ✓ Compiled in 265ms
+ ✓ Compiled /me in 171ms
+ GET /me 200 in 477ms
+ ✓ Compiled in 254ms
+ ✓ Compiled in 236ms
+ ✓ Compiled in 267ms
+ ✓ Compiled in 283ms
+ ⨯ [Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Unexpected token ';'
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:367)
+}
+[Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Unexpected token ';'
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:367)
+}
+ ⨯ unhandledRejection: [Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Unexpected token ';'
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:367)
+}
+ ⨯ unhandledRejection:  [Error: Failed to load chunk server/chunks/ssr/apps_web_src_d9a9d378._.js from module [project]/node_modules/next/dist/esm/build/templates/app-page.js?page=/(public)/me/page { GLOBAL_ERROR_MODULE => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", METADATA_0 => "[project]/apps/web/src/app/favicon.ico.mjs { IMAGE => \"[project]/apps/web/src/app/favicon.ico (static in ecmascript)\" } [app-rsc] (structured image object, ecmascript, Next.js Server Component)", MODULE_1 => "[project]/apps/web/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/apps/web/src/app/(public)/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_7 => "[project]/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_8 => "[project]/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_9 => "[project]/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_10 => "[project]/apps/web/src/app/(public)/me/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_11 => "[project]/apps/web/src/app/(public)/me/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>] {
+  digest: '2990762745',
+  [cause]: SyntaxError: Unexpected token ';'
+      at <unknown> (D:\Workspace\hotelbooking\apps\web\.next\server\chunks\ssr\apps_web_src_d9a9d378._.js:367)
+}
+ GET /me 500 in 4612ms
+ ✓ Compiled in 311ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 655ms
+ GET /favicon.ico 200 in 903ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 569ms
  ✓ Compiled in 278ms
  ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 242ms
- ✓ Compiled /admin/users/roles in 159ms
- GET /admin/users/roles 200 in 966ms
- GET /favicon.ico?favicon.0b3bf435.ico 200 in 524ms
- ✓ Compiled in 268ms
- ✓ Compiled in 257ms
- ✓ Compiled in 369ms
- ✓ Compiled in 299ms
+ ✓ Compiled in 300ms
+ ⨯ ReferenceError: updateUserMutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:204:29)
+  202 |                 <Button
+  203 |                   type="submit"
+> 204 |                   disabled={updateUserMutation.isPending}
+      |                             ^
+  205 |                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+  206 |                 >
+  207 |                   {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'} {
+  digest: '2051231681'
+}
+ GET /me 500 in 1669ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 775ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /favicon.ico 200 in 1916ms
+ ✓ Compiled in 1717ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ReferenceError: updateUserMutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:205:29)
+  203 |                 <Button
+  204 |                   type="submit"
+> 205 |                   disabled={updateUserMutation.isPending}
+      |                             ^
+  206 |                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+  207 |                 >
+  208 |                   {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'} {
+  digest: '2051231681'
+}
+ GET /me 500 in 2116ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1611ms
+ GET /favicon.ico 200 in 1310ms
+ ✓ Compiled in 745ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ReferenceError: updateUserMutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:203:29)
+  201 |                 <Button
+  202 |                   type="submit"
+> 203 |                   disabled={updateUserMutation.isPending}
+      |                             ^
+  204 |                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+  205 |                 >
+  206 |                   {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'} {
+  digest: '1760057198'
+}
+ GET /me 500 in 1716ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1120ms
+ GET /favicon.ico 200 in 1172ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 411ms
+ ⨯ ReferenceError: updateUserMutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:203:29)
+  201 |                 <Button
+  202 |                   type="submit"
+> 203 |                   disabled={updateUserMutation.isPending}
+      |                             ^
+  204 |                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+  205 |                 >
+  206 |                   {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'} {
+  digest: '1760057198'
+}
+ GET /me 500 in 1939ms
+ GET /favicon.ico 200 in 1045ms
+ ✓ Compiled in 394ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ReferenceError: updateUserMutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:202:29)
+  200 |                 <Button
+  201 |                   type="submit"
+> 202 |                   disabled={updateUserMutation.isPending}
+      |                             ^
+  203 |                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+  204 |                 >
+  205 |                   {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'} {
+  digest: '1760057198'
+}
+ GET /me 500 in 2260ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1223ms
+ GET /favicon.ico 200 in 1310ms
+ ✓ Compiled in 273ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ReferenceError: updateUserMutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:205:20)
+  203 |                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+  204 |                 >
+> 205 |                   {updateUserMutation.isPending ? 'Saving...' : 'Save Changes'}
+      |                    ^
+  206 |                 </Button>
+  207 |               </div>
+  208 |             </form> {
+  digest: '1760057198'
+}
+ GET /me 500 in 1655ms
+ GET /favicon.ico 200 in 978ms
+ GET /me 200 in 1467ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1106ms
+ GET /me 200 in 709ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1061ms
+ ✓ Compiled in 357ms
+ ✓ Compiled in 294ms
+ ✓ Compiled in 297ms
+ ✓ Compiled in 286ms
+ ✓ Compiled in 363ms
+ ✓ Compiled in 285ms
+ ✓ Compiled in 354ms
+ ✓ Compiled in 285ms
+ ✓ Compiled in 282ms
+ ✓ Compiled /me in 164ms
+ GET /me 200 in 473ms
+ ✓ Compiled in 311ms
+ ✓ Compiled in 323ms
+ ✓ Compiled in 287ms
+ ✓ Compiled in 273ms
+ ✓ Compiled in 311ms
  ✓ Compiled in 295ms
- ✓ Compiled in 265ms
+ ✓ Compiled in 368ms
+ ✓ Compiled in 254ms
+ ✓ Compiled in 318ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 398ms
+ ⨯ ReferenceError: useRef is not defined
+    at Profile (src\app\(public)\me\page.tsx:40:24)
+  38 | const Profile = () => {
+  39 |   const { user, loadUser } = useAuth();
+> 40 |   const fileInputRef = useRef<HTMLInputElement | null>(null);
+     |                        ^
+  41 |   const [preview, setPreview] = useState<string | null>(null);
+  42 |   // Inside ProfileSection component, after the updateProfileMutation
+  43 |   const [showPassword, setShowPassword] = useState({ {
+  digest: '88748520'
+}
+ GET /me 500 in 2249ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 787ms
+ ✓ Compiled in 729ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /favicon.ico 200 in 1756ms
+ GET /me 200 in 1762ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 663ms
+ ✓ Compiled in 318ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 266ms
+ GET /me 200 in 1505ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 637ms
+ ✓ Compiled in 289ms
+ ✓ Compiled in 311ms
+ ✓ Compiled in 291ms
+ ✓ Compiled in 326ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 471ms
+ ⨯ ReferenceError: mutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:163:27)
+  161 |                 className="absolute bottom-0 right-0 h-8 w-8 rounded-full border-2 border-background"
+  162 |                 onClick={() => fileInputRef.current?.click()}
+> 163 |                 disabled={mutation.isPending}
+      |                           ^
+  164 |               >
+  165 |                 <Camera className="h-4 w-4" />
+  166 |               </Button> {
+  digest: '1101499275'
+}
+ GET /me 500 in 1720ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1050ms
+ GET /favicon.ico 200 in 979ms
+ ✓ Compiled in 399ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 377ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 505ms
+ ⨯ ReferenceError: mutation is not defined
+    at Profile (src\app\(public)\me\page.tsx:178:16)
+  176 |
+  177 |               {/* ✅ Trạng thái upload */}
+> 178 |               {mutation.isPending && (
+      |                ^
+  179 |                 <p className="text-sm mt-2 text-muted-foreground">
+  180 |                   Đang upload...
+  181 |                 </p> {
+  digest: '1101499275'
+}
+ GET /me 500 in 1849ms
+ ✓ Compiled in 617ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1551ms
+ GET /favicon.ico 200 in 1898ms
+ GET /me 200 in 2197ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1082ms
+ ✓ Compiled in 249ms
+ ✓ Compiled in 344ms
+ ✓ Compiled in 288ms
+ ✓ Compiled in 270ms
+ ✓ Compiled in 275ms
+ ✓ Compiled in 307ms
+ ✓ Compiled in 266ms
+ ○ Compiling /me ...
+ ✓ Compiled /me in 602ms
+ GET /me 200 in 1312ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 305ms
+ GET /me 200 in 1681ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1276ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 417ms
+ ✓ Compiled in 588ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /me 200 in 2383ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 738ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1911ms
+ GET /me 200 in 2578ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 398ms
+ GET /me 200 in 1965ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1490ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 368ms
+ GET /me 200 in 2197ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1254ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 273ms
+ GET /me 200 in 2956ms
+ ✓ Compiled in 567ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1890ms
+ GET /me 200 in 2252ms
+ GET /me 200 in 1275ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1046ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 341ms
+ GET /me 200 in 1610ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 1207ms
+ ✓ Compiled in 267ms
+ GET /me 200 in 893ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 421ms
+ ✓ Compiled in 276ms
+ GET /me 200 in 944ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 455ms
+ ✓ Compiled in 290ms
+ ✓ Compiled in 358ms
+ ✓ Compiled in 343ms
+ ✓ Compiled /me in 276ms
+ GET /me 200 in 773ms
+ ✓ Compiled in 290ms
+ ✓ Compiled in 392ms
+ GET /me 200 in 915ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 582ms
+ ✓ Compiled in 327ms
+ ✓ Compiled in 327ms
+ ✓ Compiled in 369ms
  ✓ Compiled in 298ms
+ ✓ Compiled in 294ms
+ ✓ Compiled in 277ms
+ ✓ Compiled in 263ms
+ ✓ Compiled in 336ms
+ ✓ Compiled in 283ms
+ ✓ Compiled in 447ms
+ ✓ Compiled in 362ms
+ ✓ Compiled in 322ms
+ ✓ Compiled in 368ms
+ ✓ Compiled in 328ms
+ ✓ Compiled in 324ms
+ ✓ Compiled in 377ms
+ ✓ Compiled in 408ms
+ ✓ Compiled in 374ms
+ ✓ Compiled in 456ms
+ ✓ Compiled in 295ms
+ ✓ Compiled in 429ms
+ ✓ Compiled in 301ms
+ ✓ Compiled in 277ms
+ ✓ Compiled in 388ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 301ms
+ GET /me 200 in 1654ms

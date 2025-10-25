@@ -21,8 +21,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useRolesQuery } from '@/features/roles';
-import { Checkbox } from '@/components/ui/checkbox';
 interface UserEditFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -41,7 +39,6 @@ function UserEditFormDialog({
     defaultValues: {
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
-      roles: user?.roles?.map((r) => r.id) || [],
     },
   });
   useEffect(() => {
@@ -49,20 +46,16 @@ function UserEditFormDialog({
       form.reset({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
-        roles: user.roles?.map((r) => r.id) || [], 
       });
     } else {
       form.reset({
         firstName: '',
         lastName: '',
-        roles: [],
       });
     }
   }, [user, form]);
-  const { data: roles } = useRolesQuery();
   const handleSubmit = async (data: UserFormValues) => {
     try {
-      console.log("hello");
       setIsSubmitting(true);
       await onSubmit(data);
       form.reset();
@@ -117,53 +110,6 @@ function UserEditFormDialog({
                     <div className="col-span-3">
                       <FormControl>
                         <Input {...field} placeholder="Enter last name" />
-                      </FormControl>
-                      <FormMessage className="text-xs mt-1" />
-                    </div>
-                  </div>
-                )}
-              />
-
-              {/* Role */}
-              <FormField
-                control={form.control}
-                name="roles"
-                render={({ field }) => (
-                  <div className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right">Role</FormLabel>
-                    <div className="col-span-3">
-                      <FormControl>
-                        <div className="space-y-2">
-                          {roles?.map((role) => (
-                            <div
-                              key={role.id}
-                              className="flex items-center space-x-2"
-                            >
-                              <Checkbox
-                              className='cursor-pointer'
-                                checked={field.value?.includes(role.id)}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    field.onChange([...field.value, role.id]);
-                                  } else {
-                                    field.onChange(
-                                      field.value.filter(
-                                        (v: string) => v !== role.id
-                                      )
-                                    );
-                                  }
-                                }}
-                                id={role.id}
-                              />
-                              <label
-                                htmlFor={role.id}
-                                className="text-sm font-medium leading-none cursor-pointer"
-                              >
-                                {role.name}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
                       </FormControl>
                       <FormMessage className="text-xs mt-1" />
                     </div>

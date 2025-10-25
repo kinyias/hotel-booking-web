@@ -56,10 +56,7 @@ function UserManagementPage() {
     updateUserMutation.mutate(
       {
         id: userToEdit.id,
-        userData: {
-          firstName: data.firstName,
-          lastName: data.lastName,
-        },
+        data,
       },
       {
         onSuccess: () => {
