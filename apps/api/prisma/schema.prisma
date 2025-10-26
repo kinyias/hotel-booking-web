@@ -150,6 +150,46 @@ model ImageAsset {
   // Liên kết N-N có payload cho Hotel/RoomType/Location qua các bảng nối
 }
 
+model Country {
+  id        String    @id @default(cuid())
+  name      String
+  code      String    @unique
+  provinces Province[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Province {
+  id         String     @id @default(cuid())
+  name       String
+  code       String?    @unique
+  countryId  String
+  country    Country    @relation(fields: [countryId], references: [id])
+  districts  District[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model District {
+  id         String   @id @default(cuid())
+  name       String
+  code       String?  @unique
+  provinceId String
+  province   Province @relation(fields: [provinceId], references: [id])
+  wards      Ward[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Ward {
+  id         String   @id @default(cuid())
+  name       String
+  code       String?  @unique
+  districtId String
+  district   District @relation(fields: [districtId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
 
 // ==================== ENUM ====================
 enum AuthProvider {

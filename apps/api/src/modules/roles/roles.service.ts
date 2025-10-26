@@ -76,99 +76,106 @@ export class RolesService {
     return this.prisma.role.delete({ where: { id } });
   }
 
+  async setRolePermissions(roleId: string, dto: AssignPermissionsDto) {
+    await this.findOne(roleId);
 
-async setRolePermissions(roleId: string, dto: AssignPermissionsDto) {
-  await this.findOne(roleId);
+    const cleanIds = dto.permissionIds
+      .map((x) => (typeof x === 'string' ? x.trim() : ''))
+      .filter((x) => x.length > 0);
 
-  const cleanIds = dto.permissionIds
-    .map((x) => (typeof x === 'string' ? x.trim() : ''))
-    .filter((x) => x.length > 0);
+    if (cleanIds.length === 0) {
+      throw new BadRequestException('permissionIds contains no valid id');
+    }
 
-  if (cleanIds.length === 0) {
-    throw new BadRequestException('permissionIds contains no valid id');
-  }
+    const seen = new Set<string>();
+    const dupes = new Set<string>();
+    for (const pid of cleanIds) {
+      if (seen.has(pid)) dupes.add(pid);
+      else seen.add(pid);
+    }
+    if (dupes.size > 0) {
+      throw new BadRequestException(
+        `Duplicate permissionIds: ${[...dupes].join(', ')}`,
+      );
+    }
 
-  const seen = new Set<string>();
-  const dupes = new Set<string>();
-  for (const pid of cleanIds) {
-    if (seen.has(pid)) dupes.add(pid);
-    else seen.add(pid);
-  }
-  if (dupes.size > 0) {
-    throw new BadRequestException(`Duplicate permissionIds: ${[...dupes].join(', ')}`);
-  }
-
-  const perms = await this.prisma.permission.findMany({
-    where: { id: { in: cleanIds } },
-    select: { id: true, name: true },
-  });
-
-  const foundIds = new Set(perms.map((p) => p.id));
-  const missingIds = cleanIds.filter((pid) => !foundIds.has(pid));
-  if (missingIds.length > 0) {
-    throw new NotFoundException(`Permissions not found (by id): ${missingIds.join(', ')}`);
-  }
-
-  return this.prisma.$transaction(async (tx) => {
-    await tx.rolePermission.deleteMany({ where: { roleId } });
-    await tx.rolePermission.createMany({
-      data: cleanIds.map((permissionId) => ({ roleId, permissionId })),
-      skipDuplicates: true, // phòng race-condition
+    const perms = await this.prisma.permission.findMany({
+      where: { id: { in: cleanIds } },
+      select: { id: true, name: true },
     });
 
-    return tx.role.findUnique({
-      where: { id: roleId },
-      include: { permissions: { include: { permission: true } } },
+    const foundIds = new Set(perms.map((p) => p.id));
+    const missingIds = cleanIds.filter((pid) => !foundIds.has(pid));
+    if (missingIds.length > 0) {
+      throw new NotFoundException(
+        `Permissions not found (by id): ${missingIds.join(', ')}`,
+      );
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.rolePermission.deleteMany({ where: { roleId } });
+      await tx.rolePermission.createMany({
+        data: cleanIds.map((permissionId) => ({ roleId, permissionId })),
+        skipDuplicates: true, // phòng race-condition
+      });
+
+      return tx.role.findUnique({
+        where: { id: roleId },
+        include: { permissions: { include: { permission: true } } },
+      });
     });
-  });
-}
-
-
-async setUserRoles(dto: AssignRolesToUserDto) {
-  const user = await this.prisma.user.findUnique({ where: { id: dto?.userId } });
-  if (!user) throw new NotFoundException('User not found');
-
-
-  const cleanIds = dto.roleIds
-    .map((x) => (typeof x === 'string' ? x.trim() : ''))
-    .filter((x) => x.length > 0);
-
-  if (cleanIds.length === 0) {
-    throw new BadRequestException('roleIds contains no valid id');
   }
 
-  const seen = new Set<string>();
-  const dupes = new Set<string>();
-  for (const rid of cleanIds) {
-    if (seen.has(rid)) dupes.add(rid);
-    else seen.add(rid);
-  }
-  if (dupes.size > 0) {
-    throw new BadRequestException(`Duplicate roleIds: ${[...dupes].join(', ')}`);
-  }
+  async setUserRoles(dto: AssignRolesToUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: dto?.userId },
+    });
+    if (!user) throw new NotFoundException('User not found');
 
-  const roles = await this.prisma.role.findMany({
-    where: { id: { in: cleanIds } },
-    select: { id: true, name: true },
-  });
+    const cleanIds = dto.roleIds
+      .map((x) => (typeof x === 'string' ? x.trim() : ''))
+      .filter((x) => x.length > 0);
 
-  const foundIds = new Set(roles.map((r) => r.id));
-  const missingIds = cleanIds.filter((rid) => !foundIds.has(rid));
-  if (missingIds.length > 0) {
-    throw new NotFoundException(`Roles not found (by id): ${missingIds.join(', ')}`);
-  }
+    if (cleanIds.length === 0) {
+      throw new BadRequestException('roleIds contains no valid id');
+    }
 
-  return this.prisma.$transaction(async (tx) => {
-    await tx.userRole.deleteMany({ where: { userId: dto.userId } });
-    await tx.userRole.createMany({
-      data: cleanIds.map((roleId) => ({ userId: dto.userId, roleId })),
-      skipDuplicates: true, 
+    const seen = new Set<string>();
+    const dupes = new Set<string>();
+    for (const rid of cleanIds) {
+      if (seen.has(rid)) dupes.add(rid);
+      else seen.add(rid);
+    }
+    if (dupes.size > 0) {
+      throw new BadRequestException(
+        `Duplicate roleIds: ${[...dupes].join(', ')}`,
+      );
+    }
+
+    const roles = await this.prisma.role.findMany({
+      where: { id: { in: cleanIds } },
+      select: { id: true, name: true },
     });
 
-    return tx.user.findUnique({
-      where: { id: dto.userId },
-      include: { roles: { include: { role: true } } },
+    const foundIds = new Set(roles.map((r) => r.id));
+    const missingIds = cleanIds.filter((rid) => !foundIds.has(rid));
+    if (missingIds.length > 0) {
+      throw new NotFoundException(
+        `Roles not found (by id): ${missingIds.join(', ')}`,
+      );
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.userRole.deleteMany({ where: { userId: dto.userId } });
+      await tx.userRole.createMany({
+        data: cleanIds.map((roleId) => ({ userId: dto.userId, roleId })),
+        skipDuplicates: true,
+      });
+
+      return tx.user.findUnique({
+        where: { id: dto.userId },
+        include: { roles: { include: { role: true } } },
+      });
     });
-  });
-}
+  }
 }
