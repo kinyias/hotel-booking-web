@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { changePassword, updateProfile, updateUser, uploadAvatar } from './api';
-import { User } from './types';
-import { ChangePasswordFormValues, UserFormValues } from './validator';
+import { assignRoleToUser, changePassword, updateProfile, updateUser, uploadAvatar } from './api';
+import { ChangePasswordFormValues, RoleAssignUserFormValues, UserFormValues } from './validator';
 export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
 
@@ -32,6 +31,17 @@ export const useUpdateProfileMutation = () => {
     mutationFn: (data: UserFormValues) => updateProfile(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
+  });
+};
+
+export const useAssignRoleToUserMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: RoleAssignUserFormValues }) =>
+      assignRoleToUser(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 };

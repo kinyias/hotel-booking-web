@@ -12,5 +12,9 @@ export const changePasswordFormSchema = z.object({
   message: 'Passwords do not match',
   path: ['confirmPassword'],
 });
+export const roleAssignUserFormSchema = z.object({
+  roleIds: z.array(z.string()).min(1, 'At least one role is required'),
+});
 export type ChangePasswordFormValues = z.infer<typeof changePasswordFormSchema>;
 export type UserFormValues = z.infer<typeof userFormSchema>;
+export type RoleAssignUserFormValues = z.infer<typeof roleAssignUserFormSchema>;

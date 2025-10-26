@@ -3,8 +3,7 @@ import api from '@/lib/axios';
 import { PaginatedResponse } from '@/types';
 import { User } from './types';
 import { UsersQueryParams } from './types';
-import { ChangePasswordFormValues, UserFormValues } from './validator';
-
+import { ChangePasswordFormValues, RoleAssignUserFormValues, UserFormValues } from './validator';
 export const getUsers = async (params?: UsersQueryParams) => {
   const response = await api.get<PaginatedResponse<User>>(
     API_ENDPOINTS.USER.USERS,
@@ -37,6 +36,11 @@ export const changePassword = async (data: ChangePasswordFormValues) => {
   );
   return response.data;
 };
+
+export const assignRoleToUser = async (id: string, data: RoleAssignUserFormValues) => {
+  const response = await api.post(`${API_ENDPOINTS.USER.ROLES}/assign-to-user`, {userId: id, ...data})
+  return response.data;
+}
 
 export const uploadAvatar = async (file: File) => {
   const formData = new FormData();

@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Edit2, Trash2, Users } from 'lucide-react';
+import { Edit2, Trash2, Users, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { User } from '../types';
 import { formatDate } from '@/utils/formatTime';
@@ -18,8 +18,9 @@ interface UsersTableProps {
   users: User[];
   onEdit: (user: User) => void;
   onDelete: (id: string) => void;
+  onAssignRole: (user: User) => void;
 }
-function UserManagementTable({ users, onEdit, onDelete }: UsersTableProps) {
+function UserManagementTable({ users, onEdit, onDelete, onAssignRole }: UsersTableProps) {
   return (
     <Card className="bg-card border-border overflow-hidden">
       <Table>
@@ -52,6 +53,14 @@ function UserManagementTable({ users, onEdit, onDelete }: UsersTableProps) {
              <TableCell className="text-muted-foreground">{formatDate(user.createdAt)}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground hover:text-foreground"
+                    onClick={() => onAssignRole(user)}
+                  >
+                    <Shield size={18} />
+                  </Button>
                   <Button
                     variant="ghost"
                     size="icon"
