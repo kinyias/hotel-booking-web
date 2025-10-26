@@ -18,6 +18,9 @@ export class PrismaExceptionFilter implements ExceptionFilter {
     if (exception.code === 'P2002') {
       status = HttpStatus.CONFLICT;
       message = `Unique constraint failed on fields: ${(exception.meta?.target as string[])?.join(', ')}`;
+    } else if (exception.code === 'P2025') {
+      status = HttpStatus.NOT_FOUND;
+      message = 'Record not found';
     }
 
     response

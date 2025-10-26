@@ -4,5 +4,5 @@ export class AssignPermissionsDto {
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true })
-  permissionIds: string[]; 
+  permissionIds: string[];
 }
