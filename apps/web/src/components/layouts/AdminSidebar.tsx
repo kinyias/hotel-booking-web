@@ -63,6 +63,11 @@ export const navItems: NavItem[] = [
     icon: Star,
   },
   {
+    title: 'Promotions',
+    href: ROUTES.ADMIN_PROMOTIONS,
+    icon: Tags,
+  },
+  {
     title: 'Users',
     href: ROUTES.ADMIN_USERS,
     icon: Users,
