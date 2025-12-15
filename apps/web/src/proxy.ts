@@ -3,7 +3,7 @@ import { ROUTES } from './constants';
 
 const protectedRoutes = ['/admin', '/me']; // Add all protected routes here
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.some(
     (route) => path.startsWith(route) // Check if path starts with any protected route
