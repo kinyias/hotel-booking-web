@@ -66,6 +66,10 @@ export const navItems: NavItem[] = [
     title: 'Promotions',
     href: ROUTES.ADMIN_PROMOTIONS,
     icon: Tags,
+    submenu: [
+      { title: 'Promotions', href: ROUTES.ADMIN_PROMOTIONS },
+      { title: 'Promotion types', href: ROUTES.ADMIN_PROMOTION_TYPES },
+    ]
   },
   {
     title: 'Users',

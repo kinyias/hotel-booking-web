@@ -24,3 +24,11 @@ export const promotionFormSchema = z.object({
 });
 
 export type PromotionFormValues = z.infer<typeof promotionFormSchema>;
+
+export const promotionTypeFormSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  status: z.enum(['ACTIVE', 'INACTIVE']),
+});
+
+export type PromotionTypeFormValues = z.infer<typeof promotionTypeFormSchema>;

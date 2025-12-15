@@ -1,6 +1,10 @@
+export type PromotionTypeStatus = 'ACTIVE' | 'INACTIVE';
+
 export type PromotionType = {
   id: string;
   name: string;
+  description: string;
+  status: PromotionTypeStatus;
 };
 
 export type PromotionStatus = 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'EXPIRED';

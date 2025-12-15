@@ -34,10 +34,10 @@ import { promotionFormSchema, PromotionFormValues } from '../validator';
 import { formatNumber, parseCurrency } from '@/utils/currency';
 
 const PROMOTION_TYPES = [
-  { id: 't1', name: 'Seasonal' },
-  { id: 't2', name: 'Flash Deal' },
-  { id: 't3', name: 'New Year' },
-  { id: 't4', name: 'Early Bird' },
+  { id: 't1', name: 'Seasonal', description: 'Seasonal promotions', status: 'ACTIVE' },
+  { id: 't2', name: 'Flash Deal', description: 'Limited time offers', status: 'ACTIVE' },
+  { id: 't3', name: 'New Year', description: 'New Year specials', status: 'INACTIVE' },
+  { id: 't4', name: 'Early Bird', description: 'Advance booking discounts', status: 'ACTIVE' },
 ];
 
 interface PromotionFormProps {

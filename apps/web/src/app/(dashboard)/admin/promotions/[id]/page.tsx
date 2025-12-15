@@ -13,7 +13,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   {
     id: '1',
     hotel_id: "1",
-    type: { id: 't1', name: 'Seasonal' },
+    type: { id: 't1', name: 'Seasonal', description: 'Seasonal promotions', status: 'ACTIVE' },
     title: 'Summer Sale',
     description: 'Get 20% off on all summer bookings',
     discount_type: 'PERCENTAGE',
@@ -25,7 +25,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   {
     id: '2',
     hotel_id: "1",
-    type: { id: 't2', name: 'Flash Deal' },
+    type: { id: 't2', name: 'Flash Deal', description: 'Limited time offers', status: 'ACTIVE' },
     title: 'Weekend Getaway',
     description: 'Special price for weekend stays',
     discount_type: 'FIXED_AMOUNT',
@@ -37,7 +37,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   {
     id: '3',
     hotel_id: "1",
-    type: { id: 't3', name: 'New Year' },
+    type: { id: 't3', name: 'New Year', description: 'New Year specials', status: 'INACTIVE' },
     title: 'Welcome 2026',
     description: 'Celebrate New Year with us',
     discount_type: 'PERCENTAGE',
@@ -49,7 +49,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   {
     id: '4',
     hotel_id: "1",
-    type: { id: 't1', name: 'Seasonal' },
+    type: { id: 't1', name: 'Seasonal', description: 'Seasonal promotions', status: 'ACTIVE' },
     title: 'Winter Warmup',
     description: 'Cozy stays for winter',
     discount_type: 'PERCENTAGE',
@@ -61,7 +61,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   {
     id: '5',
     hotel_id: "1",
-    type: { id: 't4', name: 'Early Bird' },
+    type: { id: 't4', name: 'Early Bird', description: 'Advance booking discounts', status: 'ACTIVE' },
     title: 'Book Early Save More',
     description: 'Book 3 months in advance and save',
     discount_type: 'PERCENTAGE',
