@@ -19,10 +19,10 @@ const MOCK_PROMOTION_TYPES: PromotionType[] = [
 export default function PromotionTypeEditPage() {
   const params = useParams();
   const router = useRouter();
-  const id = params.id as string;
-  const isEditing = id && id !== 'new';
+  const type_id = params.type_id as string;
+  const isEditing = type_id && type_id !== 'new';
 
-  const promotionType = isEditing ? MOCK_PROMOTION_TYPES.find((p) => p.id === id) : undefined;
+  const promotionType = isEditing ? MOCK_PROMOTION_TYPES.find((p) => p.id === type_id) : undefined;
 
   if (isEditing && !promotionType) {
     return (
