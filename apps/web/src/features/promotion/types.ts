@@ -9,6 +9,7 @@ export type DiscountType = 'PERCENTAGE' | 'FIXED_AMOUNT';
 
 export type Promotion = {
   id: string;
+  hotel_id:string;
   type: PromotionType;
   title: string;
   description: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import {
@@ -8,11 +8,12 @@ import {
   PromotionTable,
   Promotion,
 } from '@/features/promotion';
-
+import Link from 'next/link';
 // Mock Data
 const MOCK_PROMOTIONS: Promotion[] = [
   {
     id: '1',
+    hotel_id: "1",
     type: { id: 't1', name: 'Seasonal' },
     title: 'Summer Sale',
     description: 'Get 20% off on all summer bookings',
@@ -24,6 +25,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   },
   {
     id: '2',
+hotel_id: "1",
     type: { id: 't2', name: 'Flash Deal' },
     title: 'Weekend Getaway',
     description: 'Special price for weekend stays',
@@ -35,6 +37,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   },
   {
     id: '3',
+    hotel_id: "1",
     type: { id: 't3', name: 'New Year' },
     title: 'Welcome 2026',
     description: 'Celebrate New Year with us',
@@ -46,6 +49,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   },
   {
     id: '4',
+    hotel_id: "1",
     type: { id: 't1', name: 'Seasonal' },
     title: 'Winter Warmup',
     description: 'Cozy stays for winter',
@@ -57,6 +61,7 @@ const MOCK_PROMOTIONS: Promotion[] = [
   },
   {
     id: '5',
+    hotel_id: "1",
     type: { id: 't4', name: 'Early Bird' },
     title: 'Book Early Save More',
     description: 'Book 3 months in advance and save',
@@ -93,10 +98,12 @@ export default function PromotionsPage() {
         <div className="m-4 md:m-6 space-y-6">
              <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-bold text-foreground">Promotions Management</h1>
+                <Link href="/admin/promotions/new">
                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
                   <Plus size={20} className="mr-2" />
                   Add Promotion
                 </Button>
+                </Link>
               </div>
 
             <PromotionFilters 

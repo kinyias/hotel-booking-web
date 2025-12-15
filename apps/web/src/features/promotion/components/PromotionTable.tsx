@@ -8,8 +8,9 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import { Promotion } from '../types';
+import Link from 'next/link';
 
 interface PromotionTableProps {
     promotions: Promotion[];
@@ -73,12 +74,11 @@ export function PromotionTable({
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end gap-2">
-                                        <Button variant="ghost" size="icon" title="Edit">
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                         <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive/90" title="Delete">
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
+                                        <Link href={`/admin/promotions/${promo.id}`}>
+                                            <Button variant="ghost" size="icon" title="Edit">
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                        </Link>
                                     </div>
                                 </TableCell>
                             </TableRow>
