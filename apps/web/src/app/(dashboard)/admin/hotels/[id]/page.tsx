@@ -8,6 +8,7 @@ import { HotelForm } from '@/features/hotels/components/HotelForm';
 import { RoomTypeTable } from '@/features/hotels/components/RoomTypeTable';
 import { HotelFormValues } from '@/features/hotels/validator';
 import { Hotel, RoomType } from '@/features/hotels/types';
+import Link from 'next/link';
 
 // Mock Hotels (Duplicated from list page for standalone demo)
 const MOCK_HOTELS: Hotel[] = [
@@ -133,10 +134,12 @@ export default function HotelEditPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Room Types</h2>
+                <Link href={`/admin/hotels/${id}/room-types/new`}>
                 <Button size="sm" variant="outline">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Room Type
                 </Button>
+                </Link>
             </div>
             <RoomTypeTable roomTypes={roomTypes} />
           </div>

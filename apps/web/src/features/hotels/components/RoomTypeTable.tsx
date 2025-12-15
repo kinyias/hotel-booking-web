@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { RoomType } from '../types';
+import Link from 'next/link';
 
 interface RoomTypeTableProps {
   roomTypes: RoomType[];
@@ -48,9 +49,11 @@ export function RoomTypeTable({ roomTypes }: RoomTypeTableProps) {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
+                    <Link href={`/admin/hotels/${room.type_id}/room-types/${room.type_id}`}>
                     <Button variant="ghost" size="icon" title="Edit">
                       <Edit className="h-4 w-4" />
                     </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       size="icon"

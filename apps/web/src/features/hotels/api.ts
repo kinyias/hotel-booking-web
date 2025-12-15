@@ -1,9 +1,9 @@
 import { API_ENDPOINTS } from '@/constants';
 import api from '@/lib/axios';
 import { PaginatedResponse } from '@/types';
-import { Hotel } from './types';
+import { Hotel, HotelsQueryParams } from './types';
 
-export const getHotels = async (params?: Record<string, unknown>) => {
+export const getHotels = async (params?: HotelsQueryParams) => {
   const response = await api.get<PaginatedResponse<Hotel>>(
     API_ENDPOINTS.HOTEL.HOTELS,
     { params }

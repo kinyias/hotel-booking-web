@@ -33,3 +33,20 @@ export interface RoomType {
   max_guests: number;
   description: string;
 }
+
+export interface RoomImage {
+  image_id: string;
+  room_id: string;
+  url: string;
+}
+
+export type RoomStatus = 'AVAILABLE' | 'BOOKED' | 'MAINTENANCE';
+
+export interface Room {
+  room_id: string;
+  type_id: string;
+  room_number: string;
+  floor: number;
+  status: RoomStatus;
+  images: RoomImage[];
+}
