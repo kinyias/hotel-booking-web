@@ -1,0 +1,103 @@
+'use client';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Edit, Trash2 } from 'lucide-react';
+import { Hotel } from '../types';
+import Link from 'next/link';
+
+interface HotelTableProps {
+  hotels: Hotel[];
+}
+
+export default function HotelTable({ hotels }: HotelTableProps) {
+  return (
+    <Card className="bg-card border-border overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="border-b border-border bg-secondary/50 hover:bg-secondary/50">
+            <TableHead className="text-foreground">Image</TableHead>
+            <TableHead className="text-foreground">Name</TableHead>
+            <TableHead className="text-foreground">Phone</TableHead>
+            <TableHead className="text-foreground">Star</TableHead>
+            <TableHead className="text-foreground">Status</TableHead>
+            <TableHead className="text-right text-foreground">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {hotels.map((hotel) => {
+            const firstImage = hotel.images?.[0]?.url;
+            return (
+              <TableRow
+                key={hotel.hotel_id}
+                className="border-b border-border hover:bg-secondary/30 transition-colors"
+              >
+                <TableCell>
+                  {firstImage ? (
+                    <img
+                      src={firstImage}
+                      alt={hotel.name}
+                      className="h-12 w-12 object-cover rounded-md border border-border"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 rounded-md bg-secondary border border-border" />
+                  )}
+                </TableCell>
+                <TableCell className="text-foreground font-medium">
+                  {hotel.name}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {hotel.phone}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {hotel.star}
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      hotel.status === 'ACTIVE' ? 'default' : 'secondary'
+                    }
+                  >
+                    {hotel.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Link href={`/admin/hotels/${hotel.hotel_id}`}>
+                    <Button variant="ghost" size="icon" title="Edit">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    </Link>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      title="Delete"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+
+      {hotels.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-12">
+          <p className="text-muted-foreground">No hotels found</p>
+        </div>
+      )}
+    </Card>
+  );
+}

@@ -19,5 +19,8 @@ export const API_ENDPOINTS = {
      ROLES: "/roles",
      PERMISSIONS: "/permissions",
      ACTIONS: "/actions"
+  },
+  HOTEL: {
+    HOTELS: "/hotels"
   }
 };
