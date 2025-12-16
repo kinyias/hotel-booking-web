@@ -35,7 +35,31 @@ model User {
   sessions      AuthSession[]
   verifyTokens  EmailVerifyToken[]
   resetTokens   PasswordResetToken[]
+  ownedHotels Hotel[]
+  hotelMemberships HotelMember[] @relation("UserHotelMemberships")
+
 }
+
+model Hotel {
+  id String @id @default(cuid())
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  members HotelMember[]
+}
+
+model HotelMember {
+  hotelId String
+  userId  String
+  role    HotelMemberRole @default(MANAGER) // vai trò trong hotel
+
+  hotel   Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  user    User   @relation("UserHotelMemberships", fields: [userId], references: [id])
+
+  @@id([hotelId, userId])
+  @@index([userId])
+}
+
 
 model Role {
   id          String        @id @default(cuid())
@@ -207,4 +231,9 @@ enum ImageKind {
   COVER      // ảnh bìa/cover
   GALLERY    // ảnh trong bộ sưu tập
   DOC        // tài liệu/biên lai nếu cần
+}
+
+enum HotelMemberRole {
+  MANAGER
+  STAFF
 }
