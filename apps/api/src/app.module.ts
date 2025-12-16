@@ -14,7 +14,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { ImageService } from './modules/image/image.service';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { LocationModule } from './modules/location/location.module';
+import { HotelModule } from './modules/hotel/hotel.module';
 
 @Module({
   imports: [
@@ -37,7 +37,7 @@ import { LocationModule } from './modules/location/location.module';
     RolesModule,
     ActionsModule,
     CloudinaryModule,
-    LocationModule,
+    HotelModule,
   ],
   controllers: [AppController],
   providers: [

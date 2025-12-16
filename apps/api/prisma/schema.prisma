@@ -42,16 +42,26 @@ model User {
 
 model Hotel {
   id String @id @default(cuid())
+  name String
+  address String?
+  city String?
+  country String?
+  description String?
+
   ownerId String
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   members HotelMember[]
+
+  deletedAt   DateTime? // soft delete
+
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model HotelMember {
   hotelId String
   userId  String
-  role    HotelMemberRole @default(MANAGER) // vai trò trong hotel
 
   hotel   Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   user    User   @relation("UserHotelMemberships", fields: [userId], references: [id])
@@ -146,6 +156,7 @@ model ApiAction {
   enabled     Boolean           @default(true)
   mode        PolicyMode        @default(ANY)
   policies    ApiActionPolicy[]
+
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 }
@@ -174,46 +185,7 @@ model ImageAsset {
   // Liên kết N-N có payload cho Hotel/RoomType/Location qua các bảng nối
 }
 
-model Country {
-  id        String    @id @default(cuid())
-  name      String
-  code      String    @unique
-  provinces Province[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
 
-model Province {
-  id         String     @id @default(cuid())
-  name       String
-  code       String?    @unique
-  countryId  String
-  country    Country    @relation(fields: [countryId], references: [id])
-  districts  District[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-}
-
-model District {
-  id         String   @id @default(cuid())
-  name       String
-  code       String?  @unique
-  provinceId String
-  province   Province @relation(fields: [provinceId], references: [id])
-  wards      Ward[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-}
-
-model Ward {
-  id         String   @id @default(cuid())
-  name       String
-  code       String?  @unique
-  districtId String
-  district   District @relation(fields: [districtId], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-}
 
 // ==================== ENUM ====================
 enum AuthProvider {
@@ -234,6 +206,7 @@ enum ImageKind {
 }
 
 enum HotelMemberRole {
+  OWNER
   MANAGER
   STAFF
 }
