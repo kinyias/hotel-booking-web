@@ -10,6 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Star, MapPin, Wifi, Car, Utensils } from "lucide-react";
 import Image from "next/image";
 import { Hotel, RoomType } from "@/features/hotels/types";
+import Link from "next/link";
 
 // Mock Data with VND prices
 const MOCK_ROOM_TYPES: RoomType[] = [
@@ -257,12 +258,14 @@ export default function HotelsPage() {
                   <div key={hotel.hotel_id} className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col md:flex-row h-auto md:h-64">
                     {/* Image Section */}
                     <div className="relative w-full md:w-1/3 min-h-[200px] md:min-h-full">
+                    <Link href={`/hotels/${hotel.hotel_id}`}>
                       <Image 
                         src={hotel.images[0]?.url || '/placeholder.jpg'} 
                         alt={hotel.name} 
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
+                    </Link>
                     </div>
 
                     {/* Content Section */}
@@ -276,9 +279,11 @@ export default function HotelsPage() {
                                 <Star key={i} className="w-3 h-3 text-yellow-500 fill-current" />
                               ))}
                             </div>
+                            <Link href={`/hotels/${hotel.hotel_id}`}>
                             <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
                               {hotel.name}
                             </h3>
+                            </Link>
                           </div>
                           {/* Favorite/Share can go here */}
                         </div>
@@ -316,9 +321,11 @@ export default function HotelsPage() {
                                <span className="text-sm text-gray-500">/night</span>
                             </div>
                          </div>
+                         <Link href={`/hotels/${hotel.hotel_id}`}>
                          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground min-w-[120px]">
                            View Details
                          </Button>
+                         </Link>
                       </div>
                     </div>
                   </div>
