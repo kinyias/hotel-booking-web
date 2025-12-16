@@ -14,7 +14,7 @@ export class HotelMemberGuard implements CanActivate {
 
     const membership = await this.prisma.hotelMember.findUnique({
       where: { hotelId_userId: { hotelId, userId } },
-      select: { role: true },
+      select: { hotelId: true },
     });
 
     // nếu là owner nhưng chưa có member record (hiếm) vẫn có thể check ownerId
@@ -30,7 +30,7 @@ export class HotelMemberGuard implements CanActivate {
       return false;
     }
 
-    req.hotelMemberRole = membership.role;
+    req.hotelMemberRole = membership.hotelId;
     
     console.log('userId', userId, 'hotelId', hotelId);
     console.log('req.user', req.user);
