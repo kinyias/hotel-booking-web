@@ -22,16 +22,20 @@ import {
 } from '@/components/ui/select';
 import { Edit, Trash2, Search } from 'lucide-react';
 import { Room } from '../types';
+import Link from 'next/link';
 
 interface RoomTableProps {
   rooms: Room[];
+  hotelId?: string;
+  roomTypeId?: string;
 }
 
-export function RoomTable({ rooms }: RoomTableProps) {
+export function RoomTable({ rooms, hotelId, roomTypeId }: RoomTableProps) {
   const [searchNumber, setSearchNumber] = useState('');
   const [searchFloor, setSearchFloor] = useState('');
   const [searchStatus, setSearchStatus] = useState<string>('all');
-
+  
+  // ... (filtering logic same as before)
   const filteredRooms = rooms.filter((room) => {
     const matchesNumber = room.room_number.toLowerCase().includes(searchNumber.toLowerCase());
     const matchesFloor = searchFloor ? room.floor.toString() === searchFloor : true;
@@ -112,14 +116,25 @@ export function RoomTable({ rooms }: RoomTableProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                       {/* Placeholder for Edit button - likely to open a dialog or navigate */}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
+                      {hotelId && (roomTypeId || room.type_id) ? (
+                          <Link href={`/admin/hotels/${hotelId}/room-types/${roomTypeId || room.type_id}/room/${room.room_id}`}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                          </Link>
+                      ) : (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                        >
+                            <Edit className="h-4 w-4" />
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="icon"

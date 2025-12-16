@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { RoomTypeForm } from '@/features/hotels/components/RoomTypeForm';
@@ -129,12 +130,14 @@ export default function RoomTypePage() {
            <div className="space-y-4">
                <div className="flex items-center justify-between">
                    <h2 className="text-lg font-semibold">Rooms ({rooms.length})</h2>
-                   <Button>
-                       <Plus className="mr-2 h-4 w-4" />
-                       Add Room
-                   </Button>
+                   <Link href={`/admin/hotels/${hotelId}/room-types/${roomTypeId}/room/new`}>
+                       <Button>
+                           <Plus className="mr-2 h-4 w-4" />
+                           Add Room
+                       </Button>
+                   </Link>
                </div>
-               <RoomTable rooms={rooms} />
+               <RoomTable rooms={rooms} hotelId={hotelId as string} roomTypeId={roomTypeId as string} />
            </div>
        )}
     </div>
