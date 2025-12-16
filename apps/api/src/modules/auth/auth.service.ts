@@ -281,7 +281,6 @@ export class AuthService {
     await this.prisma.authSession.deleteMany({
       where: { userId: token.userId },
     });
-    // Optional: push jti vào Redis blocklist nếu bạn đang giữ refresh jti ở đâu đó
 
     return { ok: true };
   }
@@ -290,49 +289,69 @@ export class AuthService {
     googleUser: {
       providerId: string;
       email: string | null;
-      name: string;
+      firstName: string | null;
+      lastName: string | null;
       avatar?: string | null;
     },
     ctx: { ip?: string; userAgent?: string },
   ) {
-    const { providerId, email } = googleUser;
+    const { providerId } = googleUser;
 
-    // 1) Kiếm user bằng providerId
-    let user = await this.prisma.user.findUnique({ where: { providerId } });
+    const email = googleUser.email?.trim().toLowerCase() ?? null;
 
-    // 2) Nếu chưa có, cân nhắc email
-    if (!user) {
-      if (email) {
-        const existingByEmail = await this.prisma.user.findUnique({
-          where: { email },
-        });
-        if (existingByEmail && existingByEmail.provider === 'LOCAL') {
-          // KHÔNG tự động gộp để tránh takeover.
-          // Có thể trả về 409 và yêu cầu liên kết thủ công trong trang bảo mật.
+    if (email) {
+      const existingByEmail = await this.prisma.user.findUnique({
+        where: { email },
+        select: { id: true, provider: true, providerId: true },
+      });
+
+      if (existingByEmail && existingByEmail.providerId !== providerId) {
+        if (existingByEmail.provider === 'LOCAL') {
           throw new UnauthorizedException(
             'Email already registered. Please login with password, then link Google in account settings.',
           );
         }
-      }
 
-      user = await this.prisma.user.create({
-        data: {
-          email: email ?? `${providerId}@google.local`, // fallback
-          provider: 'GOOGLE',
-          providerId,
-          emailVerified: true, // Google đã xác minh email → có thể đặt true nếu email != null
-          // name/avatar… nếu schema có
-        },
-      });
+        throw new UnauthorizedException(
+          'Email is already linked to another account/provider.',
+        );
+      }
     }
 
-    // 3) Tạo phiên + refresh rotation
+    const updateData: any = {
+      provider: 'GOOGLE',
+      emailVerified: true,
+      firstName: googleUser.firstName,
+      lastName: googleUser.lastName,
+    };
+
+    if (email) updateData.email = email;
+
+    if (googleUser.avatar != null) {
+      // updateData.avatarUrl = googleUser.avatar; // ví dụ nếu schema có avatarUrl
+    }
+
+    const user = await this.prisma.user.upsert({
+      where: { providerId },
+      create: {
+        firstName: googleUser.firstName,
+        lastName: googleUser.lastName,
+        email: email ?? `${providerId}@google.local`, // fallback
+        provider: 'GOOGLE', // hoặc AuthProvider.GOOGLE
+        providerId,
+        emailVerified: true,
+        // avatarUrl: googleUser.avatar ?? null, // nếu có field
+      },
+      update: updateData,
+    });
+
+    // 3) Tạo phiên + refresh rotation (giữ nguyên logic của bạn)
     const jti = crypto.randomUUID();
     const accessToken = await this.signAccessToken(user.id, jti);
     const refreshToken = await this.signRefreshToken(user.id, jti);
     const refreshHash = await argon2.hash(refreshToken);
 
-    const expiresAt = dayjs().add(30, 'day').toDate(); // hoặc dùng TTL env
+    const expiresAt = dayjs().add(30, 'day').toDate();
     await this.prisma.authSession.create({
       data: {
         userId: user.id,
