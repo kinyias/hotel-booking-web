@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { format, differenceInDays, addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
@@ -64,6 +64,8 @@ const formatCurrency = (value: number) => {
 export default function HotelDetailPage() {
   const params = useParams();
   
+  const router = useRouter();
+  
   // Filter States
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
@@ -88,6 +90,27 @@ export default function HotelDetailPage() {
       const next = Math.max(0, current + delta);
       return { ...prev, [typeId]: next };
     });
+  };
+
+  const handleBookNow = () => {
+    if (totalSelectedRooms === 0) return;
+
+    // Construct params
+    const roomsParam = Object.entries(quantities)
+      .filter(([_, qty]) => qty > 0)
+      .map(([typeId, qty]) => `${typeId}:${qty}`)
+      .join(',');
+      
+    const searchParams = new URLSearchParams();
+    searchParams.set('hotel_id', MOCK_HOTEL.hotel_id);
+    if(date?.from) searchParams.set('check_in', date.from.toISOString());
+    if(date?.to) searchParams.set('check_out', date.to.toISOString());
+    searchParams.set('total_price', totalPrice.toString());
+    searchParams.set('rooms', roomsParam);
+    searchParams.set('booking_id', `BK-${Date.now()}`); // Generate a temporary ID
+    searchParams.set('booking_status', 'PENDING');
+
+    router.push(`/booking?${searchParams.toString()}`);
   };
 
   const formatDateRange = () => {
@@ -331,6 +354,7 @@ export default function HotelDetailPage() {
                  "min-w-[200px] text-lg font-semibold transition-all",
                  totalSelectedRooms > 0 ? "bg-primary hover:bg-primary/90" : "bg-gray-200 text-gray-400 hover:bg-gray-200 cursor-not-allowed"
                )}
+               onClick={handleBookNow}
             >
                {totalSelectedRooms > 0 ? (
                   <>Book Now <span className="ml-2 text-sm opacity-80">({totalSelectedRooms} rooms)</span></>
