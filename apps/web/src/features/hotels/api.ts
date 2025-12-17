@@ -28,3 +28,10 @@ export const updateHotel = async (id: string, payload: any) => {
   );
   return response.data;
 };
+
+export const deleteHotel = async (id: string) => {
+  const response = await api.delete<Hotel>(
+    `${API_ENDPOINTS.HOTEL.HOTELS}/${id}`
+  );
+  return response.data;
+};

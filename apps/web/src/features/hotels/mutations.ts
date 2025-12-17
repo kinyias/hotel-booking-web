@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { HotelFormValues } from "./validator";
-import { createHotel, updateHotel } from "./api";
+import { createHotel, deleteHotel, updateHotel } from "./api";
 
 export const useCreateHotelMutation = () => {
     const queryClient = useQueryClient();
@@ -19,6 +19,16 @@ export const useUpdateHotelMutation = (id: string) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['hotels'] });
             queryClient.invalidateQueries({ queryKey: ['hotel', id] });
+        },
+    });
+};
+
+export const useDeleteHotelMutation = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id:string) => deleteHotel(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['hotels'] });
         },
     });
 };
