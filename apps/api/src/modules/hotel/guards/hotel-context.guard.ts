@@ -39,7 +39,6 @@ export class HotelContextGuard implements CanActivate {
       throw new ForbiddenException('You are not a member of this hotel');
     }
 
-    req.hotelMemberRole = membership.role;
     return true;
   }
 }
