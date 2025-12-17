@@ -3,19 +3,25 @@ export interface HotelImage {
   hotel_id: string;
   url: string;
 }
-
-export type HotelStatus = 'ACTIVE' | 'INACTIVE';
+export interface HotelOwner {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+export type HotelStatus = 'DRAFT' | 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED';
 
 export interface Hotel {
-  hotel_id: string;
+  id: string;
   owner_id: string;
   name: string;
   address: string;
   description: string;
-  star: number;
-  phone: string;
+  city: string;
+  country: string;
   status: HotelStatus;
   images: HotelImage[];
+  owner: HotelOwner;
 }
 
 export interface HotelsQueryParams {

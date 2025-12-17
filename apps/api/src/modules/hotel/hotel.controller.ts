@@ -55,7 +55,7 @@ export class HotelController {
   }
 
   @Get('/:hotelId')
-  @UseGuards(HotelMemberGuard) // chỉ member mới xem detail
+  // @UseGuards(HotelMemberGuard) // chỉ member mới xem detail
   getDetail(@Param('hotelId') hotelId: string) {
     return this.hotelService.getHotelDetail(hotelId);
   }

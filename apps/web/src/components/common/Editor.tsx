@@ -250,7 +250,7 @@ const Header = ({ editor }: { editor: Editor | null }) => {
   const [theme, setTheme] = useState('light')
   const [editorEditable, setEditorEditable] = useState(true);
   const [color, setColor] = useState('default');
-  const [lang, setlang] = useState('en');
+  const [lang, setlang] = useState('vi');
 
   useEffect(() => {
     if (editor) {
@@ -270,7 +270,7 @@ const Header = ({ editor }: { editor: Editor | null }) => {
 
   return <>
     <div className='flex items-center justify-between gap-[12px] header'>
-      <div className='flex items-center gap-2'>
+      {/* <div className='flex items-center gap-2'>
         <select value={lang} onChange={(e) => {
           setlang(e.target.value);
           localeActions.setLang(e.target.value)
@@ -302,7 +302,7 @@ const Header = ({ editor }: { editor: Editor | null }) => {
         >
           Documentation
         </button>
-      </div>
+      </div> */}
 {/* 
       <div className='flex items-center gap-2'>
         <button onClick={() => {
@@ -406,10 +406,9 @@ function App({ content, onChange }: { content: string, onChange: (content: strin
 
   return (
     <div
-      className="p-[24px] flex flex-col w-full max-w-screen-lg gap-[24px] mx-[auto] my-0"
+      className="p-[5px] flex flex-col w-full mx-[auto] my-0"
       style={{
-        maxWidth: 1200,
-        margin: '40px auto',
+        margin: '10px auto',
       }}
     >
       <Header editor={editor}  />

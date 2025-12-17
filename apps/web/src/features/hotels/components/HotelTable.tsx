@@ -27,18 +27,17 @@ export default function HotelTable({ hotels }: HotelTableProps) {
           <TableRow className="border-b border-border bg-secondary/50 hover:bg-secondary/50">
             <TableHead className="text-foreground">Image</TableHead>
             <TableHead className="text-foreground">Name</TableHead>
-            <TableHead className="text-foreground">Phone</TableHead>
-            <TableHead className="text-foreground">Star</TableHead>
+            <TableHead className="text-foreground">Email Owner</TableHead>
             <TableHead className="text-foreground">Status</TableHead>
             <TableHead className="text-right text-foreground">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {hotels.map((hotel) => {
+          {hotels.map((hotel, index) => {
             const firstImage = hotel.images?.[0]?.url;
             return (
               <TableRow
-                key={hotel.hotel_id}
+                key={index}
                 className="border-b border-border hover:bg-secondary/30 transition-colors"
               >
                 <TableCell>
@@ -56,10 +55,7 @@ export default function HotelTable({ hotels }: HotelTableProps) {
                   {hotel.name}
                 </TableCell>
                 <TableCell className="text-muted-foreground">
-                  {hotel.phone}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {hotel.star}
+                  {hotel.owner.email}
                 </TableCell>
                 <TableCell>
                   <Badge
@@ -72,7 +68,7 @@ export default function HotelTable({ hotels }: HotelTableProps) {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Link href={`/admin/hotels/${hotel.hotel_id}`}>
+                    <Link href={`/admin/hotels/${hotel.id}`}>
                     <Button variant="ghost" size="icon" title="Edit">
                       <Edit className="h-4 w-4" />
                     </Button>

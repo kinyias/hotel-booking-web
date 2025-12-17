@@ -4,9 +4,9 @@ export const hotelFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   address: z.string().min(1, 'Address is required'),
   description: z.string().min(1, 'Description is required'),
-  star: z.number().min(1).max(5),
-  phone: z.string().min(1, 'Phone is required'),
-  status: z.enum(['ACTIVE', 'INACTIVE']),
+  city: z.string().min(1, 'City is required'),
+  country: z.string().min(1, 'Country is required'),
+  status: z.enum(['DRAFT', 'ACTIVE', 'SUSPENDED', 'ARCHIVED']),
 });
 
 export type HotelFormValues = z.infer<typeof hotelFormSchema>;

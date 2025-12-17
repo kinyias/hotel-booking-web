@@ -11,3 +11,9 @@ export const getHotels = async (params?: HotelsQueryParams) => {
   return response.data;
 };
 
+export const getHotelById = async (id: string) => {
+  const response = await api.get<Hotel>(
+    `${API_ENDPOINTS.HOTEL.HOTELS}/${id}`
+  );
+  return response.data;
+};
