@@ -22,6 +22,9 @@ export interface Hotel {
   status: HotelStatus;
   images: HotelImage[];
   owner: HotelOwner;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
 }
 
 export interface HotelsQueryParams {

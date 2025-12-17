@@ -28,7 +28,7 @@ export class HotelService {
         images:
           images && images.length > 0
             ? {
-                create: images.map((url) => ({ url }) as any),
+                create: images.map((i) => ({ url: i.url }) as any),
               }
             : undefined,
       },

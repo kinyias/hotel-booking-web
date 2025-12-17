@@ -59,6 +59,9 @@ export class RoomTypeService {
             price_per_night: new Prisma.Decimal(dto.price_per_night),
             max_guests: dto.max_guests,
             description: dto.description?.trim() || null,
+            images: {
+              create: dto.images?.map((img) => ({ url: img.url })) || [],
+            },
           },
           select: { id: true },
         });
@@ -75,7 +78,10 @@ export class RoomTypeService {
 
         return tx.roomType.findUnique({
           where: { id: created.id },
-          include: { amenities: { include: { amenity: true } } },
+          include: { 
+            amenities: { include: { amenity: true } },
+            images: true,
+          },
         });
       });
 
@@ -124,6 +130,7 @@ export class RoomTypeService {
           amenities: {
             include: { amenity: true },
           },
+          images: true,
         },
       }),
       this.prisma.roomType.count({ where }),
@@ -144,7 +151,10 @@ export class RoomTypeService {
 
     const roomType = await this.prisma.roomType.findFirst({
       where: { id, hotelId },
-      include: { amenities: { include: { amenity: true } } },
+      include: { 
+        amenities: { include: { amenity: true } },
+        images: true,
+      },
     });
     if (!roomType) throw new NotFoundException('Room type not found');
     return roomType;
@@ -164,19 +174,50 @@ export class RoomTypeService {
     });
     if (!existing) throw new NotFoundException('Room type not found');
 
+    const { images, ...otherData } = dto;
+    let imageOps: any = undefined;
+
+    if (images) {
+      const current = await this.prisma.roomType.findUnique({
+        where: { id },
+        include: { images: true },
+      });
+      
+      if (current) {
+         const currentImageIds = current.images.map((img) => img.id);
+         const imagesToUpdate = images.filter((img) => img.id && currentImageIds.includes(img.id));
+         const imagesToCreate = images.filter((img) => !img.id || (img.id && !currentImageIds.includes(img.id)));
+         const validUpdateIds = new Set(imagesToUpdate.map(img => img.id));
+         const imagesToDeleteIds = currentImageIds.filter(id => !validUpdateIds.has(id));
+
+         imageOps = {
+           deleteMany: { id: { in: imagesToDeleteIds } },
+           update: imagesToUpdate.map((img) => ({
+             where: { id: img.id },
+             data: { url: img.url },
+           })),
+           create: imagesToCreate.map((img) => ({ url: img.url })),
+         };
+      }
+    }
+
     return await this.prisma.roomType.update({
       where: { id },
       data: {
-        ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
-        ...(dto.price_per_night !== undefined
-          ? { price_per_night: new Prisma.Decimal(dto.price_per_night) }
+        ...(otherData.name !== undefined ? { name: otherData.name.trim() } : {}),
+        ...(otherData.price_per_night !== undefined
+          ? { price_per_night: new Prisma.Decimal(otherData.price_per_night) }
           : {}),
-        ...(dto.max_guests !== undefined ? { max_guests: dto.max_guests } : {}),
-        ...(dto.description !== undefined
-          ? { description: dto.description?.trim() || null }
+        ...(otherData.max_guests !== undefined ? { max_guests: otherData.max_guests } : {}),
+        ...(otherData.description !== undefined
+          ? { description: otherData.description?.trim() || null }
           : {}),
+        ...(imageOps ? { images: imageOps } : {}),
       },
-      include: { amenities: { include: { amenity: true } } },
+      include: { 
+        amenities: { include: { amenity: true } },
+        images: true,
+      },
     });
   }
 

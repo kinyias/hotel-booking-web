@@ -12,7 +12,25 @@ export const getHotels = async (params?: HotelsQueryParams) => {
 };
 
 export const getHotelById = async (id: string) => {
-  const response = await api.get<Hotel>(
+  const response = await api.get<Hotel>(`${API_ENDPOINTS.HOTEL.HOTELS}/${id}`);
+  return response.data;
+};
+
+export const createHotel = async (payload: any) => {
+  const response = await api.post<Hotel>(API_ENDPOINTS.HOTEL.HOTELS, payload);
+  return response.data;
+};
+
+export const updateHotel = async (id: string, payload: any) => {
+  const response = await api.patch<Hotel>(
+    `${API_ENDPOINTS.HOTEL.HOTELS}/${id}`,
+    payload
+  );
+  return response.data;
+};
+
+export const deleteHotel = async (id: string) => {
+  const response = await api.delete<Hotel>(
     `${API_ENDPOINTS.HOTEL.HOTELS}/${id}`
   );
   return response.data;

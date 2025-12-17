@@ -1,6 +1,13 @@
-import { IsOptional, IsString, Length, MaxLength } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { IsOptional, IsString, Length, MaxLength, ValidateNested } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+export class HotelImageDto {
+  @IsOptional()
+  @IsString()
+  id?: string;
 
+  @IsString()
+  url!: string;
+}
 export class CreateHotelDto {
   @IsString()
   @Length(2, 120)
@@ -32,6 +39,7 @@ export class CreateHotelDto {
   description?: string;
 
   @IsOptional()
-  @IsString({ each: true })
-  images?: string[];
+  @ValidateNested({ each: true })
+  @Type(() => HotelImageDto)
+  images?: HotelImageDto[];
 }
