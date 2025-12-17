@@ -217,6 +217,7 @@ export class HotelService {
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
+          images: true,
           owner: {
             select: { id: true, email: true, firstName: true, lastName: true },
           },
