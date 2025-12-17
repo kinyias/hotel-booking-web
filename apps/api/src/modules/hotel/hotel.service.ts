@@ -8,6 +8,7 @@ import { HotelMemberRole, Prisma } from '@prisma/client';
 import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
 import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
 import { ListHotelsQueryDto } from 'src/modules/hotel/dto/list-hotels.query';
+import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 @Injectable()
 export class HotelService {
@@ -51,21 +52,53 @@ export class HotelService {
     });
   }
 
-  async updateHotel(hotelId: string, dto: any) {
+  async updateHotel(hotelId: string, dto: UpdateHotelDto) {
+    const { images, ...otherData } = dto;
+
     const hotel = await this.prisma.hotel.findFirst({
       where: {
         id: hotelId,
         deletedAt: null,
       },
+      include: { images: true },
     });
 
     if (!hotel) {
       throw new NotFoundException('Hotel not found or has been deleted');
     }
 
+    let imageOps: any = undefined;
+
+    if (images) {
+      const currentImageIds = hotel.images.map((img) => img.id);
+      
+      // Separate incoming images
+      const imagesToUpdate = images.filter((img) => img.id && currentImageIds.includes(img.id));
+      const imagesToCreate = images.filter((img) => !img.id || (img.id && !currentImageIds.includes(img.id)));
+
+      // Identify images to delete (present in DB but not in valid updates)
+      const validUpdateIds = new Set(imagesToUpdate.map(img => img.id));
+      const imagesToDeleteIds = currentImageIds.filter(id => !validUpdateIds.has(id));
+
+      imageOps = {
+        deleteMany: { id: { in: imagesToDeleteIds } },
+        update: imagesToUpdate.map((img) => ({
+          where: { id: img.id },
+          data: { url: img.url },
+        })),
+        create: imagesToCreate.map((img) => ({ url: img.url })),
+      };
+    }
+
     return this.prisma.hotel.update({
       where: { id: hotelId },
-      data: dto,
+      data: {
+        ...otherData,
+        ...(imageOps ? { images: imageOps } : {}),
+      },
+      include: {
+        images: true,
+      }
     });
   }
 
