@@ -5,11 +5,11 @@ import { ArrowLeft, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import { RoomTypeForm } from '@/features/hotels/components/RoomTypeForm';
+import { RoomTypeForm } from '@/features/room-types/components/RoomTypeForm';
 import { RoomTable } from '@/features/hotels/components/RoomTable';
-import { RoomTypeFormValues } from '@/features/hotels/validator';
-import { Room, RoomType } from '@/features/hotels/types';
-
+import { RoomTypeFormValues } from '@/features/room-types';
+import { Room } from '@/features/hotels/types';
+import { RoomType } from '@/features/room-types';
 // Mock Data
 const MOCK_ROOM_TYPES: RoomType[] = [
   {

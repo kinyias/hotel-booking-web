@@ -16,4 +16,5 @@ export const ROUTES = {
   ADMIN_ACTIONS: '/admin/users/actions',
   ADMIN_PROMOTIONS: '/admin/promotions',
   ADMIN_PROMOTION_TYPES: '/admin/promotions/types',
+  ADMIN_AMENITIES: '/admin/amenities',
 };

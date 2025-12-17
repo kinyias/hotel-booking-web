@@ -5,7 +5,7 @@ import { ArrowLeft, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { HotelForm } from '@/features/hotels/components/HotelForm';
-import { RoomTypeTable } from '@/features/hotels/components/RoomTypeTable';
+import { RoomTypeTable } from '@/features/room-types/components/RoomTypeTable';
 import { HotelFormValues } from '@/features/hotels/validator';
 import { useHotelDetailQuery } from '@/features/hotels/queries';
 import { useCreateHotelMutation, useUpdateHotelMutation } from '@/features/hotels/mutations';
@@ -96,7 +96,7 @@ export default function HotelEditPage() {
 
       {/* Room Types Section - Only Show when Editing */}
       {isEditing && (
-          <div className="space-y-4">
+          <div className="space-y-4 w-full">
             <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Room Types</h2>
                 <Link href={`/admin/hotels/${id}/room-types/new`}>

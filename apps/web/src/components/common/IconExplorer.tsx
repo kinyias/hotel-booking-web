@@ -3,8 +3,15 @@
 import { useState } from "react";
 import * as LucideIcons from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
-export default function IconExplorer() {
+interface IconExplorerProps {
+  onSelect?: (icon: string) => void;
+  selectedIcon?: string;
+  className?: string;
+}
+
+export default function IconExplorer({ onSelect, selectedIcon, className }: IconExplorerProps) {
   const [filter, setFilter] = useState("");
   const allIcons = Object.keys(LucideIcons);
 
@@ -16,7 +23,7 @@ export default function IconExplorer() {
   const displayIcons = filteredIcons.slice(0, 100);
 
   return (
-    <div className="p-8 border rounded-lg bg-background my-8">
+    <div className={cn("p-8 border rounded-lg bg-background my-8", className)}>
       <h2 className="text-2xl font-bold mb-4">Icon Explorer</h2>
       <div className="mb-6">
         <Input
@@ -41,14 +48,21 @@ export default function IconExplorer() {
           // Usually keys starting with uppercase are components.
           if (name === "icons" || name === "createReactComponent" || name === "default") return null;
 
+          const isSelected = selectedIcon === name;
+
           return (
-            <div
+            <button
               key={name}
-              className="flex flex-col items-center justify-center p-4 border rounded hover:bg-muted/50 transition-colors"
+              type="button"
+              onClick={() => onSelect?.(name)}
+              className={cn(
+                "flex flex-col items-center justify-center p-4 border rounded hover:bg-muted/50 transition-colors cursor-pointer",
+                isSelected && "border-primary bg-primary/10 ring-2 ring-primary ring-offset-2"
+              )}
             >
               <Icon className="w-8 h-8 mb-2" />
               <span className="text-xs text-center break-all">{name}</span>
-            </div>
+            </button>
           );
         })}
       </div>

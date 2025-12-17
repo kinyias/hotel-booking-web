@@ -33,16 +33,6 @@ export interface HotelsQueryParams {
   q?: string;
   status?: HotelStatus | 'all';
 }
-
-export interface RoomType {
-  type_id: string;
-  hotel_id: string;
-  name: string;
-  price_per_night: number;
-  max_guests: number;
-  description: string;
-}
-
 export interface RoomImage {
   image_id: string;
   room_id: string;

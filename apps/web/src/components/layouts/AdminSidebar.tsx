@@ -46,6 +46,10 @@ export const navItems: NavItem[] = [
     title: 'Hotel',
     href: ROUTES.ADMIN_HOTELS,
     icon: Hotel,
+    submenu: [
+      { title: 'Hotels', href: ROUTES.ADMIN_HOTELS },
+      { title: 'Amenities', href: ROUTES.ADMIN_AMENITIES },
+    ]
   },
   {
     title: 'Boookings',
