@@ -113,6 +113,7 @@ export class HotelService {
             },
           },
         },
+        images: true,
       },
     });
 
@@ -137,7 +138,6 @@ export class HotelService {
     });
   }
 
-  
   async softDeleteHotel(hotelId: string, actorUserId: string) {
     const hotel = await this.prisma.hotel.findFirst({
       where: { id: hotelId, deletedAt: null },

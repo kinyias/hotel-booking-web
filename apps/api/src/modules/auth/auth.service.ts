@@ -33,7 +33,7 @@ export class AuthService {
 
   private async signAccessToken(userId: string, jti: string) {
     const accessTtl = (process.env.JWT_ACCESS_TTL ??
-      '15m') as `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
+      '15d') as `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
 
     return await this.jwt.signAsync(
       { sub: userId, jti },

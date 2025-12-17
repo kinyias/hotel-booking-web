@@ -27,5 +27,7 @@ export class CloudinaryService {
     });
   }
 
-  
+  async deleteFile(publicId: string) {
+    return this.cloudinary.uploader.destroy(publicId);
+  }
 }
