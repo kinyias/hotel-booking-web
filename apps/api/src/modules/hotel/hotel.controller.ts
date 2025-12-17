@@ -30,7 +30,7 @@ export class HotelController {
 
   @Get('/me')
   myHotels(@Req() req: any) {
-    return this.hotelService.getMyHotels(req.user.sub);
+    return this.hotelService.getMyHotels(req.user.id);
   }
 
   @Patch('/:hotelId')
@@ -72,7 +72,7 @@ export class HotelController {
   @Delete('/:hotelId')
   @UseGuards(HotelMemberGuard)
   deleteHotel(@Req() req: any, @Param('hotelId') hotelId: string) {
-    return this.hotelService.softDeleteHotel(hotelId, req.user.sub);
+    return this.hotelService.softDeleteHotel(hotelId, req.user.id);
   }
 
   @Get()
