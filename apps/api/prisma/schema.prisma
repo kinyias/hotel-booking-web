@@ -54,6 +54,7 @@ model Hotel {
   ownerId String
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
+  roomTypes RoomType[]
   members HotelMember[]
   images    HotelImage[]   // ✅ add
 
@@ -214,6 +215,51 @@ model HotelImage {
   url     String
   hotel    Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 }
+
+model RoomType {
+  id              String      @id @default(cuid())
+  hotelId         String
+  name            String
+  price_per_night Decimal  @db.Decimal(12, 2)
+  max_guests      Int
+  description     String?
+
+  hotel           Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  amenities       RoomTypeAmenity[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([hotelId])
+  @@unique([hotelId, name])
+}
+
+model Amenity {
+  id        String   @id @default(cuid())
+  key       String   @unique // vd: "Wifi", "AirVent", "Coffee"
+  label     String   // vd: "Wi-Fi", "Máy lạnh", "Cà phê miễn phí"
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+
+  roomTypes RoomTypeAmenity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RoomTypeAmenity {
+  typeId   String
+  amenityId String
+
+  roomType  RoomType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  amenity   Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([typeId, amenityId])
+  @@index([amenityId])
+}
+
+
 // ==================== ENUM ====================
 enum AuthProvider {
   LOCAL

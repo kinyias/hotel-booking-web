@@ -15,6 +15,8 @@ import { ImageService } from './modules/image/image.service';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { HotelModule } from './modules/hotel/hotel.module';
+import { RoomTypeModule } from './modules/room-type/room-type.module';
+import { AmentityModule } from './modules/amentity/amenity.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { HotelModule } from './modules/hotel/hotel.module';
     ActionsModule,
     CloudinaryModule,
     HotelModule,
+    RoomTypeModule,
+    AmentityModule,
   ],
   controllers: [AppController],
   providers: [
