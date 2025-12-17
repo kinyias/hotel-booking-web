@@ -37,7 +37,8 @@ model User {
   resetTokens   PasswordResetToken[]
   ownedHotels Hotel[]
   hotelMemberships HotelMember[] @relation("UserHotelMemberships")
-
+  galleries ImageGallery[]
+  folderGalleries FolderGallery[]
 }
 
 model Hotel {
@@ -186,7 +187,26 @@ model ImageAsset {
 
   // Liên kết N-N có payload cho Hotel/RoomType/Location qua các bảng nối
 }
+model ImageGallery{
+  id       String @id @default(cuid())
+  publicId String @unique
+  url      String
+  secureUrl String
 
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  folderId String
+  folder        FolderGallery @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model FolderGallery{
+  id       String @id @default(cuid())
+  folderName String @unique
+  userId String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  galleries ImageGallery[]
+}
 model HotelImage {
   id       String @id @default(cuid())
   hotelId  String
