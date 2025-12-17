@@ -10,7 +10,7 @@ export type JwtUser = {
   jti: string;
   hotelMemberships: Array<{
     hotelId: string;
-    role: HotelMemberRole;
+    // role: HotelMemberRole;
   }>;
 };
 
@@ -33,7 +33,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt') {
         hotelMemberships: {
           select: {
             hotelId: true,
-            role: true,
+            // role: true,
           },
         },
       },
