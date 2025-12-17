@@ -14,21 +14,29 @@ export class HotelService {
   constructor(private prisma: PrismaService) {}
 
   async createHotel(userId: string, dto: CreateHotelDto) {
+    const { images, ...hotelData } = dto;
     return this.prisma.hotel.create({
       data: {
-        ...dto,
+        ...hotelData,
         ownerId: userId,
         members: {
           create: {
             userId,
           },
         },
+        images:
+          images && images.length > 0
+            ? {
+                create: images.map((url) => ({ url }) as any),
+              }
+            : undefined,
       },
       include: {
         owner: {
           select: { id: true, email: true, firstName: true, lastName: true },
         },
         members: true,
+        images: true,
       },
     });
   }

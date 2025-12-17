@@ -30,4 +30,8 @@ export class CreateHotelDto {
   @MaxLength(2000)
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   description?: string;
+
+  @IsOptional()
+  @IsString({ each: true })
+  images?: string[];
 }

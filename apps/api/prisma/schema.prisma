@@ -183,7 +183,6 @@ model ImageAsset {
 
   // Liên kết 1-1 cho avatar user (optional)
   userAvatarOf  User[]   @relation("UserAvatar")
-  hotelImages HotelImage[]
 
   // Liên kết N-N có payload cho Hotel/RoomType/Location qua các bảng nối
 }
@@ -210,17 +209,8 @@ model FolderGallery{
 model HotelImage {
   id       String @id @default(cuid())
   hotelId  String
-  imageId  String
-
-  kind     ImageKind @default(GALLERY)
-  position Int       @default(0)
-
+  url     String
   hotel    Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  image    ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
-
-  @@unique([hotelId, imageId])
-  @@index([hotelId, kind])
-  @@index([hotelId, position])
 }
 // ==================== ENUM ====================
 enum AuthProvider {
