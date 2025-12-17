@@ -8,8 +8,16 @@ import {
   IsString,
   Max,
   Min,
+  ValidateNested,
 } from 'class-validator';
+export class RoomTypeImageDto {
+  @IsOptional()
+  @IsString()
+  id?: string;
 
+  @IsString()
+  url!: string;
+}
 export class CreateRoomTypeDto {
   @IsString()
   @IsNotEmpty()
@@ -37,4 +45,9 @@ export class CreateRoomTypeDto {
   @ArrayUnique()
   @IsString({ each: true })
   amenityIds?: string[];
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => RoomTypeImageDto)
+  images?: RoomTypeImageDto[];
 }

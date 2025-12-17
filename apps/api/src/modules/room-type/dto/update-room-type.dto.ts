@@ -7,7 +7,9 @@ import {
   IsString,
   Max,
   Min,
+  ValidateNested,
 } from 'class-validator';
+import { RoomTypeImageDto } from './create-room-type.dto';
 
 export class UpdateRoomTypeDto {
   @IsOptional()
@@ -36,4 +38,9 @@ export class UpdateRoomTypeDto {
   @ArrayUnique()
   @IsString({ each: true })
   amenityIds?: string[];
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => RoomTypeImageDto)
+  images?: RoomTypeImageDto[];
 }

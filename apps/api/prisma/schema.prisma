@@ -227,6 +227,7 @@ model RoomType {
   hotel           Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
   amenities       RoomTypeAmenity[]
+  images RoomTypeImage[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -259,7 +260,12 @@ model RoomTypeAmenity {
   @@index([amenityId])
 }
 
-
+model RoomTypeImage{
+  id String @id @default(cuid())
+  roomTypeId String
+  url String
+  roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+}
 // ==================== ENUM ====================
 enum AuthProvider {
   LOCAL
