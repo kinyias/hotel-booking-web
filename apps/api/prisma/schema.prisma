@@ -55,6 +55,7 @@ model Hotel {
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   roomTypes RoomType[]
+  rooms     Room[] 
   members HotelMember[]
   images    HotelImage[]   // ✅ add
 
@@ -226,9 +227,11 @@ model RoomType {
 
   hotel           Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
+  rooms           Room[] 
   amenities       RoomTypeAmenity[]
   images RoomTypeImage[]
 
+  deletedAt       DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -266,6 +269,29 @@ model RoomTypeImage{
   url String
   roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
 }
+
+model Room {
+  id           String          @id @default(cuid())
+  hotelId      String
+  roomTypeId   String
+
+  code         String          // ví dụ: "101", "A-1203"
+  floor        String?
+  note         String?
+
+  status       RoomStatus      @default(ACTIVE)
+  cleanStatus  RoomCleanStatus @default(CLEAN)
+
+  hotel        Hotel           @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  roomType     RoomType        @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+
+  deletedAt    DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@unique([hotelId, code])
+  @@index([hotelId, roomTypeId])
+}
 // ==================== ENUM ====================
 enum AuthProvider {
   LOCAL
@@ -295,4 +321,16 @@ enum HotelStatus {
   ACTIVE     // đang hoạt động
   SUSPENDED  // bị khoá/tạm dừng
   ARCHIVED   // lưu trữ/ngừng kinh doanh
+}
+
+enum RoomStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum RoomCleanStatus {
+  CLEAN
+  DIRTY
+  INSPECT
 }

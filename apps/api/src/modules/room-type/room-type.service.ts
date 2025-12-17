@@ -44,57 +44,72 @@ export class RoomTypeService {
     }
   }
 
+  private async assertRoomTypeNameUnique(
+    hotelId: string,
+    name: string,
+    excludeId?: string,
+  ) {
+    const dup = await this.prisma.roomType.findFirst({
+      where: {
+        hotelId,
+        deletedAt: null,
+        name: { equals: name, mode: Prisma.QueryMode.insensitive },
+        ...(excludeId ? { NOT: { id: excludeId } } : {}),
+      },
+      select: { id: true },
+    });
+
+    if (dup) {
+      throw new BadRequestException(
+        'Room type name already exists in this hotel',
+      );
+    }
+  }
+
   async create(hotelId: string, userId: string, dto: CreateRoomTypeDto) {
     await this.assertHotelAccess(hotelId, userId);
 
     const amenityIds = dto.amenityIds ?? [];
     await this.assertAmenityIdsValid(amenityIds);
 
-    try {
-      const roomType = await this.prisma.$transaction(async (tx) => {
-        const created = await tx.roomType.create({
-          data: {
-            hotelId,
-            name: dto.name.trim(),
-            price_per_night: new Prisma.Decimal(dto.price_per_night),
-            max_guests: dto.max_guests,
-            description: dto.description?.trim() || null,
-            images: {
-              create: dto.images?.map((img) => ({ url: img.url })) || [],
-            },
-          },
-          select: { id: true },
-        });
+    const name = dto.name.trim();
+    await this.assertRoomTypeNameUnique(hotelId, name);
 
-        if (amenityIds.length) {
-          await tx.roomTypeAmenity.createMany({
-            data: amenityIds.map((amenityId) => ({
-              typeId: created.id,
-              amenityId,
-            })),
-            skipDuplicates: true,
-          });
-        }
-
-        return tx.roomType.findUnique({
-          where: { id: created.id },
-          include: { 
-            amenities: { include: { amenity: true } },
-            images: true,
+    const roomType = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.roomType.create({
+        data: {
+          hotelId,
+          name,
+          price_per_night: new Prisma.Decimal(dto.price_per_night),
+          max_guests: dto.max_guests,
+          description: dto.description?.trim() || null,
+          images: {
+            create: dto.images?.map((img) => ({ url: img.url })) || [],
           },
-        });
+        },
+        select: { id: true },
       });
 
-      return roomType;
-    } catch (e: any) {
-      // unique [hotelId, name]
-      if (e?.code === 'P2002') {
-        throw new BadRequestException(
-          'Room type name already exists in this hotel',
-        );
+      if (amenityIds.length) {
+        await tx.roomTypeAmenity.createMany({
+          data: amenityIds.map((amenityId) => ({
+            typeId: created.id,
+            amenityId,
+          })),
+          skipDuplicates: true,
+        });
       }
-      throw e;
-    }
+
+      return tx.roomType.findUnique({
+        where: { id: created.id },
+        include: {
+          amenities: { include: { amenity: true } },
+          images: true,
+        },
+      });
+    });
+
+    return roomType;
   }
 
   async list(hotelId: string, userId: string, q: ListRoomTypeDto) {
@@ -105,6 +120,7 @@ export class RoomTypeService {
 
     const where: Prisma.RoomTypeWhereInput = {
       hotelId,
+      deletedAt: null,
       ...(q.q
         ? {
             OR: [
@@ -127,9 +143,7 @@ export class RoomTypeService {
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
-          amenities: {
-            include: { amenity: true },
-          },
+          amenities: { include: { amenity: true } },
           images: true,
         },
       }),
@@ -150,12 +164,13 @@ export class RoomTypeService {
     await this.assertHotelAccess(hotelId, userId);
 
     const roomType = await this.prisma.roomType.findFirst({
-      where: { id, hotelId },
-      include: { 
+      where: { id, hotelId, deletedAt: null },
+      include: {
         amenities: { include: { amenity: true } },
         images: true,
       },
     });
+
     if (!roomType) throw new NotFoundException('Room type not found');
     return roomType;
   }
@@ -169,7 +184,7 @@ export class RoomTypeService {
     await this.assertHotelAccess(hotelId, userId);
 
     const existing = await this.prisma.roomType.findFirst({
-      where: { id, hotelId },
+      where: { id, hotelId, deletedAt: null },
       select: { id: true },
     });
     if (!existing) throw new NotFoundException('Room type not found');
@@ -177,44 +192,59 @@ export class RoomTypeService {
     const { images, ...otherData } = dto;
     let imageOps: any = undefined;
 
+    if (otherData.name !== undefined) {
+      const name = otherData.name.trim();
+      await this.assertRoomTypeNameUnique(hotelId, name, id);
+    }
+
     if (images) {
       const current = await this.prisma.roomType.findUnique({
         where: { id },
         include: { images: true },
       });
-      
-      if (current) {
-         const currentImageIds = current.images.map((img) => img.id);
-         const imagesToUpdate = images.filter((img) => img.id && currentImageIds.includes(img.id));
-         const imagesToCreate = images.filter((img) => !img.id || (img.id && !currentImageIds.includes(img.id)));
-         const validUpdateIds = new Set(imagesToUpdate.map(img => img.id));
-         const imagesToDeleteIds = currentImageIds.filter(id => !validUpdateIds.has(id));
 
-         imageOps = {
-           deleteMany: { id: { in: imagesToDeleteIds } },
-           update: imagesToUpdate.map((img) => ({
-             where: { id: img.id },
-             data: { url: img.url },
-           })),
-           create: imagesToCreate.map((img) => ({ url: img.url })),
-         };
+      if (current) {
+        const currentImageIds = current.images.map((img) => img.id);
+        const imagesToUpdate = images.filter(
+          (img) => img.id && currentImageIds.includes(img.id),
+        );
+        const imagesToCreate = images.filter(
+          (img) => !img.id || (img.id && !currentImageIds.includes(img.id)),
+        );
+        const validUpdateIds = new Set(imagesToUpdate.map((img) => img.id));
+        const imagesToDeleteIds = currentImageIds.filter(
+          (imgId) => !validUpdateIds.has(imgId),
+        );
+
+        imageOps = {
+          deleteMany: { id: { in: imagesToDeleteIds } },
+          update: imagesToUpdate.map((img) => ({
+            where: { id: img.id },
+            data: { url: img.url },
+          })),
+          create: imagesToCreate.map((img) => ({ url: img.url })),
+        };
       }
     }
 
     return await this.prisma.roomType.update({
       where: { id },
       data: {
-        ...(otherData.name !== undefined ? { name: otherData.name.trim() } : {}),
+        ...(otherData.name !== undefined
+          ? { name: otherData.name.trim() }
+          : {}),
         ...(otherData.price_per_night !== undefined
           ? { price_per_night: new Prisma.Decimal(otherData.price_per_night) }
           : {}),
-        ...(otherData.max_guests !== undefined ? { max_guests: otherData.max_guests } : {}),
+        ...(otherData.max_guests !== undefined
+          ? { max_guests: otherData.max_guests }
+          : {}),
         ...(otherData.description !== undefined
           ? { description: otherData.description?.trim() || null }
           : {}),
         ...(imageOps ? { images: imageOps } : {}),
       },
-      include: { 
+      include: {
         amenities: { include: { amenity: true } },
         images: true,
       },
@@ -225,13 +255,19 @@ export class RoomTypeService {
     await this.assertHotelAccess(hotelId, userId);
 
     const existing = await this.prisma.roomType.findFirst({
-      where: { id, hotelId },
+      where: { id, hotelId, deletedAt: null },
       select: { id: true },
     });
     if (!existing) throw new NotFoundException('Room type not found');
 
-    // onDelete: Cascade sẽ tự xoá RoomTypeAmenity
-    await this.prisma.roomType.delete({ where: { id } });
+    // Soft delete: không xoá DB
+    await this.prisma.roomType.update({
+      where: { id },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+
     return { deleted: true };
   }
 }

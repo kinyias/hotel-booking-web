@@ -18,8 +18,6 @@ import { Permissions } from '../auth/decorator/permissions.decorator';
 
 @Controller('actions')
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
-@Roles('ADMIN')
-@Permissions('MANAGE_USER') // hoặc MANAGE_POLICY tùy bạn đặt
 export class ActionsController {
   constructor(private readonly service: ActionsService) {}
 

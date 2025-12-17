@@ -18,30 +18,31 @@ import { plainToInstance } from 'class-transformer';
 import { PublicUserDto } from '../users/dto/public-user.dto';
 import { UpdateMeDto } from '../users/dto/update-me.dto';
 
+// ✅ add
+import { Action } from '../auth/decorator/action.decorator';
+import { ActionGuard } from 'src/modules/auth/guards/action.guard';
+
 @Controller('users')
-@UseGuards(JwtAuthGuard)
+// ✅ gọn: dùng chung cho cả controller
+@UseGuards(JwtAuthGuard, ActionGuard)
 export class UsersController {
   constructor(private users: UsersService) {}
 
+  @Action('users.me.changePassword')
   @Post('me/change-password')
-  async changePassword(
-    @Req() req: any,
-    @Body()
-    body: ChangePasswordDto,
-  ) {
+  async changePassword(@Req() req: any, @Body() body: ChangePasswordDto) {
     await this.users.changePassword(req.user.id, body);
     return { ok: true };
   }
 
+  @Action('users.me.read')
   @Get('me')
   async me(@Req() req: Request) {
     const user = req.user as any;
-    const userInfo = await this.users.me(user.id);
-    return {
-      data: userInfo,
-    };
+    return { data: await this.users.me(user.id) };
   }
 
+  @Action('users.me.update')
   @Patch('me')
   async updateMe(@Req() req: Request, @Body() dto: UpdateMeDto) {
     const user = req.user as any;
@@ -52,7 +53,7 @@ export class UsersController {
     });
   }
 
-  // ====== PUBLIC PROFILE ======
+  @Action('users.profile.read')
   @Get(':id')
   async getById(@Req() req: Request, @Param('id') id: string) {
     const requesterId = (req.user as any).id;
@@ -64,7 +65,7 @@ export class UsersController {
     });
   }
 
-  // ====== LIST (ADMIN/MANAGER) ======
+  @Action('users.list')
   @Get()
   async list(@Query() query: ListUsersQuery) {
     const { items, meta } = await this.users.listUsers(query);

@@ -17,6 +17,9 @@ import { APP_GUARD } from '@nestjs/core';
 import { HotelModule } from './modules/hotel/hotel.module';
 import { RoomTypeModule } from './modules/room-type/room-type.module';
 import { AmentityModule } from './modules/amentity/amenity.module';
+import { RooomController } from './modules/rooom/rooom.controller';
+import { RoomController } from './modules/room/room.controller';
+import { RoomModule } from './modules/room/room.module';
 
 @Module({
   imports: [
@@ -42,8 +45,9 @@ import { AmentityModule } from './modules/amentity/amenity.module';
     HotelModule,
     RoomTypeModule,
     AmentityModule,
+    RoomModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, RooomController, RoomController],
   providers: [
     AppService,
     PrismaService,
