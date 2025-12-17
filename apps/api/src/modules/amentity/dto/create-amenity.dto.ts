@@ -17,10 +17,6 @@ export class CreateAmenityDto {
   @IsNotEmpty()
   label!: string; // Wi-Fi
 
-  @IsString()
-  @IsNotEmpty()
-  iconKey!: string; // Wifi (lucide-react)
-
   @IsOptional()
   @Type(() => Number)
   @IsInt()

@@ -11,10 +11,6 @@ export class UpdateAmenityDto {
   label?: string;
 
   @IsOptional()
-  @IsString()
-  iconKey?: string;
-
-  @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(0)

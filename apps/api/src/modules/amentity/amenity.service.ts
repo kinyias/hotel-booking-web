@@ -14,7 +14,7 @@ export class AmenityService {
     try {
       return await this.prisma.amenity.create({
         data: {
-          key: dto.key.trim().toUpperCase(),
+          key: dto.key.trim(),
           label: dto.label.trim(),
           sortOrder: dto.sortOrder ?? 0,
           isActive: dto.isActive ?? true,
@@ -76,10 +76,9 @@ export class AmenityService {
         where: { id },
         data: {
           ...(dto.key !== undefined
-            ? { key: dto.key.trim().toUpperCase() }
+            ? { key: dto.key.trim() }
             : {}),
           ...(dto.label !== undefined ? { label: dto.label.trim() } : {}),
-          ...(dto.iconKey !== undefined ? { iconKey: dto.iconKey.trim() } : {}),
           ...(dto.sortOrder !== undefined ? { sortOrder: dto.sortOrder } : {}),
           ...(dto.isActive !== undefined ? { isActive: dto.isActive } : {}),
         },
