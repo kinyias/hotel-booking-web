@@ -8,15 +8,19 @@ import { HotelForm } from '@/features/hotels/components/HotelForm';
 import { RoomTypeTable } from '@/features/hotels/components/RoomTypeTable';
 import { HotelFormValues } from '@/features/hotels/validator';
 import { useHotelDetailQuery } from '@/features/hotels/queries';
+import { useCreateHotelMutation, useUpdateHotelMutation } from '@/features/hotels/mutations';
 import Link from 'next/link';
 
 export default function HotelEditPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
-  const isEditing = id && id !== 'new';
-
-  const { data: hotel, isLoading, isError } = useHotelDetailQuery(id);
+  const isEditing = !!id && id !== 'new';
+  const { data: hotel, isLoading, isError } = useHotelDetailQuery(id, isEditing);
+  
+  const createMutation = useCreateHotelMutation();
+  const updateMutation = useUpdateHotelMutation(id);
+  const isSaving = createMutation.isPending || updateMutation.isPending;
 
   if (isLoading && isEditing) {
      return <div className="p-6">Loading...</div>;
@@ -44,15 +48,23 @@ export default function HotelEditPage() {
         city: hotel.city,
         country: hotel.country,
         status: hotel.status,
+        images: (hotel.images ?? []).map((img: any) => ({
+          id: img.id ?? img.image_id ?? undefined,
+          url: img.url,
+        })),
       }
     : undefined;
 
   const handleSubmit = async (data: HotelFormValues) => {
-    // Simulate API call
-    console.log('Submitting hotel data:', data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    // Redirect back to list
+    const payload = {
+      ...data,
+      images: (data.images ?? []).map((x) => ({ id: x.id, url: x.url })),
+    };
+    if (isEditing) {
+      await updateMutation.mutateAsync(payload);
+    } else {
+      await createMutation.mutateAsync(payload);
+    }
     router.push('/admin/hotels');
   };
 
@@ -78,7 +90,7 @@ export default function HotelEditPage() {
         <HotelForm 
             initialData={initialData} 
             onSubmit={handleSubmit} 
-            isLoading={false} // Add proper loading state for Mutation later
+            isLoading={isSaving}
         />
       </div>
 

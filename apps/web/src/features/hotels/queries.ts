@@ -9,9 +9,10 @@ export const useHotelsQuery = (params?: HotelsQueryParams) => {
   });
 };
 
-export const useHotelDetailQuery = (hotelId: string) => {
+export const useHotelDetailQuery = (hotelId: string, enabled: boolean = true) => {
   return useQuery({
     queryKey: ['hotel', hotelId],
     queryFn: () => getHotelById(hotelId),
+    enabled,
   });
 };

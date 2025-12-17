@@ -22,5 +22,9 @@ export const API_ENDPOINTS = {
   },
   HOTEL: {
     HOTELS: "/hotels"
+  },
+  GALLERY: {
+    FOLDERS: "/upload/db-folders",
+    CREATE_FOLDER: "/upload/create-folder",
   }
 };
