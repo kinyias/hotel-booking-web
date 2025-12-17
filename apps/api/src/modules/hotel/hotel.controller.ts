@@ -11,12 +11,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { RequireHotelRoles } from 'src/modules/hotel/decorator/hotel-role.decorator';
 import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
 import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
 import { ListHotelsQueryDto } from 'src/modules/hotel/dto/list-hotels.query';
 import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
-import { HotelContextGuard } from 'src/modules/hotel/guards/hotel-context.guard';
 import { HotelMemberGuard } from 'src/modules/hotel/guards/hotel-member.guard';
 import { HotelService } from 'src/modules/hotel/hotel.service';
 
@@ -37,21 +35,18 @@ export class HotelController {
 
   @Patch('/:hotelId')
   @UseGuards(HotelMemberGuard)
-  @RequireHotelRoles('OWNER', 'MANAGER')
   update(@Param('hotelId') hotelId: string, @Body() dto: UpdateHotelDto) {
     return this.hotelService.updateHotel(hotelId, dto);
   }
 
   @Post('/:hotelId/members')
   @UseGuards(HotelMemberGuard)
-  @RequireHotelRoles('OWNER', 'MANAGER')
   addMember(@Param('hotelId') hotelId: string, @Body() dto: AddMemberDto) {
     return this.hotelService.addMember(hotelId, dto);
   }
 
   @Delete('/:hotelId/members/:userId')
   @UseGuards(HotelMemberGuard)
-  @RequireHotelRoles('OWNER', 'MANAGER')
   removeMember(
     @Param('hotelId') hotelId: string,
     @Param('userId') userId: string,
@@ -68,7 +63,6 @@ export class HotelController {
   // ✅ members list
   @Get('/:hotelId/members')
   @UseGuards(HotelMemberGuard)
-  @RequireHotelRoles('OWNER', 'MANAGER')
   listMembers(@Param('hotelId') hotelId: string) {
     return this.hotelService.listMembers(hotelId);
   }
@@ -77,7 +71,6 @@ export class HotelController {
   // ✅ soft delete hotel
   @Delete('/:hotelId')
   @UseGuards(HotelMemberGuard)
-  @RequireHotelRoles('OWNER') // chỉ owner
   deleteHotel(@Req() req: any, @Param('hotelId') hotelId: string) {
     return this.hotelService.softDeleteHotel(hotelId, req.user.sub);
   }

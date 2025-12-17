@@ -49,6 +49,8 @@ model Hotel {
   country String?
   description String?
 
+  status      HotelStatus @default(DRAFT)
+   
   ownerId String
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
@@ -234,4 +236,11 @@ enum HotelMemberRole {
   OWNER
   MANAGER
   STAFF
+}
+
+enum HotelStatus {
+  DRAFT      // mới tạo, chưa public/hoạt động
+  ACTIVE     // đang hoạt động
+  SUSPENDED  // bị khoá/tạm dừng
+  ARCHIVED   // lưu trữ/ngừng kinh doanh
 }
