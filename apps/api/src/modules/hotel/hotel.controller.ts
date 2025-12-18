@@ -23,7 +23,11 @@ import { HotelService } from 'src/modules/hotel/hotel.service';
 @Controller('hotels')
 export class HotelController {
   constructor(private hotelService: HotelService) {}
-
+  @Public()
+  @Get('/public')
+  listPublicHotels(@Query() query: ListHotelsQueryDto) {
+    return this.hotelService.listPublicHotels(query);
+  }
   @Post()
   create(@Req() req: any, @Body() dto: CreateHotelDto) {
     return this.hotelService.createHotel(req.user.id, dto);
@@ -54,7 +58,7 @@ export class HotelController {
   ) {
     return this.hotelService.removeMember(hotelId, userId);
   }
-
+  @Public()
   @Get('/:hotelId')
   // @UseGuards(HotelMemberGuard) // chỉ member mới xem detail
   getDetail(@Param('hotelId') hotelId: string) {

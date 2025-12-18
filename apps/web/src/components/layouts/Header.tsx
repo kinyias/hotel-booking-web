@@ -24,19 +24,19 @@ const navigationItems = [
   },
   {
     name: 'HOTELS',
-    href: '/',
+    href: '/hotels',
     hasDropdown: false,
     subcategories: [],
   },
   {
     name: 'CONTACT',
-    href: '/',
+    href: '/contact',
     hasDropdown: false,
     subcategories: [],
   },
   {
     name: 'NEWS',
-    href: '/tin-tuc',
+    href: '/news',
     hasDropdown: false,
     subcategories: [],
   },

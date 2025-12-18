@@ -17,4 +17,5 @@ export const ROUTES = {
   ADMIN_PROMOTIONS: '/admin/promotions',
   ADMIN_PROMOTION_TYPES: '/admin/promotions/types',
   ADMIN_AMENITIES: '/admin/amenities',
+  ADMIN_INVENTORY: '/admin/inventory',
 };

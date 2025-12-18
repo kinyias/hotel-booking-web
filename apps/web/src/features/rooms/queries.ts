@@ -12,7 +12,7 @@ export const useQueryRooms = (hotelId: string, params?: RoomQueryParams, enabled
 
 export const useQueryRoomById = (hotelId: string, roomId: string, enabled: boolean = true) => {
     return useQuery({
-        queryKey: ['room', roomId],
+        queryKey: ['room', hotelId, roomId],
         queryFn: () => getRoomById(hotelId, roomId),
         enabled,
     });

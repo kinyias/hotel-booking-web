@@ -38,7 +38,7 @@ export default function AmenitiesPage() {
     return <div className="p-6 text-red-500">Failed to load amenities.</div>;
 
   return (
-    <div className="container mx-auto py-6 space-y-4">
+    <div className="container mx-auto py-6 space-y-4" style={{display: 'block'}}>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Amenities</h1>
         <div className="flex items-center gap-2">
