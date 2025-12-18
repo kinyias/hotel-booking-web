@@ -11,7 +11,6 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { signParams, sortObject } from 'src/modules/payment/payment.util';
 
 function formatVnpDate(d: Date) {
-  // YYYYMMDDHHmmss theo mẫu VNPAY :contentReference[oaicite:2]{index=2}
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
 }

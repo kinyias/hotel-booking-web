@@ -23,15 +23,18 @@ function eachDate(from: Date, to: Date) {
 function eachDateFixed(from: Date, to: Date) {
   const dates: Date[] = [];
   const d = new Date(from);
-  d.setHours(0, 0, 0, 0);
+  d.setUTCHours(0, 0, 0, 0);
+
   const end = new Date(to);
-  end.setHours(0, 0, 0, 0);
+  end.setUTCHours(0, 0, 0, 0);
+
   while (d < end) {
     dates.push(new Date(d));
-    d.setDate(d.getDate() + 1);
+    d.setUTCDate(d.getUTCDate() + 1);
   }
   return dates;
 }
+
 
 function toDateOnly(d: string) {
   // YYYY-MM-DD -> Date (UTC midnight)
@@ -43,6 +46,7 @@ export class BookingService {
   constructor(private prisma: PrismaService) {}
 
   async create(hotelId: string, userId: string | null, dto: CreateBookingDto) {
+    console.log(dto);
     const checkIn = toDateOnly(dto.checkIn);
     const checkOut = toDateOnly(dto.checkOut);
 
