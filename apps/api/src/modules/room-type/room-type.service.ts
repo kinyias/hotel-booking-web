@@ -189,14 +189,15 @@ export class RoomTypeService {
     });
     if (!existing) throw new NotFoundException('Room type not found');
 
-    const { images, ...otherData } = dto;
+    const { images, amenityIds, ...otherData } = dto;
     let imageOps: any = undefined;
+    let amenityOps: any = undefined;
 
     if (otherData.name !== undefined) {
       const name = otherData.name.trim();
       await this.assertRoomTypeNameUnique(hotelId, name, id);
     }
-
+    // HANDLE IMAGES (diff update)
     if (images) {
       const current = await this.prisma.roomType.findUnique({
         where: { id },
@@ -226,7 +227,35 @@ export class RoomTypeService {
         };
       }
     }
+    //  HANDLE AMENITIES (diff update)
+    if(amenityIds){
+      const current = await this.prisma.roomType.findUnique({
+      where: { id },
+      include: { amenities: { include: { amenity: true } } },
+    });
+    if (current) {
+      const currentAmenityIds = current.amenities.map(
+        a => a.amenityId,
+      );
 
+      const toCreate = amenityIds.filter(
+        aid => !currentAmenityIds.includes(aid),
+      );
+
+      const toDelete = currentAmenityIds.filter(
+        aid => !amenityIds.includes(aid),
+      );
+
+      amenityOps = {
+        deleteMany: {
+          amenityId: { in: toDelete },
+        },
+        create: toCreate.map(amenityId => ({
+          amenityId,
+        })),
+      };
+    }
+    }
     return await this.prisma.roomType.update({
       where: { id },
       data: {
@@ -243,6 +272,7 @@ export class RoomTypeService {
           ? { description: otherData.description?.trim() || null }
           : {}),
         ...(imageOps ? { images: imageOps } : {}),
+        ...(amenityOps ? { amenities: amenityOps } : {}),
       },
       include: {
         amenities: { include: { amenity: true } },

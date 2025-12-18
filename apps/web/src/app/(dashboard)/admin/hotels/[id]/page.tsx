@@ -8,6 +8,7 @@ import { HotelForm } from '@/features/hotels/components/HotelForm';
 import { RoomTypeTable } from '@/features/room-types/components/RoomTypeTable';
 import { HotelFormValues } from '@/features/hotels/validator';
 import { useHotelDetailQuery } from '@/features/hotels/queries';
+import { useQueryRoomTypes } from '@/features/room-types/queries';
 import { useCreateHotelMutation, useUpdateHotelMutation } from '@/features/hotels/mutations';
 import Link from 'next/link';
 
@@ -17,6 +18,9 @@ export default function HotelEditPage() {
   const id = params.id as string;
   const isEditing = !!id && id !== 'new';
   const { data: hotel, isLoading, isError } = useHotelDetailQuery(id, isEditing);
+  // Fetch room types
+  const { data: roomTypesData } = useQueryRoomTypes(id, isEditing);
+  const roomTypes = roomTypesData?.data ?? [];
   
   const createMutation = useCreateHotelMutation();
   const updateMutation = useUpdateHotelMutation(id);
@@ -37,8 +41,6 @@ export default function HotelEditPage() {
     );
   }
   
-  // Note: Room types are not yet fetched from API.
-  const roomTypes: any[] = [];
 
   const initialData: HotelFormValues | undefined = hotel
     ? {
@@ -106,7 +108,7 @@ export default function HotelEditPage() {
                 </Button>
                 </Link>
             </div>
-            <RoomTypeTable roomTypes={roomTypes} />
+            <RoomTypeTable roomTypes={roomTypes} hotelId={id} />
           </div>
       )}
     </div>

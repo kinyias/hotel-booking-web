@@ -26,6 +26,9 @@ export const API_ENDPOINTS = {
   AMENITIES: {
     AMENITIES: "/amenities",
   },
+  ROOM_TYPES: {
+    ROOM_TYPES: "/room-types",
+  },
   GALLERY: {
     FOLDERS: "/upload/db-folders",
     CREATE_FOLDER: "/upload/create-folder",

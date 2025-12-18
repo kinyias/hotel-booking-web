@@ -7,87 +7,68 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { RoomTypeForm } from '@/features/room-types/components/RoomTypeForm';
 import { RoomTable } from '@/features/hotels/components/RoomTable';
-import { RoomTypeFormValues } from '@/features/room-types';
-import { Room } from '@/features/hotels/types';
-import { RoomType } from '@/features/room-types';
-// Mock Data
-const MOCK_ROOM_TYPES: RoomType[] = [
-  {
-    type_id: 'rt1',
-    hotel_id: '1',
-    name: 'Standard Room',
-    price_per_night: 100,
-    max_guests: 2,
-    description: 'A cozy standard room with all basic amenities.',
-  },
-  {
-    type_id: 'rt2',
-    hotel_id: '1',
-    name: 'Deluxe Suite',
-    price_per_night: 250,
-    max_guests: 4,
-    description: 'Spacious suite with a view and extra amenities.',
-  },
-];
-
-const MOCK_ROOMS: Room[] = [
-  {
-    room_id: 'r1',
-    type_id: 'rt1',
-    room_number: '101',
-    floor: 1,
-    status: 'AVAILABLE',
-    images: [],
-  },
-  {
-    room_id: 'r2',
-    type_id: 'rt1',
-    room_number: '102',
-    floor: 1,
-    status: 'BOOKED',
-    images: [],
-  },
-  {
-    room_id: 'r3',
-    type_id: 'rt2',
-    room_number: '201',
-    floor: 2,
-    status: 'AVAILABLE',
-    images: [],
-  },
-  {
-    room_id: 'r4',
-    type_id: 'rt1',
-    room_number: '103',
-    floor: 1,
-    status: 'MAINTENANCE',
-    images: [],
-  },
-];
+import { 
+  RoomTypeFormValues, 
+  useCreateRoomTypeMutation, 
+  useUpdateRoomTypeMutation, 
+  useQueryRoomTypeById 
+} from '@/features/room-types';
+import toast from 'react-hot-toast';
+import { formatNumber } from '@/utils/currency';
 
 export default function RoomTypePage() {
   const params = useParams();
   const router = useRouter();
   
-  const hotelId = params.id;
-  const roomTypeId = params.type_id;
+  const hotelId = params.id as string;
+  const roomTypeId = params.type_id as string;
   
-  const isEditing = roomTypeId && roomTypeId !== 'new';
+  const isEditing = !!roomTypeId && roomTypeId !== 'new';
 
-  // Find data
-  const roomType = isEditing ? MOCK_ROOM_TYPES.find(rt => rt.type_id === roomTypeId) : undefined;
-  const rooms = isEditing ? MOCK_ROOMS.filter(r => r.type_id === roomTypeId) : [];
+  // Use enabled: isEditing to avoid fetching when creating
+  const { data: roomType, isLoading: isFetching } = useQueryRoomTypeById(hotelId, roomTypeId, isEditing);
+  
+  const createMutation = useCreateRoomTypeMutation(hotelId);
+  const updateMutation = useUpdateRoomTypeMutation(hotelId, roomTypeId);
+  
+  const isSaving = createMutation.isPending || updateMutation.isPending;
+
+  const initialData: RoomTypeFormValues | undefined = roomType ? {
+    name: roomType.name,
+    price_per_night: roomType.price_per_night.toString(),
+    max_guests: roomType.max_guests,
+    description: roomType.description,
+    amenityIds: roomType.amenities.map((a) => a.amenity.id),
+    images: roomType.images.map(img => ({ id: img.image_id, url: img.url }))
+  } : undefined;
+  // Placeholder for when we have an endpoint to fetch rooms for a specific room type
+  const rooms: any[] = []; 
 
   const handleFormSubmit = async (data: RoomTypeFormValues) => {
-    console.log('Submitting room type data:', data);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    // In a real app, we would redirect or toast success
-    router.push(`/admin/hotels/${hotelId}`); // Go back to hotel details
+    try {
+      if (isEditing) {
+        await updateMutation.mutateAsync(data);
+        toast.success("Room Type updated successfully");
+      } else {
+        await createMutation.mutateAsync(data);
+        toast.success("Room Type created successfully");
+      }
+      router.push(`/admin/hotels/${hotelId}`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save room type. Please try again.");
+    }
   };
 
-  if (isEditing && !roomType) {
+  if (isEditing && isFetching) {
+    return (
+        <div className="flex h-[50vh] items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+    );
+  }
+
+  if (isEditing && !roomType && !isFetching) { 
     return (
       <div className="p-6">
         <div className="flex items-center gap-4 mb-6">
@@ -112,7 +93,9 @@ export default function RoomTypePage() {
              </Button>
           </div>
           <div className="flex items-center justify-between">
-          
+              <h1 className="text-3xl font-bold tracking-tight">
+                  {isEditing ? `Edit ${roomType?.name}` : 'Create New Room Type'}
+              </h1>
           </div>
        </div>
 
@@ -120,8 +103,9 @@ export default function RoomTypePage() {
        <div className="bg-card border border-border rounded-lg p-6">
           <h2 className="text-lg font-semibold mb-4">Room Type Details</h2>
           <RoomTypeForm 
-            initialData={roomType} 
+            initialData={initialData} 
             onSubmit={handleFormSubmit}
+            isLoading={isSaving}
           />
        </div>
 
@@ -137,7 +121,7 @@ export default function RoomTypePage() {
                        </Button>
                    </Link>
                </div>
-               <RoomTable rooms={rooms} hotelId={hotelId as string} roomTypeId={roomTypeId as string} />
+               <RoomTable rooms={rooms} hotelId={hotelId} roomTypeId={roomTypeId} />
            </div>
        )}
     </div>

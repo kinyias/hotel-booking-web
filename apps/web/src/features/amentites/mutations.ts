@@ -13,7 +13,7 @@ export const useCreateAmenityMutation = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['amenities'] });
             toast.success("Amenity created successfully");
-            router.push("/admin/amentites");
+            router.push("/admin/amenities");
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.message || "Failed to create amenity");
@@ -31,7 +31,7 @@ export const useUpdateAmenityMutation = (id: string) => {
             queryClient.invalidateQueries({ queryKey: ['amenities'] });
             queryClient.invalidateQueries({ queryKey: ['amenity', id] });
             toast.success("Amenity updated successfully");
-            router.push("/admin/amentites");
+            router.push("/admin/amenities");
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.message || "Failed to update amenity");

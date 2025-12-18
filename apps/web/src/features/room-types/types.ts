@@ -1,3 +1,5 @@
+import { Amenity } from "../amentites";
+
 export interface RoomImage {
   image_id: string;
   roomtype_id: string;
@@ -10,6 +12,10 @@ export interface RoomType {
   price_per_night: number;
   max_guests: number;
   description: string;
-  amenities: string[];
+  amenities: {
+    amenity: Amenity;
+    amenityId: string;
+    typeId: string;
+  }[];
   images: RoomImage[];
 }
