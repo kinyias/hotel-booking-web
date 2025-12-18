@@ -8,6 +8,7 @@ export interface Amenity {
   updatedAt: Date;
 }
 export interface AmenitiesQueryParams {
+  page?:number;
   limit?: number;
   offset?: number;
   q?: string;
