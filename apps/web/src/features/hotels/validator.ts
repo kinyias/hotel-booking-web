@@ -21,18 +21,3 @@ export type HotelFormValues = z.infer<typeof hotelFormSchema>;
 
 
 
-export const roomFormSchema = z.object({
-  room_number: z.string().min(1, 'Room number is required'),
-  floor: z.number().int().min(0, 'Floor must be a positive integer'),
-  status: z.enum(['AVAILABLE', 'BOOKED', 'MAINTENANCE']),
-  // Simple validation for list of image URLs for this demo
-  images: z
-    .array(
-      z.object({
-        url: z.string().url('Must be a valid URL'),
-      })
-    )
-    .optional(),
-});
-
-export type RoomFormValues = z.infer<typeof roomFormSchema>;
