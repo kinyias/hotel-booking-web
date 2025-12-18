@@ -1,71 +1,62 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import { format, differenceInDays, addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { 
-  Star, 
   MapPin, 
-  Wifi, 
-  Car, 
-  Utensils, 
-  Check, 
   User,
   Calendar as CalendarIcon,
-  Info
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import PageTitle from "@/components/sections/PageTitle";
-import { Hotel, RoomType } from "@/features/hotels/types";
+import { BookingTable } from "@/features/bookings/components/BookingTable";
 import { cn } from "@/lib/utils";
-
-// --- Mock Data ---
-
-const MOCK_HOTEL: Hotel = {
-  hotel_id: 'h1',
-  owner_id: 'o1',
-  name: 'Grand Luxury Hotel',
-  address: '123 Main St, New York, NY',
-  description: 'Experience world-class service and luxury at Grand Luxury Hotel. Located in the heart of the city, we offer breath-taking views, exquisite dining, and a spa that rejuvenates your soul. Perfect for business and leisure travelers alike.',
-  star: 5,
-  phone: '+1 234 567 890',
-  status: 'ACTIVE',
-  images: [
-    { image_id: 'i1', hotel_id: 'h1', url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' },
-    { image_id: 'i2', hotel_id: 'h1', url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' },
-  ]
+import { useHotelDetailQuery } from "@/features/hotels/queries";
+import { useQueryRoomTypes } from "@/features/room-types/queries";
+import { formatCurrency } from "@/utils/currency";
+import { HotelGallery } from "@/features/hotels/components/HotelGallery";
+export type GalleryImage = {
+  id: string;
+  url: string;
+  source: 'hotel' | 'roomtype';
+  roomTypeId?: string;
+  roomTypeName?: string;
 };
-
-const MOCK_ROOM_TYPES: RoomType[] = [
-  { type_id: 'rt1', hotel_id: 'h1', name: 'Standard Room', price_per_night: 3000000, max_guests: 2, description: 'Cozy and comfortable room with all basic amenities.' },
-  { type_id: 'rt2', hotel_id: 'h1', name: 'Deluxe Room', price_per_night: 4500000, max_guests: 2, description: 'Spacious room with a beautiful city view and premium bedding.' },
-  { type_id: 'rt3', hotel_id: 'h1', name: 'Executive Suite', price_per_night: 7500000, max_guests: 3, description: 'Luxury suite with a separate living area and executive lounge access.' },
-  { type_id: 'rt4', hotel_id: 'h1', name: 'Family Suite', price_per_night: 9000000, max_guests: 4, description: 'Perfect for families, featuring two bedrooms and a kitchenette.' },
-];
-
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-};
-
 export default function HotelDetailPage() {
   const params = useParams();
-  
+  const hotelId = params.hotel_id as string;
   const router = useRouter();
   
+  // Data Fetching
+  const { data: hotel, isLoading: isLoadingHotel } = useHotelDetailQuery(hotelId);
+  const { data: roomTypesResponse, isLoading: isLoadingRooms } = useQueryRoomTypes(hotelId);
+  const roomTypes = roomTypesResponse?.data || [];
+  const galleryImages: GalleryImage[] = [
+  // Hotel images
+  ...(hotel?.images ?? []).map(img => ({
+    id: img.image_id,
+    url: img.url,
+    source: 'hotel' as const,
+  })),
+
+  // RoomType images
+  ...roomTypes.flatMap(rt =>
+    (rt.images ?? []).map(img => ({
+      id: img.image_id,
+      url: img.url,
+      source: 'roomtype' as const,
+      roomTypeId: rt.id,
+      roomTypeName: rt.name,
+    }))
+  ),
+];
   // Filter States
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
@@ -80,8 +71,8 @@ export default function HotelDetailPage() {
   // Derived Values
   const nights = date?.from && date?.to ? Math.max(1, (differenceInDays(date.to, date.from)+1)) : 1;
   const totalSelectedRooms = Object.values(quantities).reduce((acc, q) => acc + q, 0);
-  const totalPrice = MOCK_ROOM_TYPES.reduce((acc, type) => {
-    return acc + (quantities[type.type_id] || 0) * type.price_per_night * nights;
+  const totalPrice = roomTypes.reduce((acc, type) => {
+    return acc + (quantities[type.id] || 0) * type.price_per_night * nights;
   }, 0);
 
   const updateQuantity = (typeId: string, delta: number) => {
@@ -93,7 +84,7 @@ export default function HotelDetailPage() {
   };
 
   const handleBookNow = () => {
-    if (totalSelectedRooms === 0) return;
+    if (totalSelectedRooms === 0 || !hotel) return;
 
     // Construct params
     const roomsParam = Object.entries(quantities)
@@ -102,12 +93,12 @@ export default function HotelDetailPage() {
       .join(',');
       
     const searchParams = new URLSearchParams();
-    searchParams.set('hotel_id', MOCK_HOTEL.hotel_id);
+    searchParams.set('hotel_id', hotel.id);
     if(date?.from) searchParams.set('check_in', date.from.toISOString());
     if(date?.to) searchParams.set('check_out', date.to.toISOString());
     searchParams.set('total_price', totalPrice.toString());
     searchParams.set('rooms', roomsParam);
-    searchParams.set('booking_id', `BK-${Date.now()}`); // Generate a temporary ID
+    searchParams.set('booking_id', `BK-${Date.now()}`); 
     searchParams.set('booking_status', 'PENDING');
 
     router.push(`/booking?${searchParams.toString()}`);
@@ -119,66 +110,55 @@ export default function HotelDetailPage() {
     return format(date.from, "dd/MM/yyyy");
   };
 
+  if (isLoadingHotel || isLoadingRooms) {
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        </div>
+    );
+  }
+
+  if (!hotel) {
+      return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-xl font-bold">Hotel not found</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-32"> {/* Added padding bottom for fixed booking bar */}
       <PageTitle 
-        title={MOCK_HOTEL.name}
+        title={hotel.name}
         description="Detail Hotel Information"
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Hotels", href: "/hotels" },
-          { label: MOCK_HOTEL.name, href: `/hotels/${params.hotel_id}` },
+          { label: hotel.name, href: `/hotels/${hotel.id}` },
         ]} 
       />
 
       <div className="container mx-auto px-4 -mt-10 relative z-20 mb-8">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Main Hotel Image */}
-          <div className="relative h-[400px] w-full">
-            <Image 
-              src={MOCK_HOTEL.images[0].url} 
-              alt={MOCK_HOTEL.name} 
-              fill 
-              className="object-cover"
-              priority
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
-               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                       <div className="flex">
-                          {Array.from({ length: MOCK_HOTEL.star }).map((_, i) => (
-                            <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                          ))}
-                       </div>
-                       <span className="text-white/80 text-sm bg-white/20 px-2 py-0.5 rounded backdrop-blur-sm">Hotel</span>
-                    </div>
-                    <h1 className="text-4xl font-bold text-white mb-2">{MOCK_HOTEL.name}</h1>
-                    <div className="flex items-center gap-2 text-white/90">
-                       <MapPin className="w-5 h-5" />
-                       <span className="text-lg">{MOCK_HOTEL.address}</span>
-                    </div>
-                  </div>
-                </div>
-            </div>
-          </div>
+          {/* Hotel Image Gallery Grid */}
+          <HotelGallery images={galleryImages}/>
           
            {/* Description & Amenities */}
            <div className="p-8">
+            
              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                <div className="lg:col-span-2">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
+                  <div>
+                    <h1 className="text-4xl font-bold mb-2">{hotel.name}</h1>
+                    <div className="flex items-center gap-2">
+                       <MapPin className="w-5 h-5" />
+                       <span className="text-lg">{hotel.address}</span>
+                    </div>
+                  </div>
+                </div>
                  <h2 className="text-2xl font-bold mb-4 text-gray-900">About this hotel</h2>
-                 <p className="text-gray-600 leading-relaxed mb-6">{MOCK_HOTEL.description}</p>
-                 <h3 className="font-semibold text-lg mb-3">Popular Amenities</h3>
-                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                   <div className="flex items-center gap-2 text-gray-600"><Wifi className="w-5 h-5 text-primary" /><span>Free Wifi</span></div>
-                   <div className="flex items-center gap-2 text-gray-600"><Car className="w-5 h-5 text-primary" /><span>Free Parking</span></div>
-                   <div className="flex items-center gap-2 text-gray-600"><Utensils className="w-5 h-5 text-primary" /><span>Restaurant</span></div>
-                   <div className="flex items-center gap-2 text-gray-600"><Check className="w-5 h-5 text-primary" /><span>24h Service</span></div>
-                 </div>
+                 {/* Dangerously set inner HTML for description as requested */}
+                 <div className="text-gray-600 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: hotel.description || '' }}></div>
                </div>
                
-               {/* Filters Section (Top Right / Sidebar feel on Desktop) */}
+            
                <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 h-fit">
                  <h3 className="font-bold text-lg mb-4">Check Availability</h3>
                  <div className="space-y-4">
@@ -258,76 +238,12 @@ export default function HotelDetailPage() {
              {/* Booking Table */}
              <div className="mt-8">
                <h2 className="text-2xl font-bold mb-6">Select Rooms</h2>
-               <div className="bg-white rounded-lg border overflow-hidden">
-                 <Table>
-                    <TableHeader className="bg-gray-50">
-                      <TableRow>
-                        <TableHead className="w-[40%]">Room Type</TableHead>
-                        <TableHead className="text-center">Max Guests</TableHead>
-                        <TableHead className="text-right">Price per Night</TableHead>
-                        <TableHead className="text-right">Total ({nights} nights)</TableHead>
-                        <TableHead className="text-center w-[150px]">Quantity</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {MOCK_ROOM_TYPES.map((type) => {
-                        const quantity = quantities[type.type_id] || 0;
-                        const totalPriceForType = type.price_per_night * nights;
-                        
-                        return (
-                          <TableRow key={type.type_id}>
-                            <TableCell>
-                               <div>
-                                  <p className="font-bold text-gray-900">{type.name}</p>
-                                  <p className="text-sm text-gray-500 line-clamp-1">{type.description}</p>
-                                  <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                                    <span className="flex items-center gap-1"><Info className="w-3 h-3" /> Non-refundable</span>
-                                    <span className="flex items-center gap-1 text-green-600"><Check className="w-3 h-3" /> Breakfast included</span>
-                                  </div>
-                               </div>
-                            </TableCell>
-                            <TableCell className="text-center">
-                               <div className="flex items-center justify-center gap-1">
-                                  <User className="w-4 h-4 text-gray-400" />
-                                  <span>x {type.max_guests}</span>
-                               </div>
-                            </TableCell>
-                            <TableCell className="text-right font-medium text-gray-600">
-                               {formatCurrency(type.price_per_night)}
-                            </TableCell>
-                            <TableCell className="text-right">
-                               <span className="font-bold text-primary">
-                                  {formatCurrency(totalPriceForType)}
-                               </span>
-                            </TableCell>
-                            <TableCell>
-                               <div className="flex items-center justify-center gap-2">
-                                  <Button 
-                                    size="icon" 
-                                    variant="outline" 
-                                    className="h-8 w-8" 
-                                    disabled={quantity === 0}
-                                    onClick={() => updateQuantity(type.type_id, -1)}
-                                  >
-                                    -
-                                  </Button>
-                                  <span className="w-8 text-center font-medium">{quantity}</span>
-                                  <Button 
-                                    size="icon" 
-                                    variant="outline" 
-                                    className="h-8 w-8"
-                                    onClick={() => updateQuantity(type.type_id, 1)}
-                                  >
-                                    +
-                                  </Button>
-                               </div>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                 </Table>
-               </div>
+               <BookingTable 
+                 roomTypes={roomTypes} 
+                 quantities={quantities} 
+                 nights={nights} 
+                 onUpdateQuantity={updateQuantity} 
+               />
              </div>
            </div>
         </div>
