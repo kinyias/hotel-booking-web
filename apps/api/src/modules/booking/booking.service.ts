@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateBookingDto } from './dto/create-booking.dto';
 import { Prisma, BookingStatus } from '@prisma/client';
-import { CreateBookingDto } from 'src/modules/booking/dto/create-booking.dto';
 
 function eachDate(from: Date, to: Date) {
   const dates: Date[] = [];
@@ -72,9 +72,9 @@ export class BookingService {
         for (const day of nights) {
           const inv = await tx.inventory.findUnique({
             where: {
-              hotelId_roomTypeId_date: {
-                hotelId,
+              roomTypeId_hotelId_date: {
                 roomTypeId: item.roomTypeId,
+                hotelId,
                 date: day,
               },
             },

@@ -19,6 +19,7 @@ import { RoomTypeModule } from './modules/room-type/room-type.module';
 import { AmentityModule } from './modules/amentity/amenity.module';
 import { RoomModule } from './modules/room/room.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
+import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
     AmentityModule,
     RoomModule,
     InventoryModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [

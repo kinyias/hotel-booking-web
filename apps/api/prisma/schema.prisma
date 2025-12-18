@@ -308,8 +308,8 @@ model Inventory {
 
   date DateTime @db.Date
 
-  totalRooms     Int? // optional (nếu chưa có Room count)
-  availableRooms Int? // optional (hoặc dùng allotment)
+  totalRooms     Int @default(0)
+  availableRooms Int @default(0)
   stopSell       Boolean @default(false)
 
   createdAt DateTime  @default(now())
@@ -319,11 +319,50 @@ model Inventory {
   hotel    Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
 
-  @@unique([roomTypeId, date])
+  @@unique([roomTypeId, hotelId, date])
   @@index([hotelId, date])
   @@index([roomTypeId, date])
 }
 
+model Booking {
+  id          String        @id @default(cuid())
+  hotelId     String
+  userId      String?       
+  status      BookingStatus @default(PENDING)
+
+  checkIn     DateTime
+  checkOut    DateTime
+
+  guestName   String
+  guestEmail  String?
+  guestPhone  String?
+
+  totalAmount Decimal @db.Decimal(12, 2) @default(0) 
+  note        String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  items       BookingItem[]
+
+  @@index([hotelId])
+  @@index([userId])
+}
+
+model BookingItem {
+  id         String  @id @default(cuid())
+  bookingId  String
+  roomTypeId String
+  quantity   Int
+
+  unitPrice  Decimal @db.Decimal(12, 2)     // snapshot giá tại thời điểm đặt
+  lineTotal  Decimal @db.Decimal(12, 2)
+
+  booking    Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@index([roomTypeId])
+}
 // ==================== ENUM ====================
 enum AuthProvider {
   LOCAL
@@ -365,4 +404,10 @@ enum RoomCleanStatus {
   CLEAN
   DIRTY
   INSPECT
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
 }
