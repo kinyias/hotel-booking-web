@@ -35,3 +35,8 @@ export const deleteHotel = async (id: string) => {
   );
   return response.data;
 };
+
+export const addMembersToHotel = async (hotelId: string, payload: {userIds: string[]}) => {
+    const response = await api.post<Hotel>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/members`, payload);
+    return response.data;
+}
