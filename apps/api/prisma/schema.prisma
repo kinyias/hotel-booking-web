@@ -13,7 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id            String   @id @default(cuid())
   email         String   @unique
@@ -24,62 +23,62 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  roles         UserRole[]
+  roles UserRole[]
 
-  avatarId      String?     
-  avatar        ImageAsset? @relation("UserAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
+  avatarId String?
+  avatar   ImageAsset? @relation("UserAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
 
-  provider     AuthProvider @default(LOCAL)
-  providerId   String?  @unique
+  provider   AuthProvider @default(LOCAL)
+  providerId String?      @unique
 
-  sessions      AuthSession[]
-  verifyTokens  EmailVerifyToken[]
-  resetTokens   PasswordResetToken[]
-  ownedHotels Hotel[]
-  hotelMemberships HotelMember[] @relation("UserHotelMemberships")
-  galleries ImageGallery[]
-  folderGalleries FolderGallery[]
+  sessions         AuthSession[]
+  verifyTokens     EmailVerifyToken[]
+  resetTokens      PasswordResetToken[]
+  ownedHotels      Hotel[]
+  hotelMemberships HotelMember[]        @relation("UserHotelMemberships")
+  galleries        ImageGallery[]
+  folderGalleries  FolderGallery[]
 }
 
 model Hotel {
-  id String @id @default(cuid())
-  name String
-  address String?
-  city String?
-  country String?
+  id          String  @id @default(cuid())
+  name        String
+  address     String?
+  city        String?
+  country     String?
   description String?
 
-  status      HotelStatus @default(DRAFT)
-   
+  status HotelStatus @default(DRAFT)
+
   ownerId String
-  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   roomTypes RoomType[]
-  rooms     Room[] 
-  members HotelMember[]
-  images    HotelImage[]   // ✅ add
+  rooms     Room[]
+  members   HotelMember[]
+  images    HotelImage[]
 
-  deletedAt   DateTime? // soft delete
+  inventories Inventory[]
 
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model HotelMember {
   hotelId String
   userId  String
 
-  hotel   Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  user    User   @relation("UserHotelMemberships", fields: [userId], references: [id])
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  user  User  @relation("UserHotelMemberships", fields: [userId], references: [id])
 
   @@id([hotelId, userId])
   @@index([userId])
 }
 
-
 model Role {
-  id          String        @id @default(cuid())
-  name        String        @unique
+  id          String           @id @default(cuid())
+  name        String           @unique
   description String?
   users       UserRole[]
   permissions RolePermission[]
@@ -94,61 +93,63 @@ model Permission {
 }
 
 model UserRole {
-  user    User     @relation(fields: [userId], references: [id])
-  userId  String
-  role    Role     @relation(fields: [roleId], references: [id])
-  roleId  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+
   @@id([userId, roleId])
 }
 
 model RolePermission {
-  role          Role         @relation(fields: [roleId], references: [id])
-  roleId        String
-  permission    Permission   @relation(fields: [permissionId], references: [id])
-  permissionId  String
-  @@id([roleId, permissionId]) 
+  role         Role       @relation(fields: [roleId], references: [id])
+  roleId       String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+
+  @@id([roleId, permissionId])
 }
 
 model AuthSession {
-  id           String   @id @default(cuid())
-  userId       String
-  jti          String   @unique
-  refreshHash  String
-  provider      AuthProvider @default(LOCAL)
+  id          String       @id @default(cuid())
+  userId      String
+  jti         String       @unique
+  refreshHash String
+  provider    AuthProvider @default(LOCAL)
 
-  userAgent    String?
-  ip           String?
-  createdAt    DateTime @default(now())
-  expiresAt    DateTime
-  revokedAt    DateTime?
-  revokedBy    String?
-  reason       String?
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+  revokedAt DateTime?
+  revokedBy String?
+  reason    String?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model EmailVerifyToken {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tokenHash String   @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([userId])
   @@index([tokenHash])
 }
 
 model PasswordResetToken {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tokenHash    String   @db.VarChar(64)
-  usedAt       DateTime?
-  expiresAt    DateTime
-  createdAt    DateTime @default(now())
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @db.VarChar(64)
+  usedAt    DateTime?
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
 
   @@index([userId])
   @@index([tokenHash])
@@ -157,94 +158,100 @@ model PasswordResetToken {
 
 model ApiAction {
   id          String            @id @default(cuid())
-  key         String            @unique   // ví dụ: "hotel.update"
+  key         String            @unique // ví dụ: "hotel.update"
   description String?
   enabled     Boolean           @default(true)
   mode        PolicyMode        @default(ANY)
   policies    ApiActionPolicy[]
 
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ApiActionPolicy {
-  action        ApiAction    @relation(fields: [actionId], references: [id])
-  actionId      String
-  permission    Permission   @relation(fields: [permissionId], references: [id])
-  permissionId  String
+  action       ApiAction  @relation(fields: [actionId], references: [id])
+  actionId     String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+
   @@id([actionId, permissionId])
 }
 
 model ImageAsset {
-  id            String   @id @default(cuid())
+  id        String @id @default(cuid())
   // publicId là định danh xoá trên Cloudinary (bắt buộc để delete)
-  publicId      String   @unique
-  url           String
-  secureUrl     String
+  publicId  String @unique
+  url       String
+  secureUrl String
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Liên kết 1-1 cho avatar user (optional)
-  userAvatarOf  User[]   @relation("UserAvatar")
+  userAvatarOf User[] @relation("UserAvatar")
 
   // Liên kết N-N có payload cho Hotel/RoomType/Location qua các bảng nối
 }
-model ImageGallery{
-  id       String @id @default(cuid())
-  publicId String @unique
-  url      String
+
+model ImageGallery {
+  id        String @id @default(cuid())
+  publicId  String @unique
+  url       String
   secureUrl String
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        String
-  folderId String
-  folder        FolderGallery @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  userId    String
+  folderId  String
+  folder    FolderGallery @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-model FolderGallery{
-  id       String @id @default(cuid())
-  folderName String @unique
-  userId String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  galleries ImageGallery[]
+
+model FolderGallery {
+  id         String         @id @default(cuid())
+  folderName String         @unique
+  userId     String
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  galleries  ImageGallery[]
 }
+
 model HotelImage {
-  id       String @id @default(cuid())
-  hotelId  String
+  id      String @id @default(cuid())
+  hotelId String
   url     String
-  hotel    Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotel   Hotel  @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 }
 
 model RoomType {
-  id              String      @id @default(cuid())
+  id              String  @id @default(cuid())
   hotelId         String
   name            String
-  price_per_night Decimal  @db.Decimal(12, 2)
+  price_per_night Decimal @db.Decimal(12, 2)
   max_guests      Int
   description     String?
 
-  hotel           Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
-  rooms           Room[] 
-  amenities       RoomTypeAmenity[]
-  images RoomTypeImage[]
+  rooms     Room[]
+  amenities RoomTypeAmenity[]
+  images    RoomTypeImage[]
 
-  deletedAt       DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  inventories Inventory[]
 
-  @@index([hotelId])
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
   @@unique([hotelId, name])
+  @@index([hotelId])
 }
 
 model Amenity {
-  id        String   @id @default(cuid())
-  key       String   @unique // vd: "Wifi", "AirVent", "Coffee"
-  label     String   // vd: "Wi-Fi", "Máy lạnh", "Cà phê miễn phí"
-  sortOrder Int      @default(0)
-  isActive  Boolean  @default(true)
+  id        String  @id @default(cuid())
+  key       String  @unique // vd: "Wifi", "AirVent", "Coffee"
+  label     String // vd: "Wi-Fi", "Máy lạnh", "Cà phê miễn phí"
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
 
   roomTypes RoomTypeAmenity[]
 
@@ -253,45 +260,70 @@ model Amenity {
 }
 
 model RoomTypeAmenity {
-  typeId   String
+  typeId    String
   amenityId String
 
-  roomType  RoomType @relation(fields: [typeId], references: [id], onDelete: Cascade)
-  amenity   Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+  roomType RoomType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  amenity  Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
 
   @@id([typeId, amenityId])
   @@index([amenityId])
 }
 
-model RoomTypeImage{
-  id String @id @default(cuid())
+model RoomTypeImage {
+  id         String   @id @default(cuid())
   roomTypeId String
-  url String
-  roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+  url        String
+  roomType   RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
 }
 
 model Room {
-  id           String          @id @default(cuid())
-  hotelId      String
-  roomTypeId   String
+  id         String @id @default(cuid())
+  hotelId    String
+  roomTypeId String
 
-  code         String          // ví dụ: "101", "A-1203"
-  floor        String?
-  note         String?
+  code  String // ví dụ: "101", "A-1203"
+  floor String?
+  note  String?
 
-  status       RoomStatus      @default(ACTIVE)
-  cleanStatus  RoomCleanStatus @default(CLEAN)
+  status      RoomStatus      @default(ACTIVE)
+  cleanStatus RoomCleanStatus @default(CLEAN)
 
-  hotel        Hotel           @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  roomType     RoomType        @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+  hotel    Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
 
-  deletedAt    DateTime?
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@unique([hotelId, code])
   @@index([hotelId, roomTypeId])
 }
+
+model Inventory {
+  id String @id @default(cuid())
+
+  hotelId    String
+  roomTypeId String
+
+  date DateTime @db.Date
+
+  totalRooms     Int? // optional (nếu chưa có Room count)
+  availableRooms Int? // optional (hoặc dùng allotment)
+  stopSell       Boolean @default(false)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  hotel    Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([roomTypeId, date])
+  @@index([hotelId, date])
+  @@index([roomTypeId, date])
+}
+
 // ==================== ENUM ====================
 enum AuthProvider {
   LOCAL
@@ -299,15 +331,15 @@ enum AuthProvider {
 }
 
 enum PolicyMode {
-  ANY    // chỉ cần 1 quyền trong danh sách
-  ALL    // cần đủ toàn bộ quyền
+  ANY // chỉ cần 1 quyền trong danh sách
+  ALL // cần đủ toàn bộ quyền
 }
 
 enum ImageKind {
-  AVATAR     // avatar user
-  COVER      // ảnh bìa/cover
-  GALLERY    // ảnh trong bộ sưu tập
-  DOC        // tài liệu/biên lai nếu cần
+  AVATAR // avatar user
+  COVER // ảnh bìa/cover
+  GALLERY // ảnh trong bộ sưu tập
+  DOC // tài liệu/biên lai nếu cần
 }
 
 enum HotelMemberRole {
@@ -317,10 +349,10 @@ enum HotelMemberRole {
 }
 
 enum HotelStatus {
-  DRAFT      // mới tạo, chưa public/hoạt động
-  ACTIVE     // đang hoạt động
-  SUSPENDED  // bị khoá/tạm dừng
-  ARCHIVED   // lưu trữ/ngừng kinh doanh
+  DRAFT // mới tạo, chưa public/hoạt động
+  ACTIVE // đang hoạt động
+  SUSPENDED // bị khoá/tạm dừng
+  ARCHIVED // lưu trữ/ngừng kinh doanh
 }
 
 enum RoomStatus {

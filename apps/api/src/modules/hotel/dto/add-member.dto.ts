@@ -6,8 +6,4 @@ export class AddMemberDto {
   @IsString()
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   userId!: string;
-
-  @IsOptional()
-  @IsEnum(HotelMemberRole)
-  role?: HotelMemberRole;
 }

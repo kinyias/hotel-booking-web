@@ -6,7 +6,7 @@ import { ListRoomDto } from './dto/list-room.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
-@Controller('/v1/hotels/:hotelId/rooms')
+@Controller('hotels/:hotelId/rooms')
 export class RoomController {
   constructor(private readonly service: RoomService) {}
 
