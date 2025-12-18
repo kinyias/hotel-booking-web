@@ -268,4 +268,93 @@ export class HotelService {
       },
     };
   }
+  async listPublicHotels(query: ListHotelsQueryDto) {
+  const page = query.page ?? 1;
+  const limit = query.limit ?? 20;
+  const offset = (page - 1) * limit;
+
+  const andWhere: Prisma.HotelWhereInput[] = [];
+
+  // only active hotels
+  andWhere.push({ deletedAt: null });
+
+  // only hotels WITH room types
+  andWhere.push({
+    roomTypes: {
+      some: {
+        deletedAt: null,
+      },
+    },
+  });
+
+  if (query.city) {
+    andWhere.push({
+      city: { contains: query.city, mode: 'insensitive' },
+    });
+  }
+
+  if (query.q) {
+    const q = query.q.trim();
+    if (q) {
+      andWhere.push({
+        OR: [
+          { name: { contains: q, mode: 'insensitive' } },
+          { address: { contains: q, mode: 'insensitive' } },
+          { city: { contains: q, mode: 'insensitive' } },
+          { country: { contains: q, mode: 'insensitive' } },
+        ],
+      });
+    }
+  }
+
+  const where: Prisma.HotelWhereInput = { AND: andWhere };
+
+  const [total, items] = await this.prisma.$transaction([
+    this.prisma.hotel.count({ where }),
+
+    this.prisma.hotel.findMany({
+      where,
+      skip: offset,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+
+      include: {
+        images: true,
+
+        roomTypes: {
+          where: { deletedAt: null },
+          select: {
+            price_per_night: true,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // 🔑 TÍNH MIN PRICE
+  const data = items.map((hotel) => {
+    const prices = hotel.roomTypes.map(
+      (rt) => Number(rt.price_per_night),
+    );
+
+    const minPrice =
+      prices.length > 0 ? Math.min(...prices) : null;
+
+    return {
+      ...hotel,
+      minPrice,
+      roomTypes: undefined, // không cần trả
+    };
+  });
+
+  return {
+    data,
+    meta: {
+      limit,
+      offset,
+      total,
+    },
+  };
+}
+
 }

@@ -10,6 +10,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Public } from 'src/common/decorators/public.decorator';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
 import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
@@ -22,7 +23,11 @@ import { HotelService } from 'src/modules/hotel/hotel.service';
 @Controller('hotels')
 export class HotelController {
   constructor(private hotelService: HotelService) {}
-
+  @Public()
+  @Get('/public')
+  listPublicHotels(@Query() query: ListHotelsQueryDto) {
+    return this.hotelService.listPublicHotels(query);
+  }
   @Post()
   create(@Req() req: any, @Body() dto: CreateHotelDto) {
     return this.hotelService.createHotel(req.user.id, dto);
