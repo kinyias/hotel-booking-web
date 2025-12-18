@@ -343,7 +343,9 @@ model Booking {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  items       BookingItem[]
+  items       BookingItem[] 
+  payments    Payment[]
+
 
   @@index([hotelId])
   @@index([userId])
@@ -362,6 +364,63 @@ model BookingItem {
 
   @@index([bookingId])
   @@index([roomTypeId])
+}
+
+enum PaymentProvider {
+  VNPAY
+}
+
+enum PaymentStatus {
+  INIT        // vừa tạo attempt, đã build paymentUrl
+  PENDING     // chờ IPN xác nhận (sau redirect)
+  SUCCEEDED
+  FAILED
+  CANCELED
+  REFUND_PENDING
+  REFUNDED
+}
+
+model Payment {
+  id          String          @id @default(cuid())
+  provider    PaymentProvider
+  status      PaymentStatus   @default(INIT)
+
+  bookingId   String
+  booking     Booking          @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  // Amount lưu theo đơn vị VND (giống booking.totalAmount)
+  amount      Decimal         @db.Decimal(12, 2)
+
+  // vnp_TxnRef: mã giao dịch phía merchant (bạn tự sinh)
+  merchantTxnRef String       @unique
+
+  // VNPAY fields (lưu những cái cần đối soát)
+  vnpTransactionNo String?    // vnp_TransactionNo
+  bankCode        String?     // vnp_BankCode
+  payDate         DateTime?   // vnp_PayDate (parse từ YYYYMMDDHHmmss)
+  responseCode    String?     // vnp_ResponseCode
+  transactionStatus String?   // vnp_TransactionStatus
+
+  // checksum/audit
+  secureHashAlg  String?      // sha512
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  events        PaymentEvent[]
+  @@index([bookingId])
+  @@index([provider, status])
+}
+
+model PaymentEvent {
+  id         String   @id @default(cuid())
+  paymentId  String
+  payment    Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  type       String   // "RETURN" | "IPN" | "QUERYDR" | "REFUND"
+  payload    Json
+  createdAt  DateTime @default(now())
+
+  @@index([paymentId])
 }
 // ==================== ENUM ====================
 enum AuthProvider {

@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsEmail,
   IsInt,
+  IsISO8601,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
@@ -24,10 +25,10 @@ class CreateBookingItemDto {
 }
 
 export class CreateBookingDto {
-  @IsDateString()
+  @IsISO8601()
   checkIn: string; // yyyy-mm-dd
 
-  @IsDateString()
+  @IsISO8601()
   checkOut: string; // yyyy-mm-dd (exclusive)
 
   @IsString()

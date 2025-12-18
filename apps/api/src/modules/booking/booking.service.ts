@@ -6,6 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Prisma, BookingStatus } from '@prisma/client';
+import { parseISO, startOfDay } from 'date-fns';
 
 function eachDate(from: Date, to: Date) {
   const dates: Date[] = [];
@@ -32,13 +33,18 @@ function eachDateFixed(from: Date, to: Date) {
   return dates;
 }
 
+function toDateOnly(d: string) {
+  // YYYY-MM-DD -> Date (UTC midnight)
+  return new Date(`${d}T00:00:00.000Z`);
+}
+
 @Injectable()
 export class BookingService {
   constructor(private prisma: PrismaService) {}
 
   async create(hotelId: string, userId: string | null, dto: CreateBookingDto) {
-    const checkIn = new Date(dto.checkIn);
-    const checkOut = new Date(dto.checkOut);
+    const checkIn = toDateOnly(dto.checkIn);
+    const checkOut = toDateOnly(dto.checkOut);
 
     if (!(checkIn < checkOut))
       throw new BadRequestException('checkOut must be after checkIn');

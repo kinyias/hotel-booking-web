@@ -10,6 +10,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Public } from 'src/common/decorators/public.decorator';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
 import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
@@ -74,7 +75,8 @@ export class HotelController {
   deleteHotel(@Req() req: any, @Param('hotelId') hotelId: string) {
     return this.hotelService.softDeleteHotel(hotelId, req.user.id);
   }
-
+  
+  @Public()
   @Get()
   listHotelsAdmin(@Query() query: ListHotelsQueryDto) {
     return this.hotelService.listHotelsAdmin(query);

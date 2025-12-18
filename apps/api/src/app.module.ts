@@ -20,6 +20,7 @@ import { AmentityModule } from './modules/amentity/amenity.module';
 import { RoomModule } from './modules/room/room.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { BookingModule } from './modules/booking/booking.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { BookingModule } from './modules/booking/booking.module';
     RoomModule,
     InventoryModule,
     BookingModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [
