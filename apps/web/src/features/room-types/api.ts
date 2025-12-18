@@ -1,11 +1,16 @@
 import api from "@/lib/axios";
 import { PaginatedResponse } from "@/types";
-import { RoomType } from "./types";
+import { RoomType, RoomTypeAvailable, RoomTypeQueryParams } from "./types";
 import { RoomTypeFormValues } from "./validator";
 
 
 export const getRoomTypes = async (hotelId: string) => {
     const response = await api.get<PaginatedResponse<RoomType>>(`/hotels/${hotelId}/room-types`);
+    return response.data;
+}
+
+export const getRoomTypesAvailable = async (hotelId: string, params?: RoomTypeQueryParams) => {
+    const response = await api.get<PaginatedResponse<RoomTypeAvailable>>(`/hotels/${hotelId}/room-types/available`, { params });
     return response.data;
 }
 

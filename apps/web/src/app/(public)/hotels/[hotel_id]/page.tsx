@@ -19,7 +19,7 @@ import PageTitle from "@/components/sections/PageTitle";
 import { BookingTable } from "@/features/bookings/components/BookingTable";
 import { cn } from "@/lib/utils";
 import { useHotelDetailQuery } from "@/features/hotels/queries";
-import { useQueryRoomTypes } from "@/features/room-types/queries";
+import { useQueryRoomTypesAvailable } from "@/features/room-types/queries";
 import { formatCurrency } from "@/utils/currency";
 import { HotelGallery } from "@/features/hotels/components/HotelGallery";
 export type GalleryImage = {
@@ -34,9 +34,23 @@ export default function HotelDetailPage() {
   const hotelId = params.hotel_id as string;
   const router = useRouter();
   
+  // Filter States
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 1),
+  });
+  const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
+  const [isGuestPopoverOpen, setIsGuestPopoverOpen] = useState(false);
+
   // Data Fetching
   const { data: hotel, isLoading: isLoadingHotel } = useHotelDetailQuery(hotelId);
-  const { data: roomTypesResponse, isLoading: isLoadingRooms } = useQueryRoomTypes(hotelId);
+  const { data: roomTypesResponse, isLoading: isLoadingRooms } = useQueryRoomTypesAvailable(
+    hotelId,
+    date?.from && date?.to ? {
+        from: format(date.from, "yyyy-MM-dd"),
+        to: format(date.to, "yyyy-MM-dd"),
+    } : undefined
+  );
   const roomTypes = roomTypesResponse?.data || [];
   const galleryImages: GalleryImage[] = [
   // Hotel images
@@ -57,14 +71,6 @@ export default function HotelDetailPage() {
     }))
   ),
 ];
-  // Filter States
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 1),
-  });
-  const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
-  const [isGuestPopoverOpen, setIsGuestPopoverOpen] = useState(false);
-
   // Booking State
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
@@ -75,10 +81,13 @@ export default function HotelDetailPage() {
     return acc + (quantities[type.id] || 0) * type.price_per_night * nights;
   }, 0);
 
-  const updateQuantity = (typeId: string, delta: number) => {
+  const updateQuantity = (typeId: string, delta: number, availableRooms: number) => {
     setQuantities(prev => {
       const current = prev[typeId] || 0;
       const next = Math.max(0, current + delta);
+      if (next > availableRooms) {
+        return prev;
+      }
       return { ...prev, [typeId]: next };
     });
   };

@@ -164,9 +164,9 @@ export default function HotelsPage() {
 
                       
                         
-                        <p className="text-gray-600 text-sm line-clamp-2">
-                           <div dangerouslySetInnerHTML={{ __html: hotel.description! }}></div>
-                        </p>
+                       <div className="text-gray-600 text-sm line-clamp-2">
+                          <div dangerouslySetInnerHTML={{ __html: hotel.description! }} />
+                       </div>
                       </div>
 
                       {/* Footer: Price & Action */}
