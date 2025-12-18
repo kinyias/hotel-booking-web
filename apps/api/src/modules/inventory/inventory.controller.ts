@@ -10,11 +10,11 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { InventoryService } from './inventory.service';
 import { ListInventoryDto } from './dto/list-inventory.dto';
 import { BulkSetInventoryDto } from './dto/bulk-set-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { InventoryService } from 'src/modules/inventory/inventory.service';
 
 const getUserId = (req: any) => req.user?.id;
 @UseGuards(JwtAuthGuard)

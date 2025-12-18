@@ -3,233 +3,169 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, BookingStatus } from '@prisma/client';
-import { CreateBookingDto } from 'src/modules/booking/dto/create-booking.dto';
+import { Prisma, Inventory } from '@prisma/client';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { ListInventoryDto } from './dto/list-inventory.dto';
+import { BulkSetInventoryDto } from './dto/bulk-set-inventory.dto';
+import { UpdateInventoryDto } from './dto/update-inventory.dto';
 
-function eachDate(from: Date, to: Date) {
-  const dates: Date[] = [];
-  const d = new Date(from);
-  while (d < to) {
-    dates.push(new Date(d));
-    d.setHours(0, 0, 0, 0);
-    dates.push(new Date(d));
-    d.setDate(d.getDate() + 1);
-  }
-  // NOTE: ở trên bị push 2 lần nếu copy nhầm — dùng bản đúng dưới:
+function toDateOnly(d: string) {
+  // YYYY-MM-DD -> Date (UTC midnight)
+  return new Date(`${d}T00:00:00.000Z`);
 }
 
-function eachDateFixed(from: Date, to: Date) {
-  const dates: Date[] = [];
-  const d = new Date(from);
-  d.setHours(0, 0, 0, 0);
-  const end = new Date(to);
-  end.setHours(0, 0, 0, 0);
-  while (d < end) {
-    dates.push(new Date(d));
-    d.setDate(d.getDate() + 1);
+function eachDay(from: Date, to: Date) {
+  const days: Date[] = [];
+  const cur = new Date(from);
+  while (cur <= to) {
+    days.push(new Date(cur));
+    cur.setUTCDate(cur.getUTCDate() + 1);
   }
-  return dates;
+  return days;
 }
 
 @Injectable()
-export class BookingService {
+export class InventoryService {
   constructor(private prisma: PrismaService) {}
 
-  async create(hotelId: string, userId: string | null, dto: CreateBookingDto) {
-    const checkIn = new Date(dto.checkIn);
-    const checkOut = new Date(dto.checkOut);
-
-    if (!(checkIn < checkOut))
-      throw new BadRequestException('checkOut must be after checkIn');
-
-    const nights = eachDateFixed(checkIn, checkOut);
-    if (nights.length <= 0) throw new BadRequestException('Invalid date range');
-
-    // Load room types (để lấy giá cứng)
-    const roomTypeIds = dto.items.map((i) => i.roomTypeId);
-    const roomTypes = await this.prisma.roomType.findMany({
-      where: { id: { in: roomTypeIds }, hotelId },
-      select: { id: true, name: true, price_per_night: true },
+  private async assertHotelAccess(hotelId: string, userId: string) {
+    const hotel = await this.prisma.hotel.findUnique({
+      where: { id: hotelId },
+      select: { id: true, ownerId: true },
     });
+    if (!hotel) throw new NotFoundException('Hotel not found');
 
-    if (roomTypes.length !== roomTypeIds.length) {
-      throw new BadRequestException('Some roomTypeId not belong to this hotel');
-    }
+    if (hotel.ownerId === userId) return;
 
-    const priceMap = new Map(
-      roomTypes.map((rt) => [
-        rt.id,
-        (rt as any).price ?? (rt as any).basePrice ?? 0,
-      ]),
-    );
-
-    // Transaction: kiểm tồn + trừ tồn + tạo booking
-    return this.prisma.$transaction(async (tx) => {
-      // 1) Check inventory đủ cho từng item, từng ngày
-      for (const item of dto.items) {
-        const quantity = item.quantity;
-        for (const day of nights) {
-          const inv = await tx.inventory.findUnique({
-            where: {
-              hotelId_roomTypeId_date: {
-                hotelId,
-                roomTypeId: item.roomTypeId,
-                date: day,
-              },
-            },
-            select: { id: true, availableRooms: true, stopSell: true },
-          });
-
-          if (!inv)
-            throw new BadRequestException(
-              `Missing inventory for ${item.roomTypeId} on ${day.toISOString().slice(0, 10)}`,
-            );
-          if (inv.stopSell)
-            throw new BadRequestException(
-              `StopSell on ${day.toISOString().slice(0, 10)}`,
-            );
-          if (inv.availableRooms < quantity)
-            throw new BadRequestException(
-              `Not enough rooms on ${day.toISOString().slice(0, 10)}`,
-            );
-        }
-      }
-
-      // 2) Trừ tồn (updateMany theo từng ngày để an toàn điều kiện)
-      for (const item of dto.items) {
-        for (const day of nights) {
-          const updated = await tx.inventory.updateMany({
-            where: {
-              hotelId,
-              roomTypeId: item.roomTypeId,
-              date: day,
-              stopSell: false,
-              availableRooms: { gte: item.quantity },
-            },
-            data: { availableRooms: { decrement: item.quantity } },
-          });
-
-          if (updated.count !== 1) {
-            throw new BadRequestException(
-              `Inventory changed, cannot book ${day.toISOString().slice(0, 10)}`,
-            );
-          }
-        }
-      }
-
-      // 3) Tính tiền (snapshot giá roomType)
-      const itemsCreate = dto.items.map((i) => {
-        const unitPrice = priceMap.get(i.roomTypeId) ?? 0;
-        const lineTotal = unitPrice * i.quantity * nights.length;
-        return {
-          roomTypeId: i.roomTypeId,
-          quantity: i.quantity,
-          unitPrice,
-          lineTotal,
-        };
-      });
-
-      const totalAmount = itemsCreate.reduce((s, x) => s + x.lineTotal, 0);
-
-      // 4) Create booking
-      const booking = await tx.booking.create({
-        data: {
-          hotelId,
-          userId: userId ?? undefined,
-          status: BookingStatus.CONFIRMED, // MVP: tạo là confirmed luôn cho kịp nộp
-          checkIn,
-          checkOut,
-          guestName: dto.guestName,
-          guestEmail: dto.guestEmail,
-          guestPhone: dto.guestPhone,
-          note: dto.note,
-          totalAmount,
-          items: { create: itemsCreate },
-        },
-        include: { items: true },
-      });
-
-      return booking;
+    const member = await this.prisma.hotelMember.findUnique({
+      where: { hotelId_userId: { hotelId, userId } },
+      select: { userId: true },
     });
+    if (!member) throw new BadRequestException('No access to this hotel');
   }
 
-  async cancel(hotelId: string, bookingId: string) {
-    return this.prisma.$transaction(async (tx) => {
-      const booking = await tx.booking.findFirst({
-        where: { id: bookingId, hotelId },
-        include: { items: true },
-      });
-      if (!booking) throw new NotFoundException('Booking not found');
-      if (booking.status === BookingStatus.CANCELLED) return booking;
+  async list(hotelId: string, userId: string, q: ListInventoryDto) {
+    await this.assertHotelAccess(hotelId, userId);
 
-      const nights = eachDateFixed(booking.checkIn, booking.checkOut);
+    const from = toDateOnly(q.from);
+    const to = toDateOnly(q.to);
+    if (from > to) throw new BadRequestException('from must be <= to');
 
-      // trả tồn
-      for (const item of booking.items) {
-        for (const day of nights) {
-          await tx.inventory.updateMany({
-            where: { hotelId, roomTypeId: item.roomTypeId, date: day },
-            data: { availableRooms: { increment: item.quantity } },
-          });
-        }
-      }
-
-      return tx.booking.update({
-        where: { id: booking.id },
-        data: { status: BookingStatus.CANCELLED },
-        include: { items: true },
-      });
-    });
-  }
-
-  async findOne(hotelId: string, id: string) {
-    const booking = await this.prisma.booking.findFirst({
-      where: { id, hotelId },
-      include: { items: true },
-    });
-    if (!booking) throw new NotFoundException('Booking not found');
-    return booking;
-  }
-
-  async list(
-    hotelId: string,
-    q: {
-      status?: BookingStatus;
-      from?: string;
-      to?: string;
-      page?: number;
-      limit?: number;
-    },
-  ) {
-    const page = q.page ?? 1;
-    const limit = q.limit ?? 20;
-    const skip = (page - 1) * limit;
-
-    const where: Prisma.BookingWhereInput = {
+    const where: Prisma.InventoryWhereInput = {
       hotelId,
-      ...(q.status ? { status: q.status } : {}),
-      ...(q.from || q.to
-        ? {
-            checkIn: {
-              ...(q.from ? { gte: new Date(q.from) } : {}),
-              ...(q.to ? { lt: new Date(q.to) } : {}),
-            },
-          }
-        : {}),
+      deletedAt: null,
+      date: { gte: from, lte: to },
+      ...(q.roomTypeId ? { roomTypeId: q.roomTypeId } : {}),
+      ...(q.includeStopped ? {} : { stopSell: false }),
     };
 
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.booking.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-        include: { items: true },
-      }),
-      this.prisma.booking.count({ where }),
-    ]);
+    const items = await this.prisma.inventory.findMany({
+      where,
+      orderBy: [{ roomTypeId: 'asc' }, { date: 'asc' }],
+      include: { roomType: { select: { id: true, name: true } } },
+    });
 
-    return { page, limit, total, items };
+    return { from: q.from, to: q.to, items };
+  }
+
+  async bulkSet(hotelId: string, userId: string, dto: BulkSetInventoryDto) {
+    await this.assertHotelAccess(hotelId, userId);
+
+    const from = toDateOnly(dto.from);
+    const to = toDateOnly(dto.to);
+    if (from > to) throw new BadRequestException('from must be <= to');
+
+    // đảm bảo roomType thuộc hotel
+    const rt = await this.prisma.roomType.findFirst({
+      where: { id: dto.roomTypeId, hotelId },
+      select: { id: true },
+    });
+    if (!rt) throw new NotFoundException('RoomType not found in this hotel');
+
+    const days = eachDay(from, to);
+
+    const ops = days.map((date) =>
+      this.prisma.inventory.upsert({
+        // ✅ đúng composite unique theo schema: @@unique([roomTypeId, hotelId, date])
+        where: {
+          roomTypeId_hotelId_date: {
+            roomTypeId: dto.roomTypeId,
+            hotelId,
+            date,
+          },
+        },
+
+        create: {
+          hotelId,
+          roomTypeId: dto.roomTypeId,
+          date,
+          // ✅ không truyền null cho Prisma
+          ...(dto.totalRooms !== undefined
+            ? { totalRooms: dto.totalRooms }
+            : {}),
+          ...(dto.availableRooms !== undefined
+            ? { availableRooms: dto.availableRooms }
+            : {}),
+          stopSell: dto.stopSell ?? false,
+        },
+
+        update: {
+          deletedAt: null,
+          ...(dto.totalRooms !== undefined
+            ? { totalRooms: dto.totalRooms }
+            : {}),
+          ...(dto.availableRooms !== undefined
+            ? { availableRooms: dto.availableRooms }
+            : {}),
+          ...(dto.stopSell !== undefined ? { stopSell: dto.stopSell } : {}),
+        },
+      }),
+    );
+
+    const result = await this.prisma.$transaction(ops);
+    return { count: result.length };
+  }
+
+  async updateOne(
+    hotelId: string,
+    userId: string,
+    id: string,
+    dto: UpdateInventoryDto,
+  ) {
+    await this.assertHotelAccess(hotelId, userId);
+
+    const inv = await this.prisma.inventory.findFirst({
+      where: { id, hotelId, deletedAt: null },
+      select: { id: true },
+    });
+    if (!inv) throw new NotFoundException('Inventory not found');
+
+    return this.prisma.inventory.update({
+      where: { id },
+      data: {
+        ...(dto.totalRooms !== undefined ? { totalRooms: dto.totalRooms } : {}),
+        ...(dto.availableRooms !== undefined
+          ? { availableRooms: dto.availableRooms }
+          : {}),
+        ...(dto.stopSell !== undefined ? { stopSell: dto.stopSell } : {}),
+      },
+    });
+  }
+
+  async softDelete(hotelId: string, userId: string, id: string) {
+    await this.assertHotelAccess(hotelId, userId);
+
+    const inv = await this.prisma.inventory.findFirst({
+      where: { id, hotelId, deletedAt: null },
+      select: { id: true },
+    });
+    if (!inv) throw new NotFoundException('Inventory not found');
+
+    await this.prisma.inventory.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+
+    return { deleted: true };
   }
 }
