@@ -55,12 +55,31 @@ export const CalendarInventory = ({ date, inventoryData, isLoading }: CalendarIn
                             key={index} 
                             onClick={() => hasInventory && setSelectedInventory(inventory)}
                             className={cn(
-                                "flex flex-col border rounded-lg p-4 min-h-[120px] transition-colors",
+                                "relative group flex flex-col border rounded-lg p-4 min-h-[120px]",
+                                "transition-all duration-200 ease-out",
+                                hasInventory && "hover:shadow-md hover:-translate-y-0.5 hover:border-primary/60",
                                 isPast ? "bg-muted/50" : "bg-card",
-                                inventory?.stopSell ? "border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-900/50" : "hover:border-primary/50",
+                                inventory?.stopSell
+                                ? "border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-900/50"
+                                : "hover:bg-primary/5",
                                 hasInventory ? "cursor-pointer" : ""
                             )}
                         >
+                            {hasInventory && (
+                                <div className="
+                                    absolute inset-0
+                                    flex items-center justify-center
+                                    bg-black/5
+                                    opacity-0
+                                    group-hover:opacity-100
+                                    transition-opacity
+                                    rounded-lg
+                                ">
+                                    <span className="text-xs font-medium text-primary">
+                                    Click to edit
+                                    </span>
+                                </div>
+                                )}
                             <div className="flex justify-between items-start mb-4">
                                 <span className={cn(
                                     "text-lg font-semibold",
