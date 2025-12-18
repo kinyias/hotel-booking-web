@@ -58,7 +58,7 @@ export class HotelController {
   ) {
     return this.hotelService.removeMember(hotelId, userId);
   }
-
+  @Public()
   @Get('/:hotelId')
   // @UseGuards(HotelMemberGuard) // chỉ member mới xem detail
   getDetail(@Param('hotelId') hotelId: string) {

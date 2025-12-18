@@ -26,10 +26,13 @@ export interface Hotel {
   updated_at: string;
   deleted_at: string | null;
 }
-
+export interface HotelPublic extends Hotel {
+  minPrice: number;
+}
 export interface HotelsQueryParams {
   limit?: number;
   offset?: number;
   q?: string;
   status?: HotelStatus | 'all';
+  page?: number;
 }
