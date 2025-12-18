@@ -40,6 +40,7 @@ export class InventoryController {
     return this.service.bulkSet(hotelId, getUserId(req), dto);
   }
 
+
   @Patch(':id')
   updateOne(
     @Param('hotelId') hotelId: string,

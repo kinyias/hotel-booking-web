@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateRoomTypeDto } from './dto/create-room-type.dto';
 import { UpdateRoomTypeDto } from './dto/update-room-type.dto';
-import { ListRoomTypeDto } from './dto/list-room-type.dto';
+import { AvailableRoomTypeDto, ListRoomTypeDto } from './dto/list-room-type.dto';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
@@ -159,7 +159,111 @@ export class RoomTypeService {
       },
     };
   }
+  async getAvailableRoomTypes(
+    hotelId: string,
+    // userId: string | undefined, // userId is optional for public access
+    q: AvailableRoomTypeDto,
+  ) {
+    // If we wanted to enforce access for admin/owner, we would check userId here.
+    // But for 'available' endpoint intended for booking, we typically allow public access.
+    
+    const limit = q.limit ?? 20;
+    const offset = q.page ? (q.page - 1) * limit : 0;
 
+    const startDate = new Date(q.from);
+    const endDate = new Date(q.to);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      throw new BadRequestException('Invalid date format');
+    }
+
+    if (startDate > endDate) {
+      throw new BadRequestException('Start date must be before end date');
+    }
+
+    const where: Prisma.RoomTypeWhereInput = {
+      hotelId,
+      deletedAt: null,
+      ...(q.q
+        ? {
+            OR: [
+              { name: { contains: q.q, mode: Prisma.QueryMode.insensitive } },
+              {
+                description: {
+                  contains: q.q,
+                  mode: Prisma.QueryMode.insensitive,
+                },
+              },
+            ],
+          }
+        : {}),
+    };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.roomType.findMany({
+        where,
+        skip: offset,
+        take: limit,
+        orderBy: { price_per_night: 'asc' }, // usually sorting by price makes sense for availability
+        include: {
+          amenities: { include: { amenity: true } },
+          images: true,
+        },
+      }),
+      this.prisma.roomType.count({ where }),
+    ]);
+
+    // Calculate number of days in range for validation
+    // difference in milliseconds / ms per day
+    const dayCount =
+      Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+    // Fetch inventories for the found room types and date range
+    const roomTypeIds = items.map((rt) => rt.id);
+    const inventories = await this.prisma.inventory.findMany({
+      where: {
+        hotelId,
+        roomTypeId: { in: roomTypeIds },
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+    });
+
+    const data = items.map((rt) => {
+      const rtInvs = inventories.filter((inv) => inv.roomTypeId === rt.id);
+
+      // 1. Check stopSell
+      const hasStopSell = rtInvs.some((inv) => inv.stopSell);
+      if (hasStopSell) {
+        return { ...rt, availableRooms: 0 };
+      }
+
+      // 2. Check if we have inventory records for all days
+      // If records are missing, it implies 0 availability (or unconfigured)
+      if (rtInvs.length < dayCount) {
+        return { ...rt, availableRooms: 0 };
+      }
+
+      // 3. Find minimum available rooms
+      const minAvailable = Math.min(...rtInvs.map((inv) => inv.availableRooms));
+
+      return {
+        ...rt,
+        availableRooms: minAvailable > 0 ? minAvailable : 0,
+      };
+    });
+
+    return {
+      data,
+      meta: {
+        limit,
+        offset,
+        total,
+      },
+    };
+  }
   async getOne(hotelId: string, userId: string, id: string) {
     await this.assertHotelAccess(hotelId, userId);
 

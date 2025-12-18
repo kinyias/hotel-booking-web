@@ -14,8 +14,9 @@ import {
 import { RoomTypeService } from './room-type.service';
 import { CreateRoomTypeDto } from './dto/create-room-type.dto';
 import { UpdateRoomTypeDto } from './dto/update-room-type.dto';
-import { ListRoomTypeDto } from './dto/list-room-type.dto';
+import { AvailableRoomTypeDto, ListRoomTypeDto } from './dto/list-room-type.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('hotels/:hotelId/room-types')
@@ -31,7 +32,7 @@ export class RoomTypeController {
     const userId = req.user.id;
     return this.service.create(hotelId, userId, dto);
   }
-
+  
   @Get()
   async list(
     @Param('hotelId') hotelId: string,
@@ -42,6 +43,15 @@ export class RoomTypeController {
     return this.service.list(hotelId, userId, query);
   }
 
+  @Public()
+  @Get('available')
+  async available(
+    @Param('hotelId') hotelId: string,
+    @Query() query: AvailableRoomTypeDto,
+    @Req() req: any,
+  ) {
+    return this.service.getAvailableRoomTypes(hotelId, query);
+  }
   @Get(':id')
   async getOne(
     @Param('hotelId') hotelId: string,
