@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { roomFormSchema, RoomFormValues } from '../validator';
-import ImageUpload from '@/components/ui/image-upload';
 
 interface RoomFormProps {
   initialData?: RoomFormValues;
@@ -34,10 +33,11 @@ export function RoomForm({ initialData, onSubmit, isLoading }: RoomFormProps) {
   const form = useForm<RoomFormValues>({
     resolver: zodResolver(roomFormSchema),
     defaultValues: initialData || {
-      room_number: '',
-      floor: 1,
-      status: 'AVAILABLE',
-      images: [],
+      code: '',
+      floor: '',
+      note: '',
+      status: 'ACTIVE',
+      cleanStatus: 'CLEAN',
     },
   });
 
@@ -46,15 +46,15 @@ export function RoomForm({ initialData, onSubmit, isLoading }: RoomFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Room Number */}
+            {/* Room Code */}
             <FormField
               control={form.control}
-              name="room_number"
+              name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Room Number</FormLabel>
+                  <FormLabel>Room Code</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. 101" {...field} />
+                    <Input placeholder="e.g. 101, A-1203" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -67,13 +67,11 @@ export function RoomForm({ initialData, onSubmit, isLoading }: RoomFormProps) {
               name="floor"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Floor</FormLabel>
+                  <FormLabel>Floor (Optional)</FormLabel>
                   <FormControl>
                     <Input 
-                        type="number" 
-                        placeholder="1" 
+                        placeholder="e.g. 1, 2, Ground" 
                         {...field} 
-                        onChange={e => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
@@ -82,53 +80,71 @@ export function RoomForm({ initialData, onSubmit, isLoading }: RoomFormProps) {
             />
         </div>
 
-        {/* Status */}
+        {/* Note */}
         <FormField
           control={form.control}
-          name="status"
+          name="note"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Status</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="AVAILABLE">Available</SelectItem>
-                  <SelectItem value="BOOKED">Booked</SelectItem>
-                  <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Images */}
-        <FormField
-          control={form.control}
-          name="images"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Room Images</FormLabel>
+              <FormLabel>Note (Optional)</FormLabel>
               <FormControl>
-                <ImageUpload
-                  value={field.value || []}
-                  onChange={(newImages) => field.onChange(newImages)}
-                  onRemove={(urlToRemove) =>
-                    field.onChange(
-                      (field.value || []).filter((current) => current.url !== urlToRemove)
-                    )
-                  }
-                  disabled={isLoading}
-                />
+                <Input placeholder="Additional notes..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        {initialData && (   
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Status */}
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="ACTIVE">Active</SelectItem>
+                      <SelectItem value="INACTIVE">Inactive</SelectItem>
+                      <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Clean Status */}
+            <FormField
+              control={form.control}
+              name="cleanStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Clean Status</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select clean status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="CLEAN">Clean</SelectItem>
+                      <SelectItem value="DIRTY">Dirty</SelectItem>
+                      <SelectItem value="INSPECT">Inspect</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        </div>
+        )}
 
         <div className="flex justify-start">
              <Button type="submit" disabled={isLoading}>

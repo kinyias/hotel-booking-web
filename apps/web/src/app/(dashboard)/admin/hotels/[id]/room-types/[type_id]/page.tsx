@@ -6,13 +6,14 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { RoomTypeForm } from '@/features/room-types/components/RoomTypeForm';
-import { RoomTable } from '@/features/hotels/components/RoomTable';
+import { RoomTable } from '@/features/rooms/components/RoomTable';
 import { 
   RoomTypeFormValues, 
   useCreateRoomTypeMutation, 
   useUpdateRoomTypeMutation, 
   useQueryRoomTypeById 
 } from '@/features/room-types';
+import { useQueryRooms } from '@/features/rooms/queries';
 import toast from 'react-hot-toast';
 import { formatNumber } from '@/utils/currency';
 
@@ -28,6 +29,11 @@ export default function RoomTypePage() {
   // Use enabled: isEditing to avoid fetching when creating
   const { data: roomType, isLoading: isFetching } = useQueryRoomTypeById(hotelId, roomTypeId, isEditing);
   
+  // Fetch rooms for this room type
+  const { data: roomsData } = useQueryRooms(hotelId, { 
+    roomTypeId: isEditing ? roomTypeId : undefined 
+  }, isEditing);
+  
   const createMutation = useCreateRoomTypeMutation(hotelId);
   const updateMutation = useUpdateRoomTypeMutation(hotelId, roomTypeId);
   
@@ -41,8 +47,9 @@ export default function RoomTypePage() {
     amenityIds: roomType.amenities.map((a) => a.amenity.id),
     images: roomType.images.map(img => ({ id: img.image_id, url: img.url }))
   } : undefined;
-  // Placeholder for when we have an endpoint to fetch rooms for a specific room type
-  const rooms: any[] = []; 
+  
+  // Get rooms from the fetched data
+  const rooms = roomsData?.data || []; 
 
   const handleFormSubmit = async (data: RoomTypeFormValues) => {
     try {
