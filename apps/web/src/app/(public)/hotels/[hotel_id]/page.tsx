@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { format, differenceInDays, addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { 
@@ -9,6 +9,7 @@ import {
   User,
   Calendar as CalendarIcon,
   Loader2,
+  Search
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ import { useHotelDetailQuery } from "@/features/hotels/queries";
 import { useQueryRoomTypesAvailable } from "@/features/room-types/queries";
 import { formatCurrency } from "@/utils/currency";
 import { HotelGallery } from "@/features/hotels/components/HotelGallery";
+
 export type GalleryImage = {
   id: string;
   url: string;
@@ -29,28 +31,51 @@ export type GalleryImage = {
   roomTypeId?: string;
   roomTypeName?: string;
 };
+
 export default function HotelDetailPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const hotelId = params.hotel_id as string;
   const router = useRouter();
   
-  // Filter States
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 1),
+  // Get date params from URL
+  const searchFrom = searchParams.get('from');
+  const searchTo = searchParams.get('to');
+
+  // Filter States - Initialize from URL or default
+  const [date, setDate] = useState<DateRange | undefined>(() => {
+    if (searchFrom && searchTo) {
+      return {
+        from: new Date(searchFrom),
+        to: new Date(searchTo)
+      };
+    }
+    return {
+      from: new Date(),
+      to: addDays(new Date(), 1),
+    };
   });
+
   const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
   const [isGuestPopoverOpen, setIsGuestPopoverOpen] = useState(false);
 
   // Data Fetching
   const { data: hotel, isLoading: isLoadingHotel } = useHotelDetailQuery(hotelId);
+  
+  // Use URL params for query if available, otherwise fallback to default date logic
+  // But strictly speaking, if we want "Change Search" behavior, we should prioritize URL params context
+  // If URL params are present, use them. If not, use the default dates (which we also initialized state with).
+  const queryFrom = searchFrom || (date?.from ? format(date.from, "yyyy-MM-dd") : undefined);
+  const queryTo = searchTo || (date?.to ? format(date.to, "yyyy-MM-dd") : undefined);
+
   const { data: roomTypesResponse, isLoading: isLoadingRooms } = useQueryRoomTypesAvailable(
     hotelId,
-    date?.from && date?.to ? {
-        from: format(date.from, "yyyy-MM-dd"),
-        to: format(date.to, "yyyy-MM-dd"),
+    queryFrom && queryTo ? {
+        from: queryFrom,
+        to: queryTo,
     } : undefined
   );
+
   const roomTypes = roomTypesResponse?.data || [];
   const galleryImages: GalleryImage[] = [
   // Hotel images
@@ -75,7 +100,15 @@ export default function HotelDetailPage() {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   // Derived Values
-  const nights = date?.from && date?.to ? Math.max(1, (differenceInDays(date.to, date.from)+1)) : 1;
+  // Calculate nights based on QUERY params (actual availability), not just picker state, 
+  // though typically they align. Let's use the date state for UI consistency,
+  // knowing the user hits "Search" to align them.
+  // Actually, for booking calculation, we should use the dates that resulted in the current roomTypes.
+  // So we should parse queryFrom/queryTo back to dates.
+  const checkInDate = queryFrom ? new Date(queryFrom) : new Date();
+  const checkOutDate = queryTo ? new Date(queryTo) : addDays(new Date(), 1);
+  const nights = Math.max(1, differenceInDays(checkOutDate, checkInDate));
+
   const totalSelectedRooms = Object.values(quantities).reduce((acc, q) => acc + q, 0);
   const totalPrice = roomTypes.reduce((acc, type) => {
     return acc + (quantities[type.id] || 0) * type.price_per_night * nights;
@@ -92,6 +125,16 @@ export default function HotelDetailPage() {
     });
   };
 
+  const handleSearch = () => {
+    if (!date?.from || !date?.to) return;
+
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('from', format(date.from, "yyyy-MM-dd"));
+    newSearchParams.set('to', format(date.to, "yyyy-MM-dd"));
+    
+    router.replace(`?${newSearchParams.toString()}`, { scroll: false });
+  };
+
   const handleBookNow = () => {
     if (totalSelectedRooms === 0 || !hotel) return;
 
@@ -101,16 +144,17 @@ export default function HotelDetailPage() {
       .map(([typeId, qty]) => `${typeId}:${qty}`)
       .join(',');
       
-    const searchParams = new URLSearchParams();
-    searchParams.set('hotel_id', hotel.id);
-    if(date?.from) searchParams.set('check_in', date.from.toISOString());
-    if(date?.to) searchParams.set('check_out', date.to.toISOString());
-    searchParams.set('total_price', totalPrice.toString());
-    searchParams.set('rooms', roomsParam);
-    searchParams.set('booking_id', `BK-${Date.now()}`); 
-    searchParams.set('booking_status', 'PENDING');
+    const bookingSearchParams = new URLSearchParams();
+    bookingSearchParams.set('hotel_id', hotel.id);
+    // Use the actual query dates for booking
+    if(queryFrom) bookingSearchParams.set('check_in', queryFrom);
+    if(queryTo) bookingSearchParams.set('check_out', queryTo);
+    bookingSearchParams.set('total_price', totalPrice.toString());
+    bookingSearchParams.set('rooms', roomsParam);
+    bookingSearchParams.set('booking_id', `BK-${Date.now()}`); 
+    bookingSearchParams.set('booking_status', 'PENDING');
 
-    router.push(`/booking?${searchParams.toString()}`);
+    router.push(`/booking?${bookingSearchParams.toString()}`);
   };
 
   const formatDateRange = () => {
@@ -233,6 +277,11 @@ export default function HotelDetailPage() {
                         </PopoverContent>
                       </Popover>
                     </div>
+
+                    <Button className="w-full" onClick={handleSearch}>
+                        <Search className="w-4 h-4 mr-2" />
+                        Change Search
+                    </Button>
                     
                     <div className="pt-4 border-t border-gray-200">
                       <div className="flex justify-between items-center text-sm mb-2">

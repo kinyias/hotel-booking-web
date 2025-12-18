@@ -12,7 +12,7 @@ export const useQueryRoomTypes = (hotelId: string, enabled?: boolean) => {
 
 export const useQueryRoomTypesAvailable = (hotelId: string, params?: RoomTypeQueryParams, enabled?: boolean) => {
     return useQuery({
-        queryKey: ['room-types-available', hotelId],
+        queryKey: ['room-types-available', hotelId, params?.from, params?.to],
         queryFn: () => getRoomTypesAvailable(hotelId, params),
         enabled,
     });
