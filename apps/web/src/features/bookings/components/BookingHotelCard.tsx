@@ -14,7 +14,7 @@ export const BookingHotelCard = ({ hotel, checkIn, checkOut }: BookingHotelCardP
   const formatDate = (dateStr: string) => format(new Date(dateStr), "EEE, dd MMM yyyy");
 
   return (
-    <Card className="shadow-lg border-0 overflow-hidden">
+    <Card className="shadow-lg border-0 overflow-hidden p-0">
       <div className="relative h-48 w-full">
         <Image 
           src={hotel.images[0].url} 
@@ -28,9 +28,6 @@ export const BookingHotelCard = ({ hotel, checkIn, checkOut }: BookingHotelCardP
             <div className="flex items-center gap-4 text-sm opacity-90">
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" /> {hotel.address}
-              </div>
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" /> {hotel.star} Stars
               </div>
             </div>
           </div>

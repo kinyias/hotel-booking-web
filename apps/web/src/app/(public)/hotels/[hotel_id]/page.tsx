@@ -151,8 +151,6 @@ export default function HotelDetailPage() {
     if(queryTo) bookingSearchParams.set('check_out', queryTo);
     bookingSearchParams.set('total_price', totalPrice.toString());
     bookingSearchParams.set('rooms', roomsParam);
-    bookingSearchParams.set('booking_id', `BK-${Date.now()}`); 
-    bookingSearchParams.set('booking_status', 'PENDING');
 
     router.push(`/booking?${bookingSearchParams.toString()}`);
   };

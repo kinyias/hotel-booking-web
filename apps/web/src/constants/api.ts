@@ -26,6 +26,9 @@ export const API_ENDPOINTS = {
   AMENITIES: {
     AMENITIES: "/amenities",
   },
+  BOOKING: {
+    BOOKINGS: "/bookings",
+  },
   ROOM_TYPES: {
     ROOM_TYPES: "/room-types",
   },
