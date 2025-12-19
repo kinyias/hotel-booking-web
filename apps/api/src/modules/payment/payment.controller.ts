@@ -8,18 +8,21 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreateVnpayPaymentDto } from './dto/create-vnpay-payment.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { Response } from 'express';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @UseGuards(JwtAuthGuard)
-@Controller('bookings/:bookingId/payments')
+@Controller()
 export class PaymentController {
   constructor(private payment: PaymentService) {}
 
-  @Post('/vnpay')
+  @Post('bookings/:bookingId/payments/vnpay')
   async createVnpay(
     @Param('bookingId') bookingId: string,
     @Body() dto: CreateVnpayPaymentDto,
@@ -32,5 +35,22 @@ export class PaymentController {
 
     const userId = req.user.id; // theo auth guard của bạn
     return this.payment.createVnpayPaymentUrl(userId, bookingId, dto, ipAddr);
+  }
+
+  @Public()
+  @Get('payments/vnpay/return')
+  async vnpayReturn(@Query() query: any, @Res() res: Response) {
+    const result = await this.payment.handleVnpayReturn(query);
+    // tuỳ bạn: redirect về FE page kết quả
+    return res.status(200).json(result);
+  }
+
+  @Public()
+  @Get('payments/vnpay/ipn')
+  async vnpayIpn(@Query() query: any, @Res() res: Response, @Req() req: any) {
+    console.log('HIT IPN', req.query);
+
+    const result = await this.payment.handleVnpayIpn(query);
+    return res.status(200).json(result);
   }
 }

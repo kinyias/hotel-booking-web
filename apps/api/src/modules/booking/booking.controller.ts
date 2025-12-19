@@ -32,8 +32,8 @@ export class BookingController {
     @Body() dto: CreateBookingDto,
     @Req() req: any,
   ) {
-    const userId = req.user?.id ?? null; // có thể null nếu cho guest booking
-    return this.service.create(hotelId, userId, dto);
+    const userId = req.user?.id;
+    this.service.create(hotelId, userId, dto);
   }
 
   @Get('hotels/:hotelId/bookings')

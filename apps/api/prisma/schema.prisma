@@ -374,15 +374,7 @@ enum PaymentProvider {
   VNPAY
 }
 
-enum PaymentStatus {
-  INIT        // vừa tạo attempt, đã build paymentUrl
-  PENDING     // chờ IPN xác nhận (sau redirect)
-  SUCCEEDED
-  FAILED
-  CANCELED
-  REFUND_PENDING
-  REFUNDED
-}
+
 
 model Payment {
   id          String          @id @default(cuid())
@@ -476,4 +468,14 @@ enum BookingStatus {
   CHECKED_IN
   COMPLETED
   NO_SHOW        
+}
+
+enum PaymentStatus {
+  INIT        // vừa tạo attempt, đã build paymentUrl
+  PENDING     // chờ IPN xác nhận (sau redirect)
+  SUCCEEDED
+  FAILED
+  CANCELED
+  REFUND_PENDING
+  REFUNDED
 }

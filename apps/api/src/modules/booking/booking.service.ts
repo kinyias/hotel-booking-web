@@ -61,19 +61,21 @@ export class BookingService {
     });
     if (!member) throw new BadRequestException('Forbidden');
   }
-  async create(hotelId: string, userId: string | null, dto: CreateBookingDto) {
-    console.log(dto);
+  
+  async create(hotelId: string, userId: string, dto: CreateBookingDto) {
     const checkIn = toDateOnly(dto.checkIn);
     const checkOut = toDateOnly(dto.checkOut);
 
-    if (!(checkIn < checkOut))
+    if (!(checkIn < checkOut)) {
       throw new BadRequestException('checkOut must be after checkIn');
+    }
 
     const nights = eachDateFixed(checkIn, checkOut);
-    if (nights.length <= 0) throw new BadRequestException('Invalid date range');
+    const nightsCount = nights.length;
+    if (nightsCount <= 0) throw new BadRequestException('Invalid date range');
 
-    // Load room types (để lấy giá cứng)
-    const roomTypeIds = dto.items.map((i) => i.roomTypeId);
+    const roomTypeIds = [...new Set(dto.items.map((i) => i.roomTypeId))];
+
     const roomTypes = await this.prisma.roomType.findMany({
       where: { id: { in: roomTypeIds }, hotelId },
       select: { id: true, name: true, price_per_night: true },
@@ -83,18 +85,13 @@ export class BookingService {
       throw new BadRequestException('Some roomTypeId not belong to this hotel');
     }
 
-    const priceMap = new Map(
-      roomTypes.map((rt) => [
-        rt.id,
-        (rt as any).price ?? (rt as any).basePrice ?? 0,
-      ]),
+    const priceMap = new Map<string, Prisma.Decimal>(
+      roomTypes.map((rt) => [rt.id, rt.price_per_night]),
     );
 
-    // Transaction: kiểm tồn + trừ tồn + tạo booking
     return this.prisma.$transaction(async (tx) => {
       // 1) Check inventory đủ cho từng item, từng ngày
       for (const item of dto.items) {
-        const quantity = item.quantity;
         for (const day of nights) {
           const inv = await tx.inventory.findUnique({
             where: {
@@ -107,22 +104,25 @@ export class BookingService {
             select: { id: true, availableRooms: true, stopSell: true },
           });
 
-          if (!inv)
+          if (!inv) {
             throw new BadRequestException(
               `Missing inventory for ${item.roomTypeId} on ${day.toISOString().slice(0, 10)}`,
             );
-          if (inv.stopSell)
+          }
+          if (inv.stopSell) {
             throw new BadRequestException(
               `StopSell on ${day.toISOString().slice(0, 10)}`,
             );
-          if (inv.availableRooms < quantity)
+          }
+          if (inv.availableRooms < item.quantity) {
             throw new BadRequestException(
               `Not enough rooms on ${day.toISOString().slice(0, 10)}`,
             );
+          }
         }
       }
 
-      // 2) Trừ tồn (updateMany theo từng ngày để an toàn điều kiện)
+      // 2) Trừ tồn
       for (const item of dto.items) {
         for (const day of nights) {
           const updated = await tx.inventory.updateMany({
@@ -144,10 +144,19 @@ export class BookingService {
         }
       }
 
-      // 3) Tính tiền (snapshot giá roomType)
+      // 3) ✅ Tính tiền bằng Decimal + snapshot unitPrice
       const itemsCreate = dto.items.map((i) => {
-        const unitPrice = priceMap.get(i.roomTypeId) ?? 0;
-        const lineTotal = unitPrice * i.quantity * nights.length;
+        const unitPrice = priceMap.get(i.roomTypeId);
+        if (!unitPrice) {
+          throw new BadRequestException(
+            `Missing price for roomTypeId ${i.roomTypeId}`,
+          );
+        }
+
+        const lineTotal = unitPrice
+          .mul(new Prisma.Decimal(i.quantity))
+          .mul(new Prisma.Decimal(nightsCount));
+
         return {
           roomTypeId: i.roomTypeId,
           quantity: i.quantity,
@@ -156,14 +165,17 @@ export class BookingService {
         };
       });
 
-      const totalAmount = itemsCreate.reduce((s, x) => s + x.lineTotal, 0);
+      const totalAmount = itemsCreate.reduce(
+        (sum, x) => sum.add(x.lineTotal),
+        new Prisma.Decimal(0),
+      );
 
       // 4) Create booking
       const booking = await tx.booking.create({
         data: {
           hotelId,
-          userId: userId ?? undefined,
-          status: BookingStatus.PENDING, // MVP: tạo là confirmed luôn cho kịp nộp
+          userId,
+          status: BookingStatus.PENDING,
           checkIn,
           checkOut,
           guestName: dto.guestName,
