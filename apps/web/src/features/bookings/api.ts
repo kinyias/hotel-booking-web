@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "@/constants";
 import api from "@/lib/axios";
 import { PaginatedResponse } from "@/types";
-import { Booking, BookingQueryParams, BookingStatus, CreateBookingDto } from "./types";
+import { Booking, BookingQueryParams, BookingStatus, CreateBookingDto, Payment } from "./types";
 
 export const createBooking = async (hotelId:string, payload: CreateBookingDto) => {
     const response = await api.post<Booking>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/bookings`, payload);
@@ -35,5 +35,10 @@ export const updateBookingStatus= async (hotelId: string, bookingId: string, pay
 
 export const cancleBooking= async (hotelId: string, bookingId: string) => {
     const response = await api.patch<Booking>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/bookings/${bookingId}/cancel`);
+    return response.data;
+}
+
+export const createPayment = async(bookingId: string)=>{
+    const response = await api.post<Payment>(`${API_ENDPOINTS.BOOKING.BOOKINGS}/${bookingId}/payments/vnpay`, {locale: 'vn', bankCode: 'NCB'});
     return response.data;
 }

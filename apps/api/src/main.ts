@@ -14,7 +14,7 @@ async function createApp() {
   app.useGlobalFilters(new PrismaExceptionFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.enableCors({
-    origin: [process.env.PUBLIC_WEB_URL],
+    origin: true,
     credentials: true,
   });
   app.setGlobalPrefix('api/v1');

@@ -271,7 +271,7 @@ export class PaymentService {
       });
     }
 
-    return { ok: true, responseCode: rspCode };
+    return { ok: true, responseCode: rspCode, bookingId: payment.bookingId };
   }
 
   async handleVnpayIpn(query: Record<string, any>) {
