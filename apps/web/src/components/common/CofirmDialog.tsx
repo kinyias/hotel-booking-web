@@ -44,7 +44,7 @@ export function ConfirmDialog({
             onClick={onConfirm}
             disabled={isLoading}
           >
-            {isLoading ? "Deleting..." : confirmText}
+            {isLoading ? "Processing..." : confirmText}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -5,6 +5,10 @@ export interface BookingItem{
     quantity: number;
     unitPrice: number;
     lineTotal: number;
+    roomType?: {
+        id: string;
+        name: string;
+    };
 }
 export interface Payment{
     id: string;
@@ -29,12 +33,12 @@ export interface CreateBookingDto{
     note: string;
     items: CreateBookingItemDto[];
 }
-export type BoookingStatus= "PENDING" | "CONFIRMED" | "CANCELLED" | "CHECK_IN" | "NO_SHOW" | "COMPLETED";
+export type BookingStatus= "PENDING" | "CONFIRMED" | "CANCELLED" | "CHECKED_IN" | "NO_SHOW" | "COMPLETED";
 export interface Booking{
     id: string;
     hotelId: string;
     userId: string;
-    status: BoookingStatus;
+    status: BookingStatus;
 
     checkIn: string;
     checkOut: string;
@@ -51,4 +55,12 @@ export interface Booking{
 
     items: BookingItem[];
     payments: Payment[];
+}
+
+export interface BookingQueryParams {
+    status?: BookingStatus;
+    from?: string;
+    to?: string;
+    page?: number;
+    limit?: number;
 }

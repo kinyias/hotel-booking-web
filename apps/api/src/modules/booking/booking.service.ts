@@ -224,7 +224,19 @@ export class BookingService {
   async findOne(hotelId: string, id: string) {
     const booking = await this.prisma.booking.findFirst({
       where: { id, hotelId },
-      include: { items: true },
+      include: {
+        items: {
+            include: {
+                roomType: {
+                    select: {
+                        id: true,
+                        name: true,
+                    }
+                }
+            }
+        },
+        payments: true
+    },
     });
     if (!booking) throw new NotFoundException('Booking not found');
     return booking;
@@ -240,8 +252,8 @@ export class BookingService {
       limit?: number;
     },
   ) {
-    const page = q.page ?? 1;
-    const limit = q.limit ?? 20;
+    const page = Number(q.page) ?? 1;
+    const limit = Number(q.limit) ?? 10;
     const offset = (page - 1) * limit;
 
     const where: Prisma.BookingWhereInput = {
@@ -379,6 +391,7 @@ export class BookingService {
       where: { id: bookingId, hotelId },
       select: { id: true, status: true },
     });
+
     if (!booking) throw new NotFoundException('Booking not found');
 
     if (booking.status === dto.status) {
@@ -400,4 +413,37 @@ export class BookingService {
       },
     });
   }
+
+  async getMyBookingDetail(userId: string, bookingId: string) {
+    const booking = await this.prisma.booking.findFirst({
+      where: { id: bookingId, userId },
+      include: {
+        hotel: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            city: true,
+            country: true,
+            images: { take: 1, select: { url: true } },
+          },
+        },
+        items: {
+          include: {
+            roomType: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        payments: true,
+      },
+    });
+
+    if (!booking) throw new NotFoundException('Booking not found');
+    return booking;
+  }
+
 }
