@@ -15,7 +15,7 @@ import { PaymentService } from './payment.service';
 import { CreateVnpayPaymentDto } from './dto/create-vnpay-payment.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Response } from 'express';
-import { Public } from '../common/decorators/public.decorator';
+import { Public } from '../../common/decorators/public.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller()
