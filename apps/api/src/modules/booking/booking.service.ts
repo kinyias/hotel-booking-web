@@ -212,7 +212,19 @@ export class BookingService {
   async findOne(hotelId: string, id: string) {
     const booking = await this.prisma.booking.findFirst({
       where: { id, hotelId },
-      include: { items: true },
+      include: {
+        items: {
+            include: {
+                roomType: {
+                    select: {
+                        id: true,
+                        name: true,
+                    }
+                }
+            }
+        },
+        payments: true
+    },
     });
     if (!booking) throw new NotFoundException('Booking not found');
     return booking;
@@ -228,8 +240,8 @@ export class BookingService {
       limit?: number;
     },
   ) {
-    const page = q.page ?? 1;
-    const limit = q.limit ?? 20;
+    const page = Number(q.page) ?? 1;
+    const limit = Number(q.limit) ?? 10;
     const offset = (page - 1) * limit;
 
     const where: Prisma.BookingWhereInput = {

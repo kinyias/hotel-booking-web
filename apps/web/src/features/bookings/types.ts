@@ -5,6 +5,10 @@ export interface BookingItem{
     quantity: number;
     unitPrice: number;
     lineTotal: number;
+    roomType?: {
+        id: string;
+        name: string;
+    };
 }
 export interface Payment{
     id: string;
@@ -51,4 +55,12 @@ export interface Booking{
 
     items: BookingItem[];
     payments: Payment[];
+}
+
+export interface BookingQueryParams {
+    status?: BoookingStatus;
+    from?: string;
+    to?: string;
+    page?: number;
+    limit?: number;
 }
