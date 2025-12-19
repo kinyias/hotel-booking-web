@@ -29,15 +29,17 @@ export default function BookingsHotelListPage() {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  
+  const limit = 10;
   const { data: hotelsResponse, isLoading } = useHotelsQuery({ 
       page, 
-      limit: 10,
+      limit,
       q: search 
   });
   
   const hotels = hotelsResponse?.data || [];
   const meta = hotelsResponse?.meta;
+  const total = meta?.total || 0;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
   return (
     <div className="container mx-auto">
 
@@ -126,7 +128,7 @@ export default function BookingsHotelListPage() {
         <div className="flex justify-center mt-4">
           <EllipsisPagination 
             currentPage={page}
-            totalPages={meta.total}
+            totalPages={totalPages}
             onPageChange={setPage}
           />
         </div>

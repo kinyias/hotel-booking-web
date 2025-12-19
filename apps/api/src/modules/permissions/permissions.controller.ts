@@ -24,13 +24,11 @@ export class PermissionsController {
   constructor(private readonly service: PermissionsService) {}
 
   @Post()
-  @Permissions(MANAGE_USER)
   create(@Body() dto: CreatePermissionDto) {
     return this.service.create(dto);
   }
 
   @Get()
-  @Permissions(MANAGE_USER)
   findAll(q?: { search?: string; skip?: number; take?: number }) {
   return this.service.listPermissions({
     q: q?.search,
@@ -41,19 +39,16 @@ export class PermissionsController {
 
 
   @Get(':id')
-  @Permissions(MANAGE_USER)
   findOne(@Param('id') id: string) {
     return this.service.findOne(id);
   }
 
   @Patch(':id')
-  @Permissions(MANAGE_USER)
   update(@Param('id') id: string, @Body() dto: UpdatePermissionDto) {
     return this.service.update(id, dto);
   }
 
   @Delete(':id')
-  @Permissions(MANAGE_USER)
   remove(@Param('id') id: string) {
     return this.service.remove(id);
   }

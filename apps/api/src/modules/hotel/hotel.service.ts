@@ -120,19 +120,48 @@ export class HotelService {
       throw new NotFoundException('Hotel not found or has been deleted');
     }
 
-    return this.prisma.hotelMember.upsert({
+    // Validate that all users exist
+    const users = await this.prisma.user.findMany({
       where: {
-        hotelId_userId: {
-          hotelId,
-          userId: dto.userId,
-        },
+        id: { in: dto.userIds },
       },
-      create: {
-        hotelId,
-        userId: dto.userId,
-      },
-      update: {},
+      select: { id: true },
     });
+
+    if (users.length !== dto.userIds.length) {
+      throw new BadRequestException('One or more users not found');
+    }
+
+    // Create or update members in a transaction
+    const members = await this.prisma.$transaction(
+      dto.userIds.map((userId) =>
+        this.prisma.hotelMember.upsert({
+          where: {
+            hotelId_userId: {
+              hotelId,
+              userId,
+            },
+          },
+          create: {
+            hotelId,
+            userId,
+          },
+          update: {},
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        }),
+      ),
+    );
+
+    return members;
   }
 
   async removeMember(hotelId: string, userId: string) {

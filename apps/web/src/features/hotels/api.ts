@@ -44,7 +44,17 @@ export const deleteHotel = async (id: string) => {
   return response.data;
 };
 
-export const addMembersToHotel = async (hotelId: string, payload: {userIds: string[]}) => {
-    const response = await api.post<Hotel>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/members`, payload);
-    return response.data;
-}
+export const addMembersToHotel = async (hotelId: string, userIds: string[]) => {
+  const response = await api.post(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/members`, { userIds });
+  return response.data;
+};
+
+export const getHotelMembers = async (hotelId: string) => {
+  const response = await api.get(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/members`);
+  return response.data;
+};
+
+export const removeMemberFromHotel = async (hotelId: string, userId: string) => {
+  const response = await api.delete(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/members/${userId}`);
+  return response.data;
+};

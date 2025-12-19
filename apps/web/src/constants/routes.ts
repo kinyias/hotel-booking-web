@@ -18,4 +18,5 @@ export const ROUTES = {
   ADMIN_PROMOTION_TYPES: '/admin/promotions/types',
   ADMIN_AMENITIES: '/admin/amenities',
   ADMIN_INVENTORY: '/admin/inventory',
+  ADMIN_MEMBER_HOTELS: '/admin/member-hotels',
 };

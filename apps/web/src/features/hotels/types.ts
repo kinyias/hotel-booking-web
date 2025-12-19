@@ -11,6 +11,19 @@ export interface HotelOwner {
 }
 export type HotelStatus = 'DRAFT' | 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED';
 
+export interface HotelMember {
+  id: string;
+  hotelId: string;
+  userId: string;
+  createdAt: string;
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  };
+}
+
 export interface Hotel {
   id: string;
   owner_id: string;
@@ -41,3 +54,4 @@ export interface HotelsQueryParams {
   checkOut?: string; // ISO date string
   city?: string;
 }
+
