@@ -11,6 +11,7 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { signParams, sortObject } from 'src/modules/payment/payment.util';
 import { BookingStatus, PaymentStatus, Prisma } from '@prisma/client';
 import { VnpaySignatureService } from 'src/modules/payment/vnpay-signature.service';
+import { MailService } from 'src/modules/mail/mail.service';
 
 function formatVnpDate(d: Date) {
   const pad = (n: number) => String(n).padStart(2, '0');
@@ -35,7 +36,82 @@ export class PaymentService {
     private prisma: PrismaService,
     private config: ConfigService,
     private readonly vnpSig: VnpaySignatureService,
+    private readonly mail: MailService,
   ) {}
+
+  private formatMoneyVnd(amount: any) {
+    // amount là Prisma.Decimal
+    const n = Number(amount);
+    return n.toLocaleString('vi-VN');
+  }
+
+  private async sendPaymentSucceededMailOnce(paymentId: string) {
+    // check đã gửi chưa
+    const existed = await this.prisma.paymentEvent.findFirst({
+      where: { paymentId, type: 'MAIL_PAYMENT_SUCCEEDED' },
+      select: { id: true },
+    });
+    if (existed) return;
+
+    const payment = await this.prisma.payment.findUnique({
+      where: { id: paymentId },
+      include: {
+        booking: {
+          select: {
+            id: true,
+            guestName: true,
+            guestEmail: true,
+            checkIn: true,
+            checkOut: true,
+            userId: true,
+            hotel: { select: { name: true } },
+          },
+        },
+      },
+    });
+    if (!payment) return;
+
+    // ưu tiên guestEmail, fallback sang user.email nếu có userId
+    let to = payment.booking.guestEmail ?? null;
+    if (!to && payment.booking.userId) {
+      const u = await this.prisma.user.findUnique({
+        where: { id: payment.booking.userId },
+        select: { email: true },
+      });
+      to = u?.email ?? null;
+    }
+    if (!to) return; // không có email thì bỏ qua
+
+    try {
+      await this.mail.sendPaymentSucceededEmail({
+        to,
+        guestName: payment.booking.guestName,
+        bookingId: payment.booking.id,
+        amountVnd: this.formatMoneyVnd(payment.amount),
+        hotelName: payment.booking.hotel?.name ?? null,
+        checkIn: payment.booking.checkIn.toISOString().slice(0, 10),
+        checkOut: payment.booking.checkOut.toISOString().slice(0, 10),
+      });
+
+      // ghi event đánh dấu đã gửi
+      await this.prisma.paymentEvent.create({
+        data: {
+          paymentId,
+          type: 'MAIL_PAYMENT_SUCCEEDED',
+          payload: { to },
+        },
+      });
+    } catch (e) {
+      // mail fail KHÔNG làm fail payment, chỉ log để theo dõi
+      await this.prisma.paymentEvent.create({
+        data: {
+          paymentId,
+          type: 'MAIL_PAYMENT_FAILED',
+          payload: { error: String(e) },
+        },
+      });
+    }
+  }
 
   async createVnpayPaymentUrl(
     userId: string,
@@ -55,8 +131,7 @@ export class PaymentService {
     const tmnCode = this.config.getOrThrow<string>('VNPAY_TMN_CODE');
     const secret = this.config.getOrThrow<string>('VNPAY_HASH_SECRET');
     const vnpUrl = this.config.getOrThrow<string>('VNPAY_URL');
-    const returnUrl =
-      'https://eda32f399f28.ngrok-free.app/api/v1/payments/vnpay/return';
+    const returnUrl = this.config.getOrThrow<string>('VNPAY_RETURN_URL');
 
     // vnp_TxnRef: bạn tự sinh (nên unique + dễ trace)
     const merchantTxnRef = `BK_${booking.id}_${Date.now()}`;
@@ -161,15 +236,6 @@ export class PaymentService {
       return { ok: true, responseCode: rspCode };
     }
 
-    // Optional: kiểm tra amount nếu muốn chặt hơn (Return cũng có vnp_Amount)
-    // const vnpAmount = Number(params.vnp_Amount); // *100
-    // const amountVnd = vnpAmount / 100;
-    // const expected = new Prisma.Decimal(amountVnd);
-    // if (!payment.amount.equals(expected)) {
-    //   // amount mismatch => không update
-    //   return { ok: true, responseCode: rspCode, amountMismatch: true };
-    // }
-
     if (rspCode === '00') {
       await this.prisma.$transaction([
         this.prisma.payment.update({
@@ -189,6 +255,7 @@ export class PaymentService {
           data: { status: BookingStatus.CONFIRMED },
         }),
       ]);
+      await this.sendPaymentSucceededMailOnce(payment.id);
     } else {
       await this.prisma.payment.update({
         where: { id: payment.id },

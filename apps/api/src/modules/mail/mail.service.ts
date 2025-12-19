@@ -48,4 +48,44 @@ export class MailService {
       html,
     });
   }
+  
+  async sendPaymentSucceededEmail(input: {
+    to: string;
+    guestName?: string | null;
+    bookingId: string;
+    amountVnd: string; // đã format
+    hotelName?: string | null;
+    checkIn?: string;
+    checkOut?: string;
+  }) {
+    const brand = this.cfg.get<string>('BRAND_NAME') ?? 'Stayra';
+    const logo = this.cfg.get<string>('BRAND_LOGO_URL');
+
+    const html = `
+      <div style="font-family:Inter,Arial,sans-serif;line-height:1.6;max-width:640px;margin:auto">
+        ${logo ? `<img src="${logo}" alt="${brand}" height="40" style="margin-bottom:12px"/>` : ''}
+        <h2>Thanh toán thành công 🎉</h2>
+
+        <p>Chào ${input.guestName ?? 'bạn'},</p>
+        <p>Bọn mình đã ghi nhận <b>thanh toán thành công</b> cho booking <b>${input.bookingId}</b>.</p>
+
+        <div style="padding:12px 14px;border:1px solid #eee;border-radius:10px">
+          <p style="margin:0"><b>Khách sạn:</b> ${input.hotelName ?? '-'}</p>
+          <p style="margin:0"><b>Check-in:</b> ${input.checkIn ?? '-'}</p>
+          <p style="margin:0"><b>Check-out:</b> ${input.checkOut ?? '-'}</p>
+          <p style="margin:8px 0 0 0"><b>Số tiền:</b> ${input.amountVnd} VND</p>
+        </div>
+
+        <p style="margin-top:14px">Cảm ơn bạn đã sử dụng ${brand}.</p>
+        <hr/>
+        <small>Nếu bạn không thực hiện giao dịch này, vui lòng liên hệ hỗ trợ.</small>
+      </div>
+    `;
+
+    await this.mailer.sendMail({
+      to: input.to,
+      subject: `Thanh toán thành công – ${brand}`,
+      html,
+    });
+  }
 }
