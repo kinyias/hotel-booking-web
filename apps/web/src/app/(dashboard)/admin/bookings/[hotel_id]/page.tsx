@@ -38,6 +38,8 @@ import { useHotelDetailQuery } from "@/features/hotels/queries";
 import { useBookingsQuery } from "@/features/bookings/queries";
 import { formatCurrency } from "@/utils/currency";
 import Link from "next/link";
+import { UpdateStatusBookingDialog } from "@/features/bookings/components/UpdateStatusBookingDialog";
+import { Booking } from "@/features/bookings/types";
 
 export default function HotelBookingsPage() {
   const params = useParams();
@@ -45,6 +47,8 @@ export default function HotelBookingsPage() {
   const hotelId = params.hotel_id as string;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [isUpdateStatusOpen, setIsUpdateStatusOpen] = useState(false);
   const limit= 10
   // Fetch Hotel Details
   const { data: hotel, isLoading: isLoadingHotel } = useHotelDetailQuery(hotelId);
@@ -69,7 +73,7 @@ export default function HotelBookingsPage() {
       case 'CONFIRMED': return <Badge className="bg-green-500 hover:bg-green-600">Confirmed</Badge>;
       case 'PENDING': return <Badge variant="secondary" className="bg-yellow-500 text-white hover:bg-yellow-600">Pending</Badge>;
       case 'CANCELLED': return <Badge variant="destructive">Cancelled</Badge>;
-      case 'CHECK_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
+      case 'CHECKED_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
       case 'NO_SHOW': return <Badge variant="destructive" className="bg-red-700">No Show</Badge>;
       case 'COMPLETED': return <Badge variant="outline" className="border-green-500 text-green-600">Completed</Badge>;
       default: return <Badge variant="outline">{status}</Badge>;
@@ -184,7 +188,12 @@ export default function HotelBookingsPage() {
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem><Link href={`/admin/bookings/${hotelId}/booking/${booking.id}`}>View Details</Link></DropdownMenuItem>
-                                        <DropdownMenuItem>Update Status</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => {
+                                            setSelectedBooking(booking);
+                                            setIsUpdateStatusOpen(true);
+                                        }}>
+                                            Update Status
+                                        </DropdownMenuItem>
                                       </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
@@ -212,6 +221,18 @@ export default function HotelBookingsPage() {
             </div>
           )}
       </Card>
+      {selectedBooking && (
+        <UpdateStatusBookingDialog
+            hotelId={hotelId}
+            bookingId={selectedBooking.id}
+            currentStatus={selectedBooking.status}
+            open={isUpdateStatusOpen}
+            onOpenChange={(open) => {
+                setIsUpdateStatusOpen(open);
+                if (!open) setSelectedBooking(null);
+            }}
+        />
+      )}
     </div>
   );
 }

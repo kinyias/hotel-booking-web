@@ -33,12 +33,12 @@ export interface CreateBookingDto{
     note: string;
     items: CreateBookingItemDto[];
 }
-export type BoookingStatus= "PENDING" | "CONFIRMED" | "CANCELLED" | "CHECK_IN" | "NO_SHOW" | "COMPLETED";
+export type BookingStatus= "PENDING" | "CONFIRMED" | "CANCELLED" | "CHECKED_IN" | "NO_SHOW" | "COMPLETED";
 export interface Booking{
     id: string;
     hotelId: string;
     userId: string;
-    status: BoookingStatus;
+    status: BookingStatus;
 
     checkIn: string;
     checkOut: string;
@@ -58,7 +58,7 @@ export interface Booking{
 }
 
 export interface BookingQueryParams {
-    status?: BoookingStatus;
+    status?: BookingStatus;
     from?: string;
     to?: string;
     page?: number;

@@ -47,7 +47,7 @@ console.log(bookingsResponse)
       case 'CONFIRMED': return <Badge className="bg-green-500 hover:bg-green-600"><CheckCircle2 className="w-3 h-3 mr-1" /> Confirmed</Badge>;
       case 'PENDING': return <Badge variant="secondary" className="bg-yellow-500 text-white hover:bg-yellow-600"><Clock className="w-3 h-3 mr-1" /> Pending</Badge>;
       case 'CANCELLED': return <Badge variant="destructive">Cancelled</Badge>;
-      case 'CHECK_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
+      case 'CHECKED_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
       case 'NO_SHOW': return <Badge variant="destructive" className="bg-red-700">No Show</Badge>;
       case 'COMPLETED': return <Badge variant="outline" className="border-green-500 text-green-600">Completed</Badge>;
       default: return <Badge variant="outline">{status}</Badge>;

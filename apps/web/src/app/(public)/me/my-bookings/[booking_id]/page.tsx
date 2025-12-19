@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 import { 
   ArrowLeft, 
   Loader2, 
@@ -28,8 +31,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ConfirmDialog } from "@/components/common/CofirmDialog";
 
 import { useMyBookingByIdQuery } from "@/features/bookings/queries";
+import { useCancelBookingMutation } from "@/features/bookings/mutations";
 import { formatCurrency } from "@/utils/currency";
 
 export default function MyBookingDetailPage() {
@@ -44,7 +49,7 @@ export default function MyBookingDetailPage() {
       case 'CONFIRMED': return <Badge className="bg-green-500 hover:bg-green-600"><CheckCircle2 className="w-3 h-3 mr-1" /> Confirmed</Badge>;
       case 'PENDING': return <Badge variant="secondary" className="bg-yellow-500 text-white hover:bg-yellow-600"><Clock className="w-3 h-3 mr-1" /> Pending</Badge>;
       case 'CANCELLED': return <Badge variant="destructive">Cancelled</Badge>;
-      case 'CHECK_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
+      case 'CHECKED_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
       case 'NO_SHOW': return <Badge variant="destructive" className="bg-red-700">No Show</Badge>;
       case 'COMPLETED': return <Badge variant="outline" className="border-green-500 text-green-600">Completed</Badge>;
       default: return <Badge variant="outline">{status}</Badge>;
@@ -59,6 +64,29 @@ export default function MyBookingDetailPage() {
           default: return <Badge variant="outline">{status}</Badge>;
       }
   }
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const { mutate: cancelBooking, isPending: isCancelling } = useCancelBookingMutation((booking as any)?.hotel?.id, bookingId);
+  const queryClient = useQueryClient();
+
+  const handleCancelClick = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmCancel = () => {
+    cancelBooking(undefined, {
+      onSuccess: () => {
+        toast.success("Booking cancelled successfully");
+        setConfirmOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["my-booking", bookingId] });
+        queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
+      },
+      onError: (error) => {
+        toast.error("Failed to cancel booking");
+        console.error(error);
+      }
+    });
+  };
 
   if (isLoading) {
     return (
@@ -96,7 +124,7 @@ export default function MyBookingDetailPage() {
         {/* Actions - e.g. Cancel Booking, Check In */}
         <div className="flex gap-2">
              {booking.status === 'PENDING' && (
-                 <Button variant="destructive">Cancel Booking</Button>
+                 <Button variant="destructive" onClick={handleCancelClick}>Cancel Booking</Button>
              )}
         </div>
       </div>
@@ -275,6 +303,17 @@ export default function MyBookingDetailPage() {
 
           </div>
       </div>
+      
+      <ConfirmDialog 
+        open={confirmOpen}
+        title="Cancel Booking"
+        description="Are you sure you want to cancel this booking? This action cannot be undone."
+        confirmText="Yes, Cancel Booking"
+        cancelText="No, Keep Booking"
+        isLoading={isCancelling}
+        onConfirm={handleConfirmCancel}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </div>
   );
 }

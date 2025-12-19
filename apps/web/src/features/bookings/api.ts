@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "@/constants";
 import api from "@/lib/axios";
 import { PaginatedResponse } from "@/types";
-import { Booking, BookingQueryParams, CreateBookingDto } from "./types";
+import { Booking, BookingQueryParams, BookingStatus, CreateBookingDto } from "./types";
 
 export const createBooking = async (hotelId:string, payload: CreateBookingDto) => {
     const response = await api.post<Booking>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/bookings`, payload);
@@ -25,5 +25,15 @@ export const getMyBookings = async (params?: BookingQueryParams) => {
 
 export const getMyBookingById = async (bookingId: string) => {
     const response = await api.get<Booking>(`${API_ENDPOINTS.BOOKING.BOOKINGS}/me/${bookingId}`);
+    return response.data;
+}
+
+export const updateBookingStatus= async (hotelId: string, bookingId: string, payload: BookingStatus) => {
+    const response = await api.patch<Booking>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/bookings/${bookingId}/status`, {status: payload});
+    return response.data;
+}
+
+export const cancleBooking= async (hotelId: string, bookingId: string) => {
+    const response = await api.patch<Booking>(`${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/bookings/${bookingId}/cancel`);
     return response.data;
 }

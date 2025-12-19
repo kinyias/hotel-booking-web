@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { 
@@ -31,12 +33,14 @@ import {
 
 import { useBookingByIdQuery } from "@/features/bookings/queries";
 import { formatCurrency } from "@/utils/currency";
+import { UpdateStatusBookingDialog } from "@/features/bookings/components/UpdateStatusBookingDialog";
 
 export default function BookingDetailPage() {
   const params = useParams();
   const router = useRouter();
   const hotelId = params.hotel_id as string;
   const bookingId = params.booking_id as string;
+  const [isUpdateStatusOpen, setIsUpdateStatusOpen] = useState(false);
 
   const { data: booking, isLoading, isError } = useBookingByIdQuery(hotelId, bookingId);
 
@@ -45,7 +49,7 @@ export default function BookingDetailPage() {
       case 'CONFIRMED': return <Badge className="bg-green-500 hover:bg-green-600"><CheckCircle2 className="w-3 h-3 mr-1" /> Confirmed</Badge>;
       case 'PENDING': return <Badge variant="secondary" className="bg-yellow-500 text-white hover:bg-yellow-600"><Clock className="w-3 h-3 mr-1" /> Pending</Badge>;
       case 'CANCELLED': return <Badge variant="destructive">Cancelled</Badge>;
-      case 'CHECK_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
+      case 'CHECKED_IN': return <Badge className="bg-blue-500 hover:bg-blue-600">Checked In</Badge>;
       case 'NO_SHOW': return <Badge variant="destructive" className="bg-red-700">No Show</Badge>;
       case 'COMPLETED': return <Badge variant="outline" className="border-green-500 text-green-600">Completed</Badge>;
       default: return <Badge variant="outline">{status}</Badge>;
@@ -96,7 +100,9 @@ export default function BookingDetailPage() {
         </div>
         {/* Actions - e.g. Cancel Booking, Check In */}
         <div className="flex gap-2">
-             {/* Add Update Status actions here */}
+             <Button onClick={() => setIsUpdateStatusOpen(true)}>
+                Update Status
+             </Button>
         </div>
       </div>
 
@@ -248,6 +254,13 @@ export default function BookingDetailPage() {
 
           </div>
       </div>
+      <UpdateStatusBookingDialog
+        hotelId={hotelId}
+        bookingId={bookingId}
+        currentStatus={booking.status}
+        open={isUpdateStatusOpen}
+        onOpenChange={setIsUpdateStatusOpen}
+      />
     </div>
   );
 }
