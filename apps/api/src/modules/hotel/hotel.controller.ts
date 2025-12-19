@@ -21,7 +21,7 @@ import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
 import { HotelMemberGuard } from 'src/modules/hotel/guards/hotel-member.guard';
 import { HotelService } from 'src/modules/hotel/hotel.service';
 
-@UseGuards(JwtAuthGuard, ActionGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('hotels')
 export class HotelController {
   constructor(private hotelService: HotelService) {}
@@ -68,7 +68,7 @@ export class HotelController {
   }
   @Public()
   @Get('/:hotelId')
-  @Action('hotels.detail.read')
+  // @Action('hotels.detail.read')
   getDetail(@Param('hotelId') hotelId: string) {
     return this.hotelService.getHotelDetail(hotelId);
   }

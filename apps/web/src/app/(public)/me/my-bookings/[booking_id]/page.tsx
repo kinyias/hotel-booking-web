@@ -34,7 +34,7 @@ import {
 import { ConfirmDialog } from "@/components/common/CofirmDialog";
 
 import { useMyBookingByIdQuery } from "@/features/bookings/queries";
-import { useCancelBookingMutation } from "@/features/bookings/mutations";
+import { useCancelBookingMutation, useCreatePaymentMutation } from "@/features/bookings/mutations";
 import { formatCurrency } from "@/utils/currency";
 
 export default function MyBookingDetailPage() {
@@ -67,7 +67,24 @@ export default function MyBookingDetailPage() {
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const { mutate: cancelBooking, isPending: isCancelling } = useCancelBookingMutation((booking as any)?.hotel?.id, bookingId);
+  const { mutate: createPayment, isPending: isCreatingPayment } = useCreatePaymentMutation(bookingId);
   const queryClient = useQueryClient();
+
+  const handleCreatePayment = () => {
+    createPayment(undefined, {
+        onSuccess: (data: any) => {
+            if(data?.paymentUrl) {
+                window.location.href = data.paymentUrl;
+            } else {
+                toast.error("Failed to create payment URL");
+            }
+        },
+        onError: (error) => {
+            toast.error("Failed to initiate payment");
+            console.error(error);
+        }
+    })
+  }
 
   const handleCancelClick = () => {
     setConfirmOpen(true);
@@ -201,24 +218,40 @@ export default function MyBookingDetailPage() {
                           <span className="text-2xl font-bold text-primary">{formatCurrency(booking.totalAmount)}</span>
                       </div>
                       
-                      {booking.payments && booking.payments.length > 0 ? (
+                       {booking.payments && booking.payments.length > 0 ? (
                            <div className="space-y-4">
                                <h4 className="font-medium text-sm text-gray-500 uppercase tracking-wider">Transaction History</h4>
                                {booking.payments.map(payment => (
                                    <div key={payment.id} className="flex justify-between items-center border-b border-gray-100 pb-4 last:border-0 last:pb-0">
                                        <div>
-                                           <div className="font-medium">{payment.method}</div>
+                                           <div className="font-medium">{payment.method || 'VNPAY'}</div>
                                            <div className="text-xs text-gray-500">{format(new Date(payment.createdAt), "dd MMM yyyy, HH:mm")}</div>
                                        </div>
                                        <div className="text-right">
                                            <div className="font-medium">{formatCurrency(payment.amount)}</div>
-                                           {/* <div className="mt-1">{getPaymentStatusBadge(payment.status || 'PENDING')}</div> */}
+                                            <div className="mt-1">{getPaymentStatusBadge(payment.status || 'PENDING')}</div>
                                        </div>
                                    </div>
                                ))}
+                                {booking.status === 'PENDING' && !booking.payments.some(p => p.status === 'SUCCEEDED') && (
+                                     <div className="pt-2">
+                                         <Button className="w-full" onClick={handleCreatePayment} disabled={isCreatingPayment}>
+                                             {isCreatingPayment && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                                             Repay Online (VNPAY)
+                                         </Button>
+                                     </div>
+                                )}
                            </div>
                       ) : (
-                          <div className="text-center py-4 text-gray-500">No payment records found</div>
+                          <div className="text-center py-4 text-gray-500 flex flex-col items-center gap-3">
+                              <p>No payment records found</p>
+                              {booking.status === 'PENDING' && (
+                                  <Button onClick={handleCreatePayment} disabled={isCreatingPayment}>
+                                       {isCreatingPayment && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                                      Pay Online (VNPAY)
+                                  </Button>
+                              )}
+                          </div>
                       )}
                   </CardContent>
               </Card>

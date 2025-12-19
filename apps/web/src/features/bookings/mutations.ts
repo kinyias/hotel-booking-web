@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { cancleBooking, createBooking, updateBookingStatus } from "./api"
+import { cancleBooking, createBooking, createPayment, updateBookingStatus } from "./api"
 import { BookingStatus, CreateBookingDto } from "./types"
 
 export const useCreateBookingMutation = (hotelId: string) => {
@@ -32,5 +32,11 @@ export const useCancelBookingMutation = (hotelId: string, bookingId: string) => 
                 queryKey: ['bookings', hotelId],
             });
         },
+    })
+}
+
+export const useCreatePaymentMutation = (bookingId: string) => {
+    return useMutation({
+        mutationFn: ()=> createPayment(bookingId),
     })
 }

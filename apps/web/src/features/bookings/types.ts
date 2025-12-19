@@ -17,6 +17,7 @@ export interface Payment{
     method: string;
     createdAt: string;
     updatedAt: string;
+    status: string;
 }
 export interface CreateBookingItemDto{
     roomTypeId: string;

@@ -41,8 +41,19 @@ export class PaymentController {
   @Get('payments/vnpay/return')
   async vnpayReturn(@Query() query: any, @Res() res: Response) {
     const result = await this.payment.handleVnpayReturn(query);
-    // tuỳ bạn: redirect về FE page kết quả
-    return res.status(200).json(result);
+    const status =
+    result.ok && result.responseCode === '00'
+      ? 'success'
+      : 'failed';
+
+  const feUrl =
+    process.env.PUBLIC_WEB_URL ??
+    'http://localhost:3000';
+
+  return res.redirect(
+    `${feUrl}/payment-result?payment_status=${status}` +
+    `&booking_id=${result.bookingId ?? ''}`
+  );
   }
 
   @Public()
