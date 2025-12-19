@@ -3,9 +3,9 @@ import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { ListRoomDto } from './dto/list-room.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ActionGuard } from '../auth/guards/action.guard';
+import { Action } from '../auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard, ActionGuard)
 @Controller('hotels/:hotelId/rooms')

@@ -10,16 +10,16 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { Public } from 'src/common/decorators/public.decorator';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
-import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
-import { ListHotelsQueryDto } from 'src/modules/hotel/dto/list-hotels.query';
-import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
-import { HotelMemberGuard } from 'src/modules/hotel/guards/hotel-member.guard';
-import { HotelService } from 'src/modules/hotel/hotel.service';
+import { Public } from '../../common/decorators/public.decorator';
+import { Action } from '../auth/decorator/action.decorator';
+import { ActionGuard } from '../auth/guards/action.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AddMemberDto } from './dto/add-member.dto';
+import { CreateHotelDto } from './dto/create-hotel.dto';
+import { ListHotelsQueryDto } from './dto/list-hotels.query';
+import { UpdateHotelDto } from './dto/update-hotel.dto';
+import { HotelMemberGuard } from './guards/hotel-member.guard';
+import { HotelService } from './hotel.service';
 
 @UseGuards(JwtAuthGuard, ActionGuard)
 @Controller('hotels')

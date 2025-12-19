@@ -5,11 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { HotelMemberRole, Prisma } from '@prisma/client';
-import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
-import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
-import { ListHotelsQueryDto } from 'src/modules/hotel/dto/list-hotels.query';
-import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { AddMemberDto } from './dto/add-member.dto';
+import { CreateHotelDto } from './dto/create-hotel.dto';
+import { ListHotelsQueryDto } from './dto/list-hotels.query';
+import { UpdateHotelDto } from './dto/update-hotel.dto';
+import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class HotelService {
   constructor(private prisma: PrismaService) {}

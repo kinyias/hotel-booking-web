@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AmenityController } from 'src/modules/amentity/amenity.controller';
-import { AmenityService } from 'src/modules/amentity/amenity.service';
+import { AmenityController } from './amenity.controller';
+import { AmenityService } from './amenity.service';
 
 @Module({
   providers: [AmenityService],

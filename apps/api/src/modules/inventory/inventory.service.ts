@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma, Inventory } from '@prisma/client';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ListInventoryDto } from './dto/list-inventory.dto';
 import { BulkSetInventoryDto } from './dto/bulk-set-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';

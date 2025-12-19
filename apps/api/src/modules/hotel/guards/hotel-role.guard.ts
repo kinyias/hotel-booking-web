@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { HotelMemberRole } from '@prisma/client';
-import { HOTEL_ROLES_KEY } from 'src/modules/hotel/decorator/hotel-role.decorator';
+import { HOTEL_ROLES_KEY } from '../decorator/hotel-role.decorator';
 
 @Injectable()
 export class HotelRoleGuard implements CanActivate {

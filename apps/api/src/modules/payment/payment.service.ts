@@ -7,11 +7,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { CreateVnpayPaymentDto } from './dto/create-vnpay-payment.dto';
 import * as qs from 'qs';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { signParams, sortObject } from 'src/modules/payment/payment.util';
+import { PrismaService } from '../prisma/prisma.service';
+import { signParams, sortObject } from './payment.util';
 import { BookingStatus, PaymentStatus, Prisma } from '@prisma/client';
-import { VnpaySignatureService } from 'src/modules/payment/vnpay-signature.service';
-import { MailService } from 'src/modules/mail/mail.service';
+import { VnpaySignatureService } from './vnpay-signature.service';
+import { MailService } from '../mail/mail.service';
 
 function formatVnpDate(d: Date) {
   const pad = (n: number) => String(n).padStart(2, '0');
