@@ -8,6 +8,7 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 import { Prisma, BookingStatus } from '@prisma/client';
 import { parseISO, startOfDay } from 'date-fns';
 import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
+import { UpdateBookingStatusDto } from 'src/modules/booking/dto/update-booking-status.dto';
 
 function eachDate(from: Date, to: Date) {
   const dates: Date[] = [];
@@ -45,6 +46,21 @@ function toDateOnly(d: string) {
 export class BookingService {
   constructor(private prisma: PrismaService) {}
 
+  private async assertHotelAccess(hotelId: string, userId: string) {
+    const hotel = await this.prisma.hotel.findUnique({
+      where: { id: hotelId },
+      select: { id: true, ownerId: true },
+    });
+    if (!hotel) throw new NotFoundException('Hotel not found');
+
+    if (hotel.ownerId === userId) return;
+
+    const member = await this.prisma.hotelMember.findUnique({
+      where: { hotelId_userId: { hotelId, userId } },
+      select: { userId: true },
+    });
+    if (!member) throw new BadRequestException('Forbidden');
+  }
   async create(hotelId: string, userId: string | null, dto: CreateBookingDto) {
     console.log(dto);
     const checkIn = toDateOnly(dto.checkIn);
@@ -147,7 +163,7 @@ export class BookingService {
         data: {
           hotelId,
           userId: userId ?? undefined,
-          status: BookingStatus.CONFIRMED, // MVP: tạo là confirmed luôn cho kịp nộp
+          status: BookingStatus.PENDING, // MVP: tạo là confirmed luôn cho kịp nộp
           checkIn,
           checkOut,
           guestName: dto.guestName,
@@ -305,5 +321,71 @@ export class BookingService {
         total,
       },
     };
+  }
+
+  private assertTransition(from: BookingStatus, to: BookingStatus) {
+    // Terminal states không cho đổi nữa
+    const terminal = new Set<BookingStatus>([
+      BookingStatus.CANCELLED,
+      BookingStatus.NO_SHOW,
+      BookingStatus.COMPLETED, // (schema của bạn đang là COMPLETED)
+    ]);
+    if (terminal.has(from)) {
+      throw new BadRequestException(`Booking is ${from}, cannot change status`);
+    }
+
+    const allowed: Record<BookingStatus, BookingStatus[]> = {
+      [BookingStatus.PENDING]: [
+        BookingStatus.CONFIRMED,
+        BookingStatus.CANCELLED,
+      ],
+      [BookingStatus.CONFIRMED]: [
+        BookingStatus.CANCELLED,
+        BookingStatus.CHECKED_IN,
+        BookingStatus.NO_SHOW,
+      ],
+      [BookingStatus.CHECKED_IN]: [BookingStatus.COMPLETED],
+      [BookingStatus.CANCELLED]: [],
+      [BookingStatus.NO_SHOW]: [],
+      [BookingStatus.COMPLETED]: [],
+    };
+
+    if (!allowed[from]?.includes(to)) {
+      throw new BadRequestException(`Invalid transition: ${from} -> ${to}`);
+    }
+  }
+
+  async updateStatus(
+    hotelId: string,
+    userId: string,
+    bookingId: string,
+    dto: UpdateBookingStatusDto,
+  ) {
+    await this.assertHotelAccess(hotelId, userId);
+
+    const booking = await this.prisma.booking.findFirst({
+      where: { id: bookingId, hotelId },
+      select: { id: true, status: true },
+    });
+    if (!booking) throw new NotFoundException('Booking not found');
+
+    if (booking.status === dto.status) {
+      return this.prisma.booking.findUnique({
+        where: { id: bookingId },
+        include: { items: true, payments: true },
+      });
+    }
+
+    this.assertTransition(booking.status, dto.status);
+
+    return this.prisma.booking.update({
+      where: { id: bookingId },
+      data: { status: dto.status },
+      include: {
+        items: true,
+        payments: true,
+        hotel: { select: { id: true, name: true } },
+      },
+    });
   }
 }

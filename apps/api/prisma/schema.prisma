@@ -473,4 +473,7 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  CHECKED_IN
+  COMPLETED
+  NO_SHOW        
 }

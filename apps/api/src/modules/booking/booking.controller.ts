@@ -13,6 +13,7 @@ import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
+import { UpdateBookingStatusDto } from 'src/modules/booking/dto/update-booking-status.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller()
@@ -48,5 +49,16 @@ export class BookingController {
   @Patch('hotels/:hotelId/bookings/:id/cancel')
   cancel(@Param('hotelId') hotelId: string, @Param('id') id: string) {
     return this.service.cancel(hotelId, id);
+  }
+
+  @Patch('hotels/:hotelId/bookings/:id/status')
+  updateStatus(
+    @Param('hotelId') hotelId: string,
+    @Param('id') id: string,
+    @Body() dto: UpdateBookingStatusDto,
+    @Req() req: any,
+  ) {
+    const userId = req.user?.id;
+    return this.service.updateStatus(hotelId, userId, id, dto);
   }
 }
