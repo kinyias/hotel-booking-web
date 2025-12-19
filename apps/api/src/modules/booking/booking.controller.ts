@@ -14,6 +14,7 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
 import { UpdateBookingStatusDto } from 'src/modules/booking/dto/update-booking-status.dto';
+import { Action } from 'src/modules/auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller()
@@ -43,21 +44,25 @@ export class BookingController {
   }
 
   @Get('hotels/:hotelId/bookings')
+  @Action('bookings.list')
   list(@Param('hotelId') hotelId: string, @Query() q: any) {
     return this.service.list(hotelId, q);
   }
 
   @Get('hotels/:hotelId/bookings/:id')
+  @Action('bookings.detail.read')
   findOne(@Param('hotelId') hotelId: string, @Param('id') id: string) {
     return this.service.findOne(hotelId, id);
   }
 
   @Patch('hotels/:hotelId/bookings/:id/cancel')
+  @Action('bookings.cancel')
   cancel(@Param('hotelId') hotelId: string, @Param('id') id: string) {
     return this.service.cancel(hotelId, id);
   }
 
   @Patch('hotels/:hotelId/bookings/:id/status')
+  @Action('bookings.status.update')
   updateStatus(
     @Param('hotelId') hotelId: string,
     @Param('id') id: string,

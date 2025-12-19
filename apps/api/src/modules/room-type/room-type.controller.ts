@@ -17,6 +17,7 @@ import { UpdateRoomTypeDto } from './dto/update-room-type.dto';
 import { AvailableRoomTypeDto, ListRoomTypeDto } from './dto/list-room-type.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Action } from 'src/modules/auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('hotels/:hotelId/room-types')
@@ -63,6 +64,7 @@ export class RoomTypeController {
   }
 
   @Patch(':id')
+  @Action('room-types.update')
   async update(
     @Param('hotelId') hotelId: string,
     @Param('id') id: string,
@@ -74,6 +76,7 @@ export class RoomTypeController {
   }
 
   @Delete(':id')
+  @Action('room-types.delete')
   async remove(
     @Param('hotelId') hotelId: string,
     @Param('id') id: string,

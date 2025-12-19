@@ -15,14 +15,17 @@ import { BulkSetInventoryDto } from './dto/bulk-set-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { InventoryService } from 'src/modules/inventory/inventory.service';
+import { ActionGuard } from 'src/modules/auth/guards/action.guard';
+import { Action } from 'src/modules/auth/decorator/action.decorator';
 
 const getUserId = (req: any) => req.user?.id;
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, ActionGuard)
 @Controller('hotels/:hotelId/inventories')
 export class InventoryController {
   constructor(private readonly service: InventoryService) {}
 
   @Get()
+  @Action('inventories.list')
   list(
     @Param('hotelId') hotelId: string,
     @Query() q: ListInventoryDto,
@@ -32,6 +35,7 @@ export class InventoryController {
   }
 
   @Post('bulk')
+  @Action('inventories.bulk.set')
   bulkSet(
     @Param('hotelId') hotelId: string,
     @Body() dto: BulkSetInventoryDto,
@@ -42,6 +46,7 @@ export class InventoryController {
 
 
   @Patch(':id')
+  @Action('inventories.update')
   updateOne(
     @Param('hotelId') hotelId: string,
     @Param('id') id: string,
@@ -52,6 +57,7 @@ export class InventoryController {
   }
 
   @Delete(':id')
+  @Action('inventories.delete')
   remove(
     @Param('hotelId') hotelId: string,
     @Param('id') id: string,
