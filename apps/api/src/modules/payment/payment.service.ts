@@ -55,7 +55,8 @@ export class PaymentService {
     const tmnCode = this.config.getOrThrow<string>('VNPAY_TMN_CODE');
     const secret = this.config.getOrThrow<string>('VNPAY_HASH_SECRET');
     const vnpUrl = this.config.getOrThrow<string>('VNPAY_URL');
-    const returnUrl = "https://eda32f399f28.ngrok-free.app/api/v1/payments/vnpay/return";
+    const returnUrl =
+      'https://eda32f399f28.ngrok-free.app/api/v1/payments/vnpay/return';
 
     // vnp_TxnRef: bạn tự sinh (nên unique + dễ trace)
     const merchantTxnRef = `BK_${booking.id}_${Date.now()}`;
@@ -112,28 +113,98 @@ export class PaymentService {
     const params = { ...query };
     delete params.vnp_SecureHash;
     delete params.vnp_SecureHashType;
-    
-    console.log("Handle VNPAY Return:", params.vnp_ResponseCode);
 
     const ok = this.vnpSig.verify(params, secureHash);
-    // lưu event để audit
-    const merchantTxnRef = params.vnp_TxnRef;
+    const merchantTxnRef = params.vnp_TxnRef as string | undefined;
 
-    const payment = merchantTxnRef
-      ? await this.prisma.payment.findUnique({ where: { merchantTxnRef } })
-      : null;
+    // Nếu thiếu txnRef thì khỏi làm gì được
+    if (!merchantTxnRef) {
+      return { ok: false, responseCode: params.vnp_ResponseCode ?? null };
+    }
 
-    if (payment) {
-      await this.prisma.paymentEvent.create({
+    // Tìm payment theo merchantTxnRef
+    const payment = await this.prisma.payment.findUnique({
+      where: { merchantTxnRef },
+      include: { booking: { select: { id: true, status: true } } },
+    });
+
+    // Không có payment => vẫn trả FE biết kết quả verify
+    if (!payment) {
+      return { ok, responseCode: params.vnp_ResponseCode ?? null };
+    }
+
+    // Log RETURN event để audit
+    await this.prisma.paymentEvent.create({
+      data: {
+        paymentId: payment.id,
+        type: 'RETURN',
+        payload: query,
+      },
+    });
+
+    // Nếu chữ ký fail => không update trạng thái
+    if (!ok) {
+      return { ok: false, responseCode: params.vnp_ResponseCode ?? null };
+    }
+
+    const rspCode = (params.vnp_ResponseCode as string) ?? null; // "00" success
+    const payDate = parseVnpPayDate(params.vnp_PayDate);
+    const bankCode = (params.vnp_BankCode as string) ?? null;
+    const vnpTransactionNo = (params.vnp_TransactionNo as string) ?? null;
+    const transactionStatus = (params.vnp_TransactionStatus as string) ?? null;
+
+    // Idempotent: nếu IPN đã set trạng thái cuối rồi thì không ghi đè
+    if (
+      payment.status !== PaymentStatus.INIT &&
+      payment.status !== PaymentStatus.PENDING
+    ) {
+      return { ok: true, responseCode: rspCode };
+    }
+
+    // Optional: kiểm tra amount nếu muốn chặt hơn (Return cũng có vnp_Amount)
+    // const vnpAmount = Number(params.vnp_Amount); // *100
+    // const amountVnd = vnpAmount / 100;
+    // const expected = new Prisma.Decimal(amountVnd);
+    // if (!payment.amount.equals(expected)) {
+    //   // amount mismatch => không update
+    //   return { ok: true, responseCode: rspCode, amountMismatch: true };
+    // }
+
+    if (rspCode === '00') {
+      await this.prisma.$transaction([
+        this.prisma.payment.update({
+          where: { id: payment.id },
+          data: {
+            status: PaymentStatus.SUCCEEDED,
+            responseCode: rspCode,
+            transactionStatus,
+            vnpTransactionNo,
+            bankCode,
+            payDate,
+            secureHashAlg: 'sha512',
+          },
+        }),
+        this.prisma.booking.update({
+          where: { id: payment.bookingId },
+          data: { status: BookingStatus.CONFIRMED },
+        }),
+      ]);
+    } else {
+      await this.prisma.payment.update({
+        where: { id: payment.id },
         data: {
-          paymentId: payment.id,
-          type: 'RETURN',
-          payload: query,
+          status: PaymentStatus.FAILED,
+          responseCode: rspCode,
+          transactionStatus,
+          vnpTransactionNo,
+          bankCode,
+          payDate,
+          secureHashAlg: 'sha512',
         },
       });
     }
 
-    return { ok, responseCode: params.vnp_ResponseCode };
+    return { ok: true, responseCode: rspCode };
   }
 
   async handleVnpayIpn(query: Record<string, any>) {
