@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import PageTitle from "@/components/sections/PageTitle";
 import BookingFilter from "@/components/booking/BookingFilter";
 import { Button } from "@/components/ui/button";
@@ -10,42 +11,66 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePublicHotelsQuery } from "@/features/hotels/queries";
 import EllipsisPagination from "@/components/ui/EllipsisPagination";
+import { formatCurrency } from "@/utils/currency";
 
 const MAX_PRICE = 50000000;
 const STEP_PRICE = 10000;
 const PAGE_LIMIT = 12;
 
 export default function HotelsPage() {
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, MAX_PRICE]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
+  // Extract URL parameters
+  const urlMinPrice = searchParams.get('minPrice');
+  const urlMaxPrice = searchParams.get('maxPrice');
+  const urlCheckIn = searchParams.get('check_in');
+  const urlCheckOut = searchParams.get('check_out');
+  const urlCity = searchParams.get('city');
+  
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    urlMinPrice ? Number(urlMinPrice) : 0,
+    urlMaxPrice ? Number(urlMaxPrice) : MAX_PRICE
+  ]);
   const [page, setPage] = useState(1);
   
-  // Fetch public hotels
+  // Fetch public hotels with URL params
   const { data: hotelsData, isLoading } = usePublicHotelsQuery({
     page,
     limit: PAGE_LIMIT,
+    minPrice: urlMinPrice ? Number(urlMinPrice) : undefined,
+    maxPrice: urlMaxPrice ? Number(urlMaxPrice) : undefined,
+    checkIn: urlCheckIn || undefined,
+    checkOut: urlCheckOut || undefined,
+    city: urlCity || undefined,
   });
   
   const hotels = hotelsData?.data || [];
   const meta = hotelsData?.meta;
   const totalPages = meta ? Math.ceil(meta.total / meta.limit) : 0;
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-  };
-
-  const filteredHotels = hotels.filter(hotel => {
-    // Filter by Price (minPrice)
-    const price = hotel.minPrice ?? 0;
-    if (price < priceRange[0] || price > priceRange[1]) {
-      return false;
-    }
-
-    return true;
-  });
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleApplyFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    // Update price params
+    if (priceRange[0] > 0) {
+      params.set('minPrice', priceRange[0].toString());
+    } else {
+      params.delete('minPrice');
+    }
+    
+    if (priceRange[1] < MAX_PRICE) {
+      params.set('maxPrice', priceRange[1].toString());
+    } else {
+      params.delete('maxPrice');
+    }
+    
+    router.push(`/hotels?${params.toString()}`);
   };
 
   return (
@@ -88,6 +113,12 @@ export default function HotelsPage() {
                      {formatCurrency(priceRange[1])}
                   </div>
                 </div>
+                <Button 
+                  onClick={handleApplyFilters}
+                  className="w-full mt-4 bg-primary hover:bg-primary/90"
+                >
+                  Apply Filters
+                </Button>
               </div>
             </div>
           </div>
@@ -112,7 +143,7 @@ export default function HotelsPage() {
                 <div className="flex justify-center py-20">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
-            ) : filteredHotels.length === 0 ? (
+            ) : hotels.length === 0 ? (
               <div className="text-center py-20 bg-white rounded-xl border border-gray-100 shadow-sm">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No hotels found</h3>
                 <p className="text-gray-500">Try adjusting your filters to find what you're looking for.</p>
@@ -127,7 +158,7 @@ export default function HotelsPage() {
                 </Button>
               </div>
             ) : (
-              filteredHotels.map((hotel) => {
+              hotels.map((hotel) => {
                 return (
                   <div key={hotel.id} className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col md:flex-row h-auto md:h-64">
                     {/* Image Section */}

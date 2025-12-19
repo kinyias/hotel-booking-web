@@ -21,7 +21,7 @@ import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
 import { HotelMemberGuard } from 'src/modules/hotel/guards/hotel-member.guard';
 import { HotelService } from 'src/modules/hotel/hotel.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, ActionGuard)
 @Controller('hotels')
 export class HotelController {
   constructor(private hotelService: HotelService) {}

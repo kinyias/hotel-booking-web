@@ -35,4 +35,9 @@ export interface HotelsQueryParams {
   q?: string;
   status?: HotelStatus | 'all';
   page?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  checkIn?: string; // ISO date string
+  checkOut?: string; // ISO date string
+  city?: string;
 }

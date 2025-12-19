@@ -298,6 +298,79 @@ export class HotelService {
         },
       },
     });
+    
+    andWhere.push({ status: 'ACTIVE' });
+    // 🔑 PRICE RANGE FILTER
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      if (query.minPrice !== undefined && query.maxPrice !== undefined) {
+        // Both min and max specified
+        andWhere.push({
+          roomTypes: {
+            some: {
+              deletedAt: null,
+              price_per_night: {
+                gte: query.minPrice,
+                lte: query.maxPrice,
+              },
+            },
+          },
+        });
+      } else if (query.minPrice !== undefined) {
+        // Only min specified
+        andWhere.push({
+          roomTypes: {
+            some: {
+              deletedAt: null,
+              price_per_night: {
+                gte: query.minPrice,
+              },
+            },
+          },
+        });
+      } else if (query.maxPrice !== undefined) {
+        // Only max specified
+        andWhere.push({
+          roomTypes: {
+            some: {
+              deletedAt: null,
+              price_per_night: {
+                lte: query.maxPrice,
+              },
+            },
+          },
+        });
+      }
+    }
+
+    // 🔑 DATE RANGE / INVENTORY AVAILABILITY FILTER
+    if (query.checkIn && query.checkOut) {
+      // Generate array of dates between checkIn and checkOut (exclusive of checkOut)
+      const dates: Date[] = [];
+      const currentDate = new Date(query.checkIn);
+      const endDate = new Date(query.checkOut);
+      
+      while (currentDate < endDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      // Hotels must have at least one room type with available inventory
+      // for the date range (checking that inventory exists and has availability)
+      andWhere.push({
+        inventories: {
+          some: {
+            date: {
+              in: dates,
+            },
+            availableRooms: {
+              gt: 0,
+            },
+            stopSell: false,
+            deletedAt: null,
+          },
+        },
+      });
+    }
 
     if (query.city) {
       andWhere.push({
