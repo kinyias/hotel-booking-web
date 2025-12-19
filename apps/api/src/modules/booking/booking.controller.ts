@@ -26,6 +26,12 @@ export class BookingController {
     return this.service.getMyBookings(userId, q);
   }
 
+  @Get('bookings/me/:id')
+  getMyBooking(@Req() req: any, @Param('id') id: string) {
+    const userId = req.user?.id;
+    return this.service.getMyBookingDetail(userId, id);
+  }
+
   @Post('hotels/:hotelId/bookings')
   create(
     @Param('hotelId') hotelId: string,
