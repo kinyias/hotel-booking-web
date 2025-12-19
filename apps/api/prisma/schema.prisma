@@ -52,6 +52,7 @@ model Hotel {
 
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  bookings   Booking[]
 
   roomTypes RoomType[]
   rooms     Room[]
@@ -235,7 +236,7 @@ model RoomType {
   rooms     Room[]
   amenities RoomTypeAmenity[]
   images    RoomTypeImage[]
-
+  bookingItems BookingItem[]
   inventories Inventory[]
 
   deletedAt DateTime?
@@ -339,6 +340,7 @@ model Booking {
 
   totalAmount Decimal @db.Decimal(12, 2) @default(0) 
   note        String?
+  hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -357,14 +359,16 @@ model BookingItem {
   roomTypeId String
   quantity   Int
 
-  unitPrice  Decimal @db.Decimal(12, 2)     // snapshot giá tại thời điểm đặt
+  unitPrice  Decimal @db.Decimal(12, 2)
   lineTotal  Decimal @db.Decimal(12, 2)
 
-  booking    Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  booking    Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  roomType   RoomType  @relation(fields: [roomTypeId], references: [id])
 
   @@index([bookingId])
   @@index([roomTypeId])
 }
+
 
 enum PaymentProvider {
   VNPAY

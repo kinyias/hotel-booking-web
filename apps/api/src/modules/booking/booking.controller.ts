@@ -1,28 +1,51 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
 
-@Controller('hotels/:hotelId/bookings')
+@UseGuards(JwtAuthGuard)
+@Controller()
 export class BookingController {
   constructor(private readonly service: BookingService) {}
 
-  @Post()
-  create(@Param('hotelId') hotelId: string, @Body() dto: CreateBookingDto, @Req() req: any) {
-    const userId = req.user?.id ?? null; // tuỳ auth guard bạn đang dùng
+  @Get('bookings/me')
+  getMyBookings(@Req() req: any, @Query() q: ListMyBookingDto) {
+    const userId = req.user?.id;
+    return this.service.getMyBookings(userId, q);
+  }
+
+  @Post('hotels/:hotelId/bookings')
+  create(
+    @Param('hotelId') hotelId: string,
+    @Body() dto: CreateBookingDto,
+    @Req() req: any,
+  ) {
+    const userId = req.user?.id ?? null; // có thể null nếu cho guest booking
     return this.service.create(hotelId, userId, dto);
   }
 
-  @Get()
+  @Get('hotels/:hotelId/bookings')
   list(@Param('hotelId') hotelId: string, @Query() q: any) {
     return this.service.list(hotelId, q);
   }
 
-  @Get(':id')
+  @Get('hotels/:hotelId/bookings/:id')
   findOne(@Param('hotelId') hotelId: string, @Param('id') id: string) {
     return this.service.findOne(hotelId, id);
   }
 
-  @Patch(':id/cancel')
+  @Patch('hotels/:hotelId/bookings/:id/cancel')
   cancel(@Param('hotelId') hotelId: string, @Param('id') id: string) {
     return this.service.cancel(hotelId, id);
   }

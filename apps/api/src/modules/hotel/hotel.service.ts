@@ -71,14 +71,20 @@ export class HotelService {
 
     if (images) {
       const currentImageIds = hotel.images.map((img) => img.id);
-      
+
       // Separate incoming images
-      const imagesToUpdate = images.filter((img) => img.id && currentImageIds.includes(img.id));
-      const imagesToCreate = images.filter((img) => !img.id || (img.id && !currentImageIds.includes(img.id)));
+      const imagesToUpdate = images.filter(
+        (img) => img.id && currentImageIds.includes(img.id),
+      );
+      const imagesToCreate = images.filter(
+        (img) => !img.id || (img.id && !currentImageIds.includes(img.id)),
+      );
 
       // Identify images to delete (present in DB but not in valid updates)
-      const validUpdateIds = new Set(imagesToUpdate.map(img => img.id));
-      const imagesToDeleteIds = currentImageIds.filter(id => !validUpdateIds.has(id));
+      const validUpdateIds = new Set(imagesToUpdate.map((img) => img.id));
+      const imagesToDeleteIds = currentImageIds.filter(
+        (id) => !validUpdateIds.has(id),
+      );
 
       imageOps = {
         deleteMany: { id: { in: imagesToDeleteIds } },
@@ -98,7 +104,7 @@ export class HotelService {
       },
       include: {
         images: true,
-      }
+      },
     });
   }
 
@@ -252,7 +258,12 @@ export class HotelService {
         include: {
           images: true,
           owner: {
-            select: { id: true, email: true, firstName: true, lastName: true },
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
           },
           _count: { select: { members: true } },
         },
@@ -268,93 +279,90 @@ export class HotelService {
       },
     };
   }
+
   async listPublicHotels(query: ListHotelsQueryDto) {
-  const page = query.page ?? 1;
-  const limit = query.limit ?? 20;
-  const offset = (page - 1) * limit;
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+    const offset = (page - 1) * limit;
 
-  const andWhere: Prisma.HotelWhereInput[] = [];
+    const andWhere: Prisma.HotelWhereInput[] = [];
 
-  // only active hotels
-  andWhere.push({ deletedAt: null });
+    // only active hotels
+    andWhere.push({ deletedAt: null });
 
-  // only hotels WITH room types
-  andWhere.push({
-    roomTypes: {
-      some: {
-        deletedAt: null,
-      },
-    },
-  });
-
-  if (query.city) {
+    // only hotels WITH room types
     andWhere.push({
-      city: { contains: query.city, mode: 'insensitive' },
-    });
-  }
-
-  if (query.q) {
-    const q = query.q.trim();
-    if (q) {
-      andWhere.push({
-        OR: [
-          { name: { contains: q, mode: 'insensitive' } },
-          { address: { contains: q, mode: 'insensitive' } },
-          { city: { contains: q, mode: 'insensitive' } },
-          { country: { contains: q, mode: 'insensitive' } },
-        ],
-      });
-    }
-  }
-
-  const where: Prisma.HotelWhereInput = { AND: andWhere };
-
-  const [total, items] = await this.prisma.$transaction([
-    this.prisma.hotel.count({ where }),
-
-    this.prisma.hotel.findMany({
-      where,
-      skip: offset,
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-
-      include: {
-        images: true,
-
-        roomTypes: {
-          where: { deletedAt: null },
-          select: {
-            price_per_night: true,
-          },
+      roomTypes: {
+        some: {
+          deletedAt: null,
         },
       },
-    }),
-  ]);
+    });
 
-  // 🔑 TÍNH MIN PRICE
-  const data = items.map((hotel) => {
-    const prices = hotel.roomTypes.map(
-      (rt) => Number(rt.price_per_night),
-    );
+    if (query.city) {
+      andWhere.push({
+        city: { contains: query.city, mode: 'insensitive' },
+      });
+    }
 
-    const minPrice =
-      prices.length > 0 ? Math.min(...prices) : null;
+    if (query.q) {
+      const q = query.q.trim();
+      if (q) {
+        andWhere.push({
+          OR: [
+            { name: { contains: q, mode: 'insensitive' } },
+            { address: { contains: q, mode: 'insensitive' } },
+            { city: { contains: q, mode: 'insensitive' } },
+            { country: { contains: q, mode: 'insensitive' } },
+          ],
+        });
+      }
+    }
+
+    const where: Prisma.HotelWhereInput = { AND: andWhere };
+
+    const [total, items] = await this.prisma.$transaction([
+      this.prisma.hotel.count({ where }),
+
+      this.prisma.hotel.findMany({
+        where,
+        skip: offset,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+
+        include: {
+          images: true,
+
+          roomTypes: {
+            where: { deletedAt: null },
+            select: {
+              price_per_night: true,
+            },
+          },
+        },
+      }),
+    ]);
+
+    // 🔑 TÍNH MIN PRICE
+    const data = items.map((hotel) => {
+      const prices = hotel.roomTypes.map((rt) => Number(rt.price_per_night));
+
+      const minPrice = prices.length > 0 ? Math.min(...prices) : null;
+
+      return {
+        ...hotel,
+        minPrice,
+        roomTypes: undefined, // không cần trả
+      };
+    });
 
     return {
-      ...hotel,
-      minPrice,
-      roomTypes: undefined, // không cần trả
+      data,
+      meta: {
+        limit,
+        offset,
+        total,
+      },
     };
-  });
-
-  return {
-    data,
-    meta: {
-      limit,
-      offset,
-      total,
-    },
-  };
-}
-
+  }
 }

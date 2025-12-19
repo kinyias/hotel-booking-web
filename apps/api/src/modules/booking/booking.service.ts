@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Prisma, BookingStatus } from '@prisma/client';
 import { parseISO, startOfDay } from 'date-fns';
+import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
 
 function eachDate(from: Date, to: Date) {
   const dates: Date[] = [];
@@ -34,7 +35,6 @@ function eachDateFixed(from: Date, to: Date) {
   }
   return dates;
 }
-
 
 function toDateOnly(d: string) {
   // YYYY-MM-DD -> Date (UTC midnight)
@@ -214,7 +214,7 @@ export class BookingService {
   ) {
     const page = q.page ?? 1;
     const limit = q.limit ?? 20;
-    const skip = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
     const where: Prisma.BookingWhereInput = {
       hotelId,
@@ -229,17 +229,81 @@ export class BookingService {
         : {}),
     };
 
-    const [items, total] = await this.prisma.$transaction([
+    const [total, items] = await this.prisma.$transaction([
+      this.prisma.booking.count({ where }),
       this.prisma.booking.findMany({
         where,
-        skip,
+        skip: offset,
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: { items: true },
       }),
+    ]);
+
+    return {
+      data: items,
+      meta: {
+        limit,
+        offset,
+        total,
+      },
+    };
+  }
+
+  async getMyBookings(userId: string, q: ListMyBookingDto) {
+    const page = q.page ?? 1;
+    const limit = q.limit ?? 10;
+    const offset = (page - 1) * limit;
+
+    const where: Prisma.BookingWhereInput = {
+      userId,
+      ...(q.status ? { status: q.status } : {}),
+    };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.booking.findMany({
+        where,
+        take: limit,
+        skip: offset,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          hotel: {
+            select: {
+              id: true,
+              name: true,
+              address: true,
+            },
+          },
+          items: {
+            include: {
+              roomType: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          payments: {
+            select: {
+              id: true,
+              status: true,
+              amount: true,
+              provider: true,
+            },
+          },
+        },
+      }),
       this.prisma.booking.count({ where }),
     ]);
 
-    return { page, limit, total, items };
+    return {
+      data: items,
+      meta: {
+        limit,
+        offset,
+        total,
+      },
+    };
   }
 }
