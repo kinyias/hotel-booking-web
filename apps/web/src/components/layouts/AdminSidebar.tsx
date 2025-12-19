@@ -53,7 +53,7 @@ export const navItems: NavItem[] = [
     ]
   },
   {
-    title: 'Boookings',
+    title: 'Bookings',
     href: ROUTES.ADMIN_BOOKINGS,
     icon: Receipt,
   },

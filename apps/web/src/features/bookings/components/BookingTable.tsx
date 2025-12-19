@@ -50,7 +50,8 @@ export const BookingTable = ({
                   <div>
                     <p className="font-bold text-gray-900">{type.name}</p>
                     <p className="text-sm text-gray-500 line-clamp-1">{type.description}</p>
-                      <p className="text-sm text-red-600 font-bold">Only {type.availableRooms} rooms left</p>
+                    {type.availableRooms === 0 ? ( <p className="text-sm text-red-600 font-bold">Fully booked</p>): ( <p className="text-sm text-red-600 font-bold">Only {type.availableRooms} rooms left</p>)}
+                     
                     <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
                         <Info className="w-3 h-3" /> Non-refundable

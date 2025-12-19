@@ -1,6 +1,6 @@
 import { Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RoomType } from "@/features/hotels/types";
+import { RoomType } from "@/features/room-types/types";
 
 interface BookingRoomListProps {
   rooms: { type: RoomType; quantity: number }[];

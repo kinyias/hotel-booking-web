@@ -1,135 +1,260 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format, differenceInDays } from "date-fns";
+import { Loader2 } from "lucide-react";
+
 import PageTitle from "@/components/sections/PageTitle";
-import { User } from "@/features/user/types";
-import { Hotel, RoomType } from "@/features/hotels/types";
 import { 
   BookingHotelCard, 
   BookingRoomList, 
-  BookingGuestInfo, 
-  BookingPaymentMethod, 
-  BookingSummary 
+  BookingSummary,
 } from "@/features/bookings";
+import { useHotelDetailQuery } from "@/features/hotels/queries";
+import { useQueryRoomTypesAvailable } from "@/features/room-types/queries";
+import { useCreateBookingMutation } from "@/features/bookings/mutations";
+import { boookingFormSchema, BoookingFormValues } from "@/features/bookings/validator";
+import { CreateBookingDto, CreateBookingItemDto } from "@/features/bookings/types";
+import { RoomType } from "@/features/room-types/types";
 
-// --- Mock Data Helpers ---
-
-const MOCK_USER: User = {
-  id: "u1",
-  firstName: "John",
-  lastName: "Doe",
-  email: "john.doe@example.com",
-  roles: [{ id: "r1", name: "USER" }],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-  avatar: {
-    id: "a1",
-    secureUrl: "https://github.com/shadcn.png",
-    publicId: "pid1"
-  }
-};
-
-const MOCK_HOTEL_DATA: Hotel = {
-  hotel_id: 'h1',
-  owner_id: 'o1',
-  name: 'Grand Luxury Hotel',
-  address: '123 Main St, New York, NY',
-  description: 'Experience world-class service...',
-  star: 5,
-  phone: '+1 234 567 890',
-  status: 'ACTIVE',
-  images: [
-    { image_id: 'i1', hotel_id: 'h1', url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' }
-  ]
-};
-
-const MOCK_ROOM_TYPES: Record<string, RoomType> = {
-  'rt1': { type_id: 'rt1', hotel_id: 'h1', name: 'Standard Room', price_per_night: 3000000, max_guests: 2, description: '' },
-  'rt2': { type_id: 'rt2', hotel_id: 'h1', name: 'Deluxe Room', price_per_night: 4500000, max_guests: 2, description: '' },
-  'rt3': { type_id: 'rt3', hotel_id: 'h1', name: 'Executive Suite', price_per_night: 7500000, max_guests: 3, description: '' },
-  'rt4': { type_id: 'rt4', hotel_id: 'h1', name: 'Family Suite', price_per_night: 9000000, max_guests: 4, description: '' },
-};
-
-// --- Component ---
+// UI Components
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function BookingPayment() {
   const searchParams = useSearchParams();
-  const [paymentMethod, setPaymentMethod] = useState("momo");
+  const router = useRouter();
   
   // 1. Get Params
-  const booking_id = searchParams.get('booking_id') || 'BK-2024-001';
-  // const user_id = searchParams.get('user_id') || MOCK_USER.id; // In real app, we'd fetch user by this ID
-  // const hotel_id = searchParams.get('hotel_id') || MOCK_HOTEL_DATA.hotel_id;
-  const check_in_str = searchParams.get('check_in') || new Date().toISOString();
-  const check_out_str = searchParams.get('check_out') || new Date(Date.now() + 86400000).toISOString();
-  const total_price = Number(searchParams.get('total_price')) || 0;
-  const booking_status = searchParams.get('booking_status') || 'PENDING';
-  
-  // Parse Rooms (Assuming format: rooms=rt1:1,rt2:2)
+  const hotel_id = searchParams.get('hotel_id');
+  const check_in_str = searchParams.get('check_in');
+  const check_out_str = searchParams.get('check_out');
   const roomsParam = searchParams.get('rooms') || '';
-  const bookedRooms: { type: RoomType; quantity: number }[] = [];
   
-  if (roomsParam) {
+  const checkIn = check_in_str ? new Date(check_in_str) : new Date();
+  const checkOut = check_out_str ? new Date(check_out_str) : new Date(Date.now() + 86400000);
+
+  // 2. Fetch Data
+  const { data: hotel, isLoading: isLoadingHotel } = useHotelDetailQuery(hotel_id || '', !!hotel_id);
+  
+  const { data: roomTypesResponse, isLoading: isLoadingRooms } = useQueryRoomTypesAvailable(
+    hotel_id || '',
+    {
+      from: format(checkIn, "yyyy-MM-dd"),
+      to: format(checkOut, "yyyy-MM-dd"),
+    },
+    !!hotel_id
+  );
+
+  const availableRoomTypes = roomTypesResponse?.data || [];
+
+  // 3. Parse Selected Rooms
+  const bookedRooms = useMemo(() => {
+    if (!roomsParam || availableRoomTypes.length === 0) return [];
+    
+    const items: { type: RoomType; quantity: number }[] = [];
     roomsParam.split(',').forEach(item => {
        const [typeId, qty] = item.split(':');
-       if (MOCK_ROOM_TYPES[typeId]) {
-         bookedRooms.push({ type: MOCK_ROOM_TYPES[typeId], quantity: Number(qty) });
+       const roomType = availableRoomTypes.find(rt => rt.id === typeId);
+       if (roomType) {
+         items.push({ type: roomType, quantity: Number(qty) });
        }
     });
-  } else {
-    // Default mock rooms if no params provided
-    bookedRooms.push({ type: MOCK_ROOM_TYPES['rt1'], quantity: 1 });
-    bookedRooms.push({ type: MOCK_ROOM_TYPES['rt3'], quantity: 1 });
+    return items;
+  }, [roomsParam, availableRoomTypes]);
+
+  // 4. Booking Mutation
+  const { mutate: createBooking, isPending } = useCreateBookingMutation(hotel_id || '');
+
+  // 5. Form Setup
+  const form = useForm<BoookingFormValues>({
+    resolver: zodResolver(boookingFormSchema),
+    defaultValues: {
+      guestName: "",
+      guestEmail: "",
+      guestPhone: "",
+      note: ""
+    }
+  });
+
+  // 6. Calculations
+  const nights = Math.max(1, differenceInDays(checkOut, checkIn));
+  const calculatedTotal = bookedRooms.reduce((acc, item) => acc + (item.type.price_per_night * item.quantity * nights), 0);
+  
+  // 7. Submit Handler
+  const onSubmit = (values: BoookingFormValues) => {
+    if (!hotel_id) return;
+
+    const items: CreateBookingItemDto[] = bookedRooms.map(r => ({
+      roomTypeId: r.type.id,
+      quantity: r.quantity
+    }));
+
+    const payload: CreateBookingDto = {
+      hotelId: hotel_id,
+      checkIn: format(checkIn, "yyyy-MM-dd"),
+      checkOut: format(checkOut, "yyyy-MM-dd"),
+      guestName: values.guestName,
+      guestEmail: values.guestEmail,
+      guestPhone: values.guestPhone,
+      note: values.note || "",
+      totalAmount: calculatedTotal, // Backend should verify this usually
+      items
+    };
+
+    createBooking(payload, {
+      onSuccess: (data) => {
+        // Redirect to success page or history
+        // For now, redirect to home or show success
+        alert("Booking created successfully!");
+        router.push("/");
+      },
+      onError: (error) => {
+        console.error(error);
+        alert("Failed to create booking. Please try again.");
+      }
+    });
+  };
+
+  if (isLoadingHotel || isLoadingRooms) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+      </div>
+    );
   }
 
-  // Ensure total price is calculated if not provided or 0 (for mock display)
-  const calculatedTotal = bookedRooms.reduce((acc, item) => acc + (item.type.price_per_night * item.quantity), 0);
-  const finalPrice = total_price > 0 ? total_price : calculatedTotal;
+  if (!hotel || bookedRooms.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-4">
+        <div className="text-xl font-bold">Invalid Booking Details</div>
+        <Button onClick={() => router.back()}>Go Back</Button>
+      </div>
+    );
+  }
 
   return (
       <div className="min-h-screen bg-gray-50 pb-20">
         <PageTitle 
           title="Confirm Booking" 
-          description={`Confirm your booking`}
+          description={`Complete your booking at ${hotel.name}`}
           breadcrumbs={[
             { label: "Home", href: "/" },
+            { label: "Hotels", href: "/hotels" },
             { label: "Booking", href: "/booking" },
           ]} 
         />
 
         <div className="container mx-auto px-4 -mt-10 relative z-20">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* LEFT COLUMN: Booking Details */}
-            <div className="lg:col-span-2 space-y-6">
-              <BookingHotelCard 
-                hotel={MOCK_HOTEL_DATA}
-                checkIn={check_in_str}
-                checkOut={check_out_str}
-              />
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                {/* LEFT COLUMN: Booking Details */}
+                <div className="lg:col-span-2 space-y-6">
+                  {/* Hotel Info */}
+                  <BookingHotelCard 
+                    hotel={hotel}
+                    checkIn={checkIn.toISOString()}
+                    checkOut={checkOut.toISOString()}
+                  />
 
-              <BookingRoomList rooms={bookedRooms} />
+                  {/* Room List */}
+                  <BookingRoomList rooms={bookedRooms} />
 
-              <BookingGuestInfo user={MOCK_USER} />
+                  {/* Guest Form */}
+                  <Card className="shadow-sm border border-gray-100">
+                    <CardHeader>
+                      <CardTitle>Guest Information</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <FormField
+                            control={form.control}
+                            name="guestName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Full Name</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="John Doe" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="guestPhone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Phone Number</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="+84 ..." {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                      </div>
 
-              <BookingPaymentMethod 
-                paymentMethod={paymentMethod}
-                setPaymentMethod={setPaymentMethod}
-              />
-            </div>
+                      <FormField
+                        control={form.control}
+                        name="guestEmail"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email Address</FormLabel>
+                            <FormControl>
+                              <Input placeholder="john@example.com" type="email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-            {/* RIGHT COLUMN: Price Summary */}
-            <div className="lg:col-span-1">
-               <BookingSummary 
-                  bookedRooms={bookedRooms}
-                  finalPrice={finalPrice}
-                  bookingStatus={booking_status}
-                  paymentMethod={paymentMethod}
-               />
-            </div>
+                      <FormField
+                        control={form.control}
+                        name="note"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Special Requests (Optional)</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Late check-in, dietary restrictions, etc." 
+                                className="min-h-[100px]"
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-          </div>
+                    </CardContent>
+                  </Card>
+
+                </div>
+
+                {/* RIGHT COLUMN: Price Summary */}
+                <div className="lg:col-span-1">
+                  <BookingSummary 
+                      bookedRooms={bookedRooms}
+                      finalPrice={calculatedTotal}
+
+                      onConfirm={form.handleSubmit(onSubmit)}
+                      isPending={isPending}
+                  />
+                </div>
+
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
   );
