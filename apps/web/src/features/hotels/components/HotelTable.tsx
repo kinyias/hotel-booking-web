@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { Hotel } from '../types';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 interface HotelTableProps {
   hotels: Hotel[];
@@ -34,7 +35,14 @@ export default function HotelTable({ hotels }: HotelTableProps) {
 
   const handleConfirmDelete = () => {
     if (selectedHotelId) {
-      deleteMutation.mutate(selectedHotelId);
+      deleteMutation.mutate(selectedHotelId, {
+        onSuccess: () => {
+          toast.success('Hotel deleted successfully');
+        },
+        onError: (error: any) => {
+          toast.error(error?.response?.data?.message || 'Failed to delete hotel');
+        },
+      });
     }
     setConfirmOpen(false);
     setSelectedHotelId(null);
