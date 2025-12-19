@@ -11,14 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { RoomType } from "@/features/room-types/types";
+import { RoomType, RoomTypeAvailable } from "@/features/room-types/types";
 import { formatCurrency } from "@/utils/currency";
 
 interface BookingTableProps {
-  roomTypes: RoomType[];
+  roomTypes: RoomTypeAvailable[];
   quantities: Record<string, number>;
   nights: number;
-  onUpdateQuantity: (typeId: string, delta: number) => void;
+  onUpdateQuantity: (typeId: string, delta: number, availableRooms: number) => void;
 }
 
 export const BookingTable = ({ 
@@ -50,12 +50,13 @@ export const BookingTable = ({
                   <div>
                     <p className="font-bold text-gray-900">{type.name}</p>
                     <p className="text-sm text-gray-500 line-clamp-1">{type.description}</p>
+                      <p className="text-sm text-red-600 font-bold">Only {type.availableRooms} rooms left</p>
                     <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
                         <Info className="w-3 h-3" /> Non-refundable
                       </span>
                       {type.amenities?.map((item) => {
-                        const IconComponent = (Icons as any)[item.amenity.key];
+                          const IconComponent = (Icons as any)[item.amenity.key];
                         return (
                           <span key={item.amenityId || Math.random()} className="flex items-center gap-1">
                             {IconComponent && <IconComponent className="w-3 h-3" />}
@@ -87,7 +88,7 @@ export const BookingTable = ({
                       variant="outline" 
                       className="h-8 w-8" 
                       disabled={quantity === 0}
-                      onClick={() => onUpdateQuantity(type.id, -1)}
+                      onClick={() => onUpdateQuantity(type.id, -1,type.availableRooms)}
                     >
                       -
                     </Button>
@@ -96,7 +97,8 @@ export const BookingTable = ({
                       size="icon" 
                       variant="outline" 
                       className="h-8 w-8"
-                      onClick={() => onUpdateQuantity(type.id, 1)}
+                      disabled={quantity >= type.availableRooms}
+                      onClick={() => onUpdateQuantity(type.id, 1, type.availableRooms)}
                     >
                       +
                     </Button>
