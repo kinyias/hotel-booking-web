@@ -11,7 +11,7 @@ import * as crypto from 'crypto';
 import { createClient } from 'redis';
 import { ACTION_KEY } from '../../auth/decorator/action.decorator';
 import { PrismaService } from '../../prisma/prisma.service';
-import { IS_PUBLIC_KEY } from 'src/common/decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '../../../common/decorators/public.decorator';
 
 @Injectable()
 export class ActionGuard implements CanActivate {

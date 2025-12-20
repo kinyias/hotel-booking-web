@@ -9,14 +9,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DateRange } from "react-day-picker";
-import { vi } from "date-fns/locale";
-
+import { useRouter } from "next/navigation";
 const BookingFilter = () => {
   const [location, setLocation] = useState("");
   const [rooms, setRooms] = useState(1);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isGuestPopoverOpen, setIsGuestPopoverOpen] = useState(false);
+  const router = useRouter();
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
@@ -34,7 +34,26 @@ const BookingFilter = () => {
     }
     return format(date.from, "dd/MM/yyyy");
   };
-
+  
+  const handleApplyFilter = () => {
+    const params = new URLSearchParams();
+    
+    // Add location if provided
+    if (location) {
+      params.set('city', location);
+    }
+    
+    // Add date range if both dates are selected
+    if (date?.from) {
+      params.set('check_in', date.from.toISOString().split('T')[0]);
+    }
+    if (date?.to) {
+      params.set('check_out', date.to.toISOString().split('T')[0]);
+    }
+    
+    // Navigate to hotels page with params
+    router.push(`/hotels?${params.toString()}`);
+  };
   // Container animation variants
   const containerVariants = {
     hidden: { 
@@ -199,6 +218,7 @@ const BookingFilter = () => {
 
           {/* Check Now Button */}
           <Button
+            onClick={handleApplyFilter}
             size="lg"
             className="bg-background hover:bg-background/90 text-primary border-0 h-auto py-4 md:py-6 text-base font-semibold group"
           >

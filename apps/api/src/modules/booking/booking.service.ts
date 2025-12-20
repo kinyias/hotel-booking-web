@@ -8,8 +8,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Prisma, BookingStatus } from '@prisma/client';
 import { parseISO, startOfDay } from 'date-fns';
-import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
-import { UpdateBookingStatusDto } from 'src/modules/booking/dto/update-booking-status.dto';
+import { ListMyBookingDto } from './dto/list-my-bookings.dto';
+import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 
 function eachDate(from: Date, to: Date) {
   const dates: Date[] = [];

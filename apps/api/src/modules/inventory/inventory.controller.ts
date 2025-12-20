@@ -13,10 +13,10 @@ import {
 import { ListInventoryDto } from './dto/list-inventory.dto';
 import { BulkSetInventoryDto } from './dto/bulk-set-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { InventoryService } from 'src/modules/inventory/inventory.service';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { InventoryService } from './inventory.service';
+import { ActionGuard } from '../auth/guards/action.guard';
+import { Action } from '../auth/decorator/action.decorator';
 
 const getUserId = (req: any) => req.user?.id;
 @UseGuards(JwtAuthGuard, ActionGuard)

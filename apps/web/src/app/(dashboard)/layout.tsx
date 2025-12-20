@@ -3,6 +3,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import AdminSidebar from '@/components/layouts/AdminSidebar';
 import AdminHeader from '@/components/layouts/AdminHeader';
+import AdminRoute from '@/components/layouts/AdminRoute';
 export default function AdminLayout({
   children,
 }: {
@@ -11,6 +12,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <AuthProvider>
+        <AdminRoute>
         <SidebarProvider>
           <AdminSidebar />
           <SidebarInset>
@@ -20,6 +22,7 @@ export default function AdminLayout({
             </main>
           </SidebarInset>
         </SidebarProvider>
+        </AdminRoute>
       </AuthProvider>
     </div>
   );

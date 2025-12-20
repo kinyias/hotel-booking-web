@@ -99,14 +99,14 @@ export class AuthController {
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const jti = dto.jti ?? req.user?.jti;
-    if (jti) {
-      await this.authService.revokeSessionByJti(
-        jti,
-        req.user?.sub,
-        'user logout',
-      );
-    }
+    // const jti = dto.jti ?? req.user?.jti;
+    // if (jti) {
+    //   await this.authService.revokeSessionByJti(
+    //     jti,
+    //     req.user?.sub,
+    //     'user logout',
+    //   );
+    // }
     res.clearCookie('refresh_token', {
       httpOnly: true,
       secure: true,

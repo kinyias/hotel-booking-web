@@ -213,7 +213,7 @@ function Header() {
                     <Link href="/me">Account</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href="/me/booking">My Bookings</Link>
+                    <Link href="/me/my-bookings">My Bookings</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link href="/me/sale">My offers</Link>

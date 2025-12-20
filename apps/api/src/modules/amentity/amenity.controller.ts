@@ -12,10 +12,10 @@ import {
 import { CreateAmenityDto } from './dto/create-amenity.dto';
 import { UpdateAmenityDto } from './dto/update-amenity.dto';
 import { ListAmenityDto } from './dto/list-amenity.dto';
-import { AmenityService } from 'src/modules/amentity/amenity.service';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { AmenityService } from './amenity.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ActionGuard } from '../auth/guards/action.guard';
+import { Action } from '../auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard, ActionGuard)
 @Controller('amenities')

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { API_BASE_URL, API_ENDPOINTS, ROUTES } from '@/constants';
+import toast from 'react-hot-toast';
 
 // Create axios instance
 const api = axios.create({
@@ -67,7 +68,10 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-
+    if (error.response?.status === 403) {
+      toast.error('Bạn không có quyền truy cập chức năng này');
+      return Promise.reject(error);
+    }
     return Promise.reject(error);
   }
 );

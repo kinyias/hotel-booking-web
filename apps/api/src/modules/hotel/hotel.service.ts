@@ -5,11 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { HotelMemberRole, Prisma } from '@prisma/client';
-import { AddMemberDto } from 'src/modules/hotel/dto/add-member.dto';
-import { CreateHotelDto } from 'src/modules/hotel/dto/create-hotel.dto';
-import { ListHotelsQueryDto } from 'src/modules/hotel/dto/list-hotels.query';
-import { UpdateHotelDto } from 'src/modules/hotel/dto/update-hotel.dto';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { AddMemberDto } from './dto/add-member.dto';
+import { CreateHotelDto } from './dto/create-hotel.dto';
+import { ListHotelsQueryDto } from './dto/list-hotels.query';
+import { UpdateHotelDto } from './dto/update-hotel.dto';
+import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class HotelService {
   constructor(private prisma: PrismaService) {}
@@ -120,19 +120,48 @@ export class HotelService {
       throw new NotFoundException('Hotel not found or has been deleted');
     }
 
-    return this.prisma.hotelMember.upsert({
+    // Validate that all users exist
+    const users = await this.prisma.user.findMany({
       where: {
-        hotelId_userId: {
-          hotelId,
-          userId: dto.userId,
-        },
+        id: { in: dto.userIds },
       },
-      create: {
-        hotelId,
-        userId: dto.userId,
-      },
-      update: {},
+      select: { id: true },
     });
+
+    if (users.length !== dto.userIds.length) {
+      throw new BadRequestException('One or more users not found');
+    }
+
+    // Create or update members in a transaction
+    const members = await this.prisma.$transaction(
+      dto.userIds.map((userId) =>
+        this.prisma.hotelMember.upsert({
+          where: {
+            hotelId_userId: {
+              hotelId,
+              userId,
+            },
+          },
+          create: {
+            hotelId,
+            userId,
+          },
+          update: {},
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        }),
+      ),
+    );
+
+    return members;
   }
 
   async removeMember(hotelId: string, userId: string) {
@@ -298,6 +327,79 @@ export class HotelService {
         },
       },
     });
+    
+    andWhere.push({ status: 'ACTIVE' });
+    // 🔑 PRICE RANGE FILTER
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      if (query.minPrice !== undefined && query.maxPrice !== undefined) {
+        // Both min and max specified
+        andWhere.push({
+          roomTypes: {
+            some: {
+              deletedAt: null,
+              price_per_night: {
+                gte: query.minPrice,
+                lte: query.maxPrice,
+              },
+            },
+          },
+        });
+      } else if (query.minPrice !== undefined) {
+        // Only min specified
+        andWhere.push({
+          roomTypes: {
+            some: {
+              deletedAt: null,
+              price_per_night: {
+                gte: query.minPrice,
+              },
+            },
+          },
+        });
+      } else if (query.maxPrice !== undefined) {
+        // Only max specified
+        andWhere.push({
+          roomTypes: {
+            some: {
+              deletedAt: null,
+              price_per_night: {
+                lte: query.maxPrice,
+              },
+            },
+          },
+        });
+      }
+    }
+
+    // 🔑 DATE RANGE / INVENTORY AVAILABILITY FILTER
+    if (query.checkIn && query.checkOut) {
+      // Generate array of dates between checkIn and checkOut (exclusive of checkOut)
+      const dates: Date[] = [];
+      const currentDate = new Date(query.checkIn);
+      const endDate = new Date(query.checkOut);
+      
+      while (currentDate < endDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      // Hotels must have at least one room type with available inventory
+      // for the date range (checking that inventory exists and has availability)
+      andWhere.push({
+        inventories: {
+          some: {
+            date: {
+              in: dates,
+            },
+            availableRooms: {
+              gt: 0,
+            },
+            stopSell: false,
+            deletedAt: null,
+          },
+        },
+      });
+    }
 
     if (query.city) {
       andWhere.push({

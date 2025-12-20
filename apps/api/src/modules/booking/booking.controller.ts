@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { ListMyBookingDto } from 'src/modules/booking/dto/list-my-bookings.dto';
-import { UpdateBookingStatusDto } from 'src/modules/booking/dto/update-booking-status.dto';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ListMyBookingDto } from './dto/list-my-bookings.dto';
+import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
+import { Action } from '../auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller()

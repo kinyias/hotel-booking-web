@@ -15,9 +15,9 @@ import { RoomTypeService } from './room-type.service';
 import { CreateRoomTypeDto } from './dto/create-room-type.dto';
 import { UpdateRoomTypeDto } from './dto/update-room-type.dto';
 import { AvailableRoomTypeDto, ListRoomTypeDto } from './dto/list-room-type.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { Public } from 'src/common/decorators/public.decorator';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../../common/decorators/public.decorator';
+import { Action } from '../auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('hotels/:hotelId/room-types')

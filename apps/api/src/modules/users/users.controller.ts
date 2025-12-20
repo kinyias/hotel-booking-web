@@ -56,6 +56,7 @@ export class UsersController {
     });
   }
 
+
   @Get()
   async list(@Query() query: ListUsersQuery) {
     const { items, meta } = await this.users.listUsers(query);
