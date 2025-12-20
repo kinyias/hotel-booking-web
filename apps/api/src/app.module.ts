@@ -21,7 +21,6 @@ import { RoomModule } from './modules/room/room.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { PaymentModule } from './modules/payment/payment.module';
-import { CommissionModule } from './modules/commission/commission.module';
 import { CommissionPackageModule } from './modules/commission-package/commission-package.module';
 
 @Module({
@@ -52,7 +51,6 @@ import { CommissionPackageModule } from './modules/commission-package/commission
     InventoryModule,
     BookingModule,
     PaymentModule,
-    CommissionModule,
     CommissionPackageModule,
   ],
   controllers: [AppController],

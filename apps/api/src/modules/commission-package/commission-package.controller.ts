@@ -14,7 +14,7 @@ import { CommissionPackageService } from 'src/modules/commission-package/commiss
 import { CreateCommissionPackageDto } from 'src/modules/commission-package/dto/create-commission-package.dto';
 import { UpdateCommissionPackageDto } from 'src/modules/commission-package/dto/update-commission-package.dto';
 
-@Controller('/api/v1/admin/commission-packages')
+@Controller('/admin/commission-packages')
 @UseGuards(JwtAuthGuard, ActionGuard)
 export class CommissionPackageController {
   constructor(private readonly service: CommissionPackageService) {}
@@ -42,7 +42,7 @@ export class CommissionPackageController {
   deactivate(@Param('id') id: string) {
     return this.service.deactivate(id);
   }
-  
+
   @Patch(':hotelId/commission-package')
   @Action('hotels.set-commission-package')
   async setCommissionPackage(
