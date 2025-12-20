@@ -7,6 +7,7 @@ import {
   UpdateNewsRequest,
 } from './types';
 
+// Admin API
 export const getNewsList = async (params: NewsListParams): Promise<NewsListResponse> => {
   const { data } = await axios.get('/admin/news', { params });
   return data;
@@ -32,5 +33,16 @@ export const updateNews = async (
 
 export const deleteNews = async (id: string): Promise<News> => {
   const { data } = await axios.delete(`/admin/news/${id}`);
+  return data;
+};
+
+// Public API
+export const getPublicNewsList = async (params: NewsListParams): Promise<NewsListResponse> => {
+  const { data } = await axios.get('/news', { params });
+  return data;
+};
+
+export const getPublicNewsDetail = async (slug: string): Promise<News> => {
+  const { data } = await axios.get(`/news/${slug}`);
   return data;
 };
