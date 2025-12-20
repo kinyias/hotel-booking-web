@@ -39,6 +39,7 @@ model User {
   galleries        ImageGallery[]
   folderGalleries  FolderGallery[]
   reviews Review[]
+  news News[]
 }
 
 model Hotel {
@@ -414,6 +415,44 @@ model ReviewImage {
 
   @@index([reviewId])
 }
+model News {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  summary   String?
+  content   String?  // nếu bạn lưu HTML/markdown
+  status    NewsStatus @default(DRAFT)
+  publishedAt DateTime?
+
+  // audit
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  images    NewsImage[]
+
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([createdAt])
+}
+
+model NewsImage {
+  id      String @id @default(cuid())
+  newsId  String
+  url     String
+  news    News   @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@index([newsId])
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 enum PaymentProvider {
   VNPAY
 }

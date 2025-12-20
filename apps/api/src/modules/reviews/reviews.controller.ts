@@ -16,6 +16,7 @@ import { ModerateReviewDto, UpdateReviewDto } from './dto/update-review.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Action } from '../auth/decorator/action.decorator';
 import { ReviewService } from 'src/modules/reviews/reviews.service';
+import { ActionGuard } from 'src/modules/auth/guards/action.guard';
 
 @Controller()
 export class ReviewController {
@@ -61,7 +62,7 @@ export class ReviewController {
 
   // Hotel moderation: ẩn/hiện review
   @Patch('hotels/:hotelId/reviews/:id/moderate')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ActionGuard)
   @Action('reviews.moderate')
   async moderate(
     @Param('hotelId') hotelId: string,
@@ -74,7 +75,7 @@ export class ReviewController {
 
   // Hotel moderation: soft delete review
   @Delete('hotels/:hotelId/reviews/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ActionGuard)
   @Action('reviews.delete')
   async remove(
     @Param('hotelId') hotelId: string,

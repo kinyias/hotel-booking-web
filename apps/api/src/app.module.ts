@@ -23,6 +23,7 @@ import { BookingModule } from './modules/booking/booking.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { CommissionPackageModule } from './modules/commission-package/commission-package.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { NewsModule } from './modules/news/news.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
     PaymentModule,
     CommissionPackageModule,
     ReviewsModule,
+    NewsModule,
   ],
   controllers: [AppController],
   providers: [
