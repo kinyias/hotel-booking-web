@@ -59,3 +59,17 @@ export const setHotelCommissionPackage = async (
   return response.data;
 };
 
+export interface CommissionRevenueParams {
+  year?: string;
+  from?: string;
+  to?: string;
+}
+
+export const getCommissionRevenue = async (params?: CommissionRevenueParams) => {
+  const response = await api.get<number[] | { date: string; revenue: number }[]>(
+    `${API_ENDPOINTS.COMMISSION_PACKAGES.COMMISSION_PACKAGES}/revenue/chart`,
+    { params }
+  );
+  return response.data;
+};
+

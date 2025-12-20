@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Action } from 'src/modules/auth/decorator/action.decorator';
@@ -13,6 +14,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { CommissionPackageService } from 'src/modules/commission-package/commission-package.service';
 import { CreateCommissionPackageDto } from 'src/modules/commission-package/dto/create-commission-package.dto';
 import { UpdateCommissionPackageDto } from 'src/modules/commission-package/dto/update-commission-package.dto';
+import { CommissionRevenueQueryDto } from 'src/modules/commission-package/dto/commission-revenue-query.dto';
 
 @Controller('/admin/commission-packages')
 @UseGuards(JwtAuthGuard, ActionGuard)
@@ -23,6 +25,12 @@ export class CommissionPackageController {
   @Action('commission-packages.list')
   list() {
     return this.service.list();
+  }
+
+  @Get('revenue/chart')
+  @Action('commission-packages.revenue')
+  getCommissionRevenue(@Query() query: CommissionRevenueQueryDto) {
+    return this.service.getCommissionRevenue(query);
   }
 
   @Get(':id')

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCommissionPackageDto } from 'src/modules/commission-package/dto/create-commission-package.dto';
 import { UpdateCommissionPackageDto } from 'src/modules/commission-package/dto/update-commission-package.dto';
+import { CommissionRevenueQueryDto } from 'src/modules/commission-package/dto/commission-revenue-query.dto';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
@@ -42,5 +43,104 @@ export class CommissionPackageService {
       where: { id: hotelId },
       data: { commissionPackageId: commissionPackageId },
     });
+  }
+
+  async getCommissionRevenue(query: CommissionRevenueQueryDto) {
+    const { from, to, year } = query;
+
+    // If year is provided, return monthly aggregation for that year
+    if (year) {
+      const yearNum = parseInt(year);
+      const startDate = new Date(yearNum, 0, 1); // January 1st
+      const endDate = new Date(yearNum, 11, 31, 23, 59, 59); // December 31st
+
+      const bookings = await this.prisma.booking.findMany({
+        where: {
+          status: 'COMPLETED',
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+          commissionAmount: {
+            not: null,
+          },
+        },
+        select: {
+          createdAt: true,
+          commissionAmount: true,
+        },
+      });
+
+      // Aggregate by month (0-11)
+      const monthlyTotals = new Array(12).fill(0);
+      bookings.forEach((booking) => {
+        const month = booking.createdAt.getMonth();
+        monthlyTotals[month] += booking.commissionAmount || 0;
+      });
+
+      return monthlyTotals;
+    }
+
+    // If from/to are provided, return individual booking data for custom range
+    if (from && to) {
+      const startDate = new Date(from);
+      const endDate = new Date(to);
+      endDate.setHours(23, 59, 59, 999);
+
+      const bookings = await this.prisma.booking.findMany({
+        where: {
+          status: 'COMPLETED',
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+          commissionAmount: {
+            not: null,
+          },
+        },
+        select: {
+          createdAt: true,
+          commissionAmount: true,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+
+      return bookings.map((booking) => ({
+        date: booking.createdAt.toISOString(),
+        revenue: booking.commissionAmount || 0,
+      }));
+    }
+
+    // Default: return current year monthly data
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(currentYear, 0, 1);
+    const endDate = new Date(currentYear, 11, 31, 23, 59, 59);
+
+    const bookings = await this.prisma.booking.findMany({
+      where: {
+        status: 'COMPLETED',
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+        commissionAmount: {
+          not: null,
+        },
+      },
+      select: {
+        createdAt: true,
+        commissionAmount: true,
+      },
+    });
+
+    const monthlyTotals = new Array(12).fill(0);
+    bookings.forEach((booking) => {
+      const month = booking.createdAt.getMonth();
+      monthlyTotals[month] += booking.commissionAmount || 0;
+    });
+
+    return monthlyTotals;
   }
 }
