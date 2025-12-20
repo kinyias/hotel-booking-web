@@ -1,3 +1,5 @@
+import { CommissionPackage } from '../commissions/types';
+
 export interface HotelImage {
   image_id: string;
   hotel_id: string;
@@ -35,6 +37,8 @@ export interface Hotel {
   status: HotelStatus;
   images: HotelImage[];
   owner: HotelOwner;
+  commissionPackageId?: string;
+  commissionPackage?: CommissionPackage;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

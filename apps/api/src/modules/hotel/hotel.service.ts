@@ -190,6 +190,7 @@ export class HotelService {
           },
         },
         images: true,
+        commissionPackage: true,
       },
     });
 
@@ -294,6 +295,7 @@ export class HotelService {
               lastName: true,
             },
           },
+          commissionPackage: true,
           _count: { select: { members: true } },
         },
       }),

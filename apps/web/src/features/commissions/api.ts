@@ -47,3 +47,29 @@ export const deactivateCommissionPackage = async (id: string) => {
   );
   return response.data;
 };
+
+export const setHotelCommissionPackage = async (
+  hotelId: string,
+  commissionPackageId: string
+) => {
+  const response = await api.patch<CommissionPackage>(
+    `${API_ENDPOINTS.COMMISSION_PACKAGES.COMMISSION_PACKAGES}/${hotelId}/commission-package`,
+    { commissionPackageId }
+  );
+  return response.data;
+};
+
+export interface CommissionRevenueParams {
+  year?: string;
+  from?: string;
+  to?: string;
+}
+
+export const getCommissionRevenue = async (params?: CommissionRevenueParams) => {
+  const response = await api.get<number[] | { date: string; revenue: number }[]>(
+    `${API_ENDPOINTS.COMMISSION_PACKAGES.COMMISSION_PACKAGES}/revenue/chart`,
+    { params }
+  );
+  return response.data;
+};
+

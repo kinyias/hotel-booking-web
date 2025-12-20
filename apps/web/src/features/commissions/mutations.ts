@@ -3,6 +3,7 @@ import {
   createCommissionPackage,
   updateCommissionPackage,
   deactivateCommissionPackage,
+  setHotelCommissionPackage,
 } from './api';
 import { COMMISSION_PACKAGES_QUERY_KEY } from './queries';
 import {
@@ -51,6 +52,28 @@ export const useDeactivateCommissionPackageMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [COMMISSION_PACKAGES_QUERY_KEY],
+      });
+    },
+  });
+};
+
+export const useSetHotelCommissionPackageMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      hotelId,
+      commissionPackageId,
+    }: {
+      hotelId: string;
+      commissionPackageId: string;
+    }) => setHotelCommissionPackage(hotelId, commissionPackageId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['hotels'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['hotel'],
       });
     },
   });

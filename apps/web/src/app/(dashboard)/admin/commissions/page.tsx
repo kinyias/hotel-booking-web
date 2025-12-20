@@ -5,6 +5,7 @@ import { useCommissionPackagesQuery } from '@/features/commissions';
 import CommissionPackageTable from '@/features/commissions/components/CommissionPackageTable';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import { CommissionRevenue } from '@/features/commissions/components/CommissionRevenue';
 
 export default function CommissionsPage() {
   const { data: packages, isLoading, isError } = useCommissionPackagesQuery();
@@ -22,6 +23,8 @@ export default function CommissionsPage() {
           </Button>
         </Link>
       </div>
+
+      <CommissionRevenue />
 
       {isLoading ? (
         <div className="flex justify-center py-8">
