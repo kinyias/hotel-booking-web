@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -59,9 +60,9 @@ export class BookingService {
       where: { hotelId_userId: { hotelId, userId } },
       select: { userId: true },
     });
-    if (!member) throw new BadRequestException('Forbidden');
+    if (!member) throw new ForbiddenException('Forbidden');
   }
-  
+
   async create(hotelId: string, userId: string, dto: CreateBookingDto) {
     const checkIn = toDateOnly(dto.checkIn);
     const checkOut = toDateOnly(dto.checkOut);
@@ -88,6 +89,24 @@ export class BookingService {
     const priceMap = new Map<string, Prisma.Decimal>(
       roomTypes.map((rt) => [rt.id, rt.price_per_night]),
     );
+
+    const hotelCommission = await this.prisma.hotel.findUnique({
+      where: { id: hotelId },
+      select: {
+        commissionPackage: {
+          select: { commissionRate: true, isActive: true },
+        },
+      },
+    });
+
+    const commissionRate = hotelCommission?.commissionPackage?.isActive
+      ? hotelCommission.commissionPackage.commissionRate
+      : 0;
+
+    // validate nhẹ để tránh dữ liệu bậy
+    if (commissionRate < 0 || commissionRate > 1) {
+      throw new BadRequestException('Invalid commissionRate on hotel package');
+    }
 
     return this.prisma.$transaction(async (tx) => {
       // 1) Check inventory đủ cho từng item, từng ngày
@@ -144,7 +163,6 @@ export class BookingService {
         }
       }
 
-      // 3) ✅ Tính tiền bằng Decimal + snapshot unitPrice
       const itemsCreate = dto.items.map((i) => {
         const unitPrice = priceMap.get(i.roomTypeId);
         if (!unitPrice) {
@@ -170,7 +188,11 @@ export class BookingService {
         new Prisma.Decimal(0),
       );
 
-      // 4) Create booking
+
+      const commissionAmount = totalAmount
+        .mul(new Prisma.Decimal(commissionRate))
+        .toDecimalPlaces(0, Prisma.Decimal.ROUND_HALF_UP);
+
       const booking = await tx.booking.create({
         data: {
           hotelId,
@@ -183,6 +205,10 @@ export class BookingService {
           guestPhone: dto.guestPhone,
           note: dto.note,
           totalAmount,
+
+          commissionRateSnapshot: commissionRate,
+          commissionAmount: Number(commissionAmount.toString()),
+
           items: { create: itemsCreate },
         },
         include: { items: true },
@@ -226,17 +252,17 @@ export class BookingService {
       where: { id, hotelId },
       include: {
         items: {
-            include: {
-                roomType: {
-                    select: {
-                        id: true,
-                        name: true,
-                    }
-                }
-            }
+          include: {
+            roomType: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
         },
-        payments: true
-    },
+        payments: true,
+      },
     });
     if (!booking) throw new NotFoundException('Booking not found');
     return booking;
@@ -445,5 +471,4 @@ export class BookingService {
     if (!booking) throw new NotFoundException('Booking not found');
     return booking;
   }
-
 }

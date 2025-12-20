@@ -58,6 +58,9 @@ model Hotel {
   rooms     Room[]
   members   HotelMember[]
   images    HotelImage[]
+  commissionPackageId String?
+  commissionPackage   CommissionPackage? @relation(fields: [commissionPackageId], references: [id], onDelete: SetNull)
+
 
   inventories Inventory[]
 
@@ -341,6 +344,9 @@ model Booking {
   totalAmount Decimal @db.Decimal(12, 2) @default(0) 
   note        String?
   hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  commissionRateSnapshot Float?  // commission tại thời điểm tạo booking
+  commissionAmount       Int?    // số tiền hoa hồng (VND)
+
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -418,6 +424,21 @@ model PaymentEvent {
 
   @@index([paymentId])
 }
+
+model CommissionPackage {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  name          String
+  description   String?
+  commissionRate Float   // 0.1 = 10%
+  isActive      Boolean  @default(true)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  hotels        Hotel[]
+}
+
 // ==================== ENUM ====================
 enum AuthProvider {
   LOCAL
@@ -478,4 +499,17 @@ enum PaymentStatus {
   CANCELED
   REFUND_PENDING
   REFUNDED
+}
+
+enum PackageType {
+  FREE            // miễn phí
+  SUBSCRIPTION    // trả phí định kỳ (tháng/quý/năm)
+  SLOT            // theo slot
+  PAY_PER_BOOKING // trả theo booking (commission)
+}
+
+enum BillingCycle {
+  MONTH
+  QUARTER
+  YEAR
 }
