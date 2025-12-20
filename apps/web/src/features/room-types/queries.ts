@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRoomTypeById, getRoomTypes, getRoomTypesAvailable } from "./api";
+import { getRoomTypeById, getRoomTypes, getRoomTypesAvailable, listAllRoomTypes } from "./api";
 import { RoomTypeQueryParams } from "./types";
 
 export const useQueryRoomTypes = (hotelId: string, enabled?: boolean) => {
@@ -9,6 +9,13 @@ export const useQueryRoomTypes = (hotelId: string, enabled?: boolean) => {
         enabled,
     });
 }
+
+export const useListAllRoomTypesQuery = (limit: number = 3) => {
+  return useQuery({
+    queryKey: ['room-types-all', limit],
+    queryFn: () => listAllRoomTypes(limit),
+  });
+};
 
 export const useQueryRoomTypesAvailable = (hotelId: string, params?: RoomTypeQueryParams, enabled?: boolean) => {
     return useQuery({

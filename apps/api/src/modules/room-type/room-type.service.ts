@@ -404,4 +404,50 @@ export class RoomTypeService {
 
     return { deleted: true };
   }
+
+  async listAll(q: ListRoomTypeDto) {
+    const limit = q.limit ?? 20;
+    const offset = q.page ? (q.page - 1) * limit : 0;
+
+    const where: Prisma.RoomTypeWhereInput = {
+      deletedAt: null,
+      ...(q.q
+        ? {
+            OR: [
+              { name: { contains: q.q, mode: Prisma.QueryMode.insensitive } },
+              {
+                description: {
+                  contains: q.q,
+                  mode: Prisma.QueryMode.insensitive,
+                },
+              },
+            ],
+          }
+        : {}),
+    };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.roomType.findMany({
+        where,
+        skip: offset,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          amenities: { include: { amenity: true } },
+          images: true,
+          hotel: true,
+        },
+      }),
+      this.prisma.roomType.count({ where }),
+    ]);
+
+    return {
+      data: items,
+      meta: {
+        limit,
+        offset,
+        total,
+      },
+    };
+  }
 }

@@ -9,6 +9,11 @@ export const getRoomTypes = async (hotelId: string) => {
     return response.data;
 }
 
+export const listAllRoomTypes = async (limit: number) => {
+    const response = await api.get<PaginatedResponse<RoomType>>(`/room-types`, { params: { limit } });
+    return response.data;
+}
+
 export const getRoomTypesAvailable = async (hotelId: string, params?: RoomTypeQueryParams) => {
     const response = await api.get<PaginatedResponse<RoomTypeAvailable>>(`/hotels/${hotelId}/room-types/available`, { params });
     return response.data;

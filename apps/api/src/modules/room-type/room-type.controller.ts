@@ -20,11 +20,17 @@ import { Public } from '../../common/decorators/public.decorator';
 import { Action } from '../auth/decorator/action.decorator';
 
 @UseGuards(JwtAuthGuard)
-@Controller('hotels/:hotelId/room-types')
+@Controller()
 export class RoomTypeController {
   constructor(private readonly service: RoomTypeService) {}
 
-  @Post()
+  @Public()
+  @Get('room-types')
+  async listAll(@Query() query: ListRoomTypeDto) {
+    return this.service.listAll(query);
+  }
+
+  @Post('hotels/:hotelId/room-types')
   async create(
     @Param('hotelId') hotelId: string,
     @Body() dto: CreateRoomTypeDto,
@@ -34,7 +40,7 @@ export class RoomTypeController {
     return this.service.create(hotelId, userId, dto);
   }
   
-  @Get()
+  @Get('hotels/:hotelId/room-types')
   async list(
     @Param('hotelId') hotelId: string,
     @Query() query: ListRoomTypeDto,
@@ -45,7 +51,7 @@ export class RoomTypeController {
   }
 
   @Public()
-  @Get('available')
+  @Get('hotels/:hotelId/room-types/available')
   async available(
     @Param('hotelId') hotelId: string,
     @Query() query: AvailableRoomTypeDto,
@@ -53,7 +59,8 @@ export class RoomTypeController {
   ) {
     return this.service.getAvailableRoomTypes(hotelId, query);
   }
-  @Get(':id')
+
+  @Get('hotels/:hotelId/room-types/:id')
   async getOne(
     @Param('hotelId') hotelId: string,
     @Param('id') id: string,
@@ -63,7 +70,7 @@ export class RoomTypeController {
     return this.service.getOne(hotelId, userId, id);
   }
 
-  @Patch(':id')
+  @Patch('hotels/:hotelId/room-types/:id')
   @Action('room-types.update')
   async update(
     @Param('hotelId') hotelId: string,
@@ -75,7 +82,7 @@ export class RoomTypeController {
     return this.service.update(hotelId, userId, id, dto);
   }
 
-  @Delete(':id')
+  @Delete('hotels/:hotelId/room-types/:id')
   @Action('room-types.delete')
   async remove(
     @Param('hotelId') hotelId: string,

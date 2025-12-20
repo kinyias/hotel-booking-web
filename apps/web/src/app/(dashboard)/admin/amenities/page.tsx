@@ -61,7 +61,7 @@ export default function AmenitiesPage() {
       </div>
       {isLoading? (<div className="p-6">Loading amenities...</div>): (
         <div>
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden mb-5">
         <Table className="table-fixed w-full">
           <TableHeader>
             <TableRow className="bg-secondary/50">
