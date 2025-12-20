@@ -19,4 +19,5 @@ export const ROUTES = {
   ADMIN_AMENITIES: '/admin/amenities',
   ADMIN_INVENTORY: '/admin/inventory',
   ADMIN_MEMBER_HOTELS: '/admin/member-hotels',
+  ADMIN_COMMISSIONS: '/admin/commissions',
 };

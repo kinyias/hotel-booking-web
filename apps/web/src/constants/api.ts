@@ -35,5 +35,8 @@ export const API_ENDPOINTS = {
   GALLERY: {
     FOLDERS: "/upload/db-folders",
     CREATE_FOLDER: "/upload/create-folder",
+  },
+  COMMISSION_PACKAGES: {
+    COMMISSION_PACKAGES: "/admin/commission-packages",
   }
 };

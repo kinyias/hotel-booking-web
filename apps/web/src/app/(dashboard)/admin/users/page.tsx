@@ -122,10 +122,6 @@ function UserManagementPage() {
     <div className="m-4 md:m-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Users Management</h1>
-        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-          <Plus size={20} className="mr-2" />
-          Add User
-        </Button>
       </div>
 
       <UsersFilters

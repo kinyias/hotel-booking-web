@@ -25,6 +25,12 @@ export class CommissionPackageController {
     return this.service.list();
   }
 
+  @Get(':id')
+  @Action('commission-packages.view')
+  findOne(@Param('id') id: string) {
+    return this.service.findOne(id);
+  }
+
   @Post()
   @Action('commission-packages.create')
   create(@Body() dto: CreateCommissionPackageDto) {

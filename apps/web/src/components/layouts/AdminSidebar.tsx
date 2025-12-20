@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Hotel, Receipt, Settings, Star, Tags } from 'lucide-react';
+import { CirclePercent, FileText, Hotel, Receipt, Settings, Star, Tags } from 'lucide-react';
 import {
   ChevronDown,
   Home,
@@ -76,6 +76,11 @@ export const navItems: NavItem[] = [
       { title: 'Promotions', href: ROUTES.ADMIN_PROMOTIONS },
       { title: 'Promotion types', href: ROUTES.ADMIN_PROMOTION_TYPES },
     ]
+  },
+  {
+    title: 'Commissions',
+    href: ROUTES.ADMIN_COMMISSIONS,
+    icon: CirclePercent,
   },
   {
     title: 'Users',

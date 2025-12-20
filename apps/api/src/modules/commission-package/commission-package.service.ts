@@ -13,6 +13,12 @@ export class CommissionPackageService {
     });
   }
 
+  async findOne(id: string) {
+    return this.prisma.commissionPackage.findUnique({
+      where: { id },
+    });
+  }
+
   async create(dto: CreateCommissionPackageDto) {
     return this.prisma.commissionPackage.create({ data: dto });
   }
