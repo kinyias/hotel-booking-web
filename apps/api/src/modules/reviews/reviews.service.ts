@@ -189,6 +189,7 @@ export class ReviewService {
         orderBy: { createdAt: 'desc' },
         include: {
           images: true,
+          hotel: { select: { id: true, name: true } },
           user: {
             select: {
               id: true,

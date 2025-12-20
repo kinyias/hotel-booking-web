@@ -1,6 +1,6 @@
 import api from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants/api';
-import { CreateReviewInput, ListReviewsParams, ListReviewsResponse, Review } from './types';
+import { CreateReviewInput, ListReviewsParams, ListReviewsResponse, ListReviewsResponseWithHotel, Review } from './types';
 
 export const listHotelReviews = async (hotelId: string, params: ListReviewsParams) => {
   const response = await api.get<ListReviewsResponse>(
@@ -38,5 +38,18 @@ export const createReview = async (hotelId: string, data: CreateReviewInput) => 
     `${API_ENDPOINTS.HOTEL.HOTELS}/${hotelId}/reviews`,
     data
   );
+  return response.data;
+};
+
+export const listMyReviews = async (params: ListReviewsParams) => {
+  const response = await api.get<ListReviewsResponseWithHotel>('users/me/reviews', { params });
+  return response.data;
+};
+
+export const updateReview = async (
+  id: string,
+  data: { rating: number; title?: string; content?: string }
+) => {
+  const response = await api.patch<Review>(`reviews/${id}`, data);
   return response.data;
 };

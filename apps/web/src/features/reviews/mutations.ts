@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createReview, deleteReview, moderateReview } from './api';
+import { createReview, deleteReview, moderateReview, updateReview } from './api';
 import { CreateReviewInput } from './types';
 import { REVIEWS_QUERY_KEY } from './queries';
 import { toast } from 'react-hot-toast';
@@ -46,6 +46,22 @@ export const useDeleteReviewMutation = (hotelId: string) => {
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || 'Failed to delete review');
+    },
+  });
+};
+
+export const useUpdateReviewMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { rating: number; title?: string; content?: string } }) =>
+      updateReview(id, data),
+    onSuccess: (data) => {
+      toast.success('Review updated successfully');
+      queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY_KEY, 'my'] });
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to update review');
     },
   });
 };

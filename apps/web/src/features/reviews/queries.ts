@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { listHotelReviews, listModerationReviews } from './api';
+import { listHotelReviews, listModerationReviews, listMyReviews } from './api';
 import { ListReviewsParams } from './types';
 
 export const REVIEWS_QUERY_KEY = 'reviews';
@@ -17,5 +17,12 @@ export const useModerationReviewsQuery = (hotelId: string, params: ListReviewsPa
     queryKey: [REVIEWS_QUERY_KEY, 'moderation', hotelId, params],
     queryFn: () => listModerationReviews(hotelId, params),
     enabled: !!hotelId,
+  });
+};
+
+export const useMyReviewsQuery = (params: ListReviewsParams = {}) => {
+  return useQuery({
+    queryKey: [REVIEWS_QUERY_KEY, 'my', params],
+    queryFn: () => listMyReviews(params),
   });
 };

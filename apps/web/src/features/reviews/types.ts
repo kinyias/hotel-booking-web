@@ -50,3 +50,15 @@ export interface ListReviewsResponse {
   page: number;
   limit: number;
 }
+export interface ReviewWithHotel extends Review {
+  hotel: {
+    id: string;
+    name: string;
+  };
+}
+export interface ListReviewsResponseWithHotel {
+  items: ReviewWithHotel[];
+  total: number;
+  page: number;
+  limit: number;
+}

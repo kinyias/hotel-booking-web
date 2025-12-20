@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { User, Package, Menu, X, Tag, MapPin, Eye, MessageSquare } from 'lucide-react';
+import { User, Package, Menu, X, Tag, MapPin, Eye, MessageSquare, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -22,6 +22,13 @@ const navigationItems = [
     icon: Package,
     description: 'View and manage your bookings',
     href: '/me/my-bookings',
+  },
+  {
+    id: 'myreviews',
+    label: 'My Reviews',
+    icon: Star,
+    description: 'View and manage your reviews',
+    href: '/me/my-reviews',
   },
   {
     id: 'contact',
