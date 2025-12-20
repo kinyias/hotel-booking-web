@@ -47,3 +47,15 @@ export const deactivateCommissionPackage = async (id: string) => {
   );
   return response.data;
 };
+
+export const setHotelCommissionPackage = async (
+  hotelId: string,
+  commissionPackageId: string
+) => {
+  const response = await api.patch<CommissionPackage>(
+    `${API_ENDPOINTS.COMMISSION_PACKAGES.COMMISSION_PACKAGES}/${hotelId}/commission-package`,
+    { commissionPackageId }
+  );
+  return response.data;
+};
+

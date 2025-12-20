@@ -14,10 +14,11 @@ import {
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Ban } from 'lucide-react';
+import { Edit, Ban, Building } from 'lucide-react';
 import { CommissionPackage } from '../types';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import CommissionAssignToHotelsDialog from './CommissionAssignToHotelsDialog';
 
 interface CommissionPackageTableProps {
   packages: CommissionPackage[];
@@ -27,19 +28,25 @@ export default function CommissionPackageTable({
   packages,
 }: CommissionPackageTableProps) {
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(
+  const [assignOpen, setAssignOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<CommissionPackage | null>(
     null
   );
   const deactivateMutation = useDeactivateCommissionPackageMutation();
 
   const handleDeactivateClick = (id: string) => {
-    setSelectedPackageId(id);
+    setSelectedPackage(packages.find((p) => p.id === id) || null);
     setConfirmOpen(true);
   };
 
+  const handleAssignClick = (pkg: CommissionPackage) => {
+    setSelectedPackage(pkg);
+    setAssignOpen(true);
+  };
+
   const handleConfirmDeactivate = () => {
-    if (selectedPackageId) {
-      deactivateMutation.mutate(selectedPackageId, {
+    if (selectedPackage) {
+      deactivateMutation.mutate(selectedPackage.id, {
         onSuccess: () => {
           toast.success('Commission package deactivated successfully');
         },
@@ -52,7 +59,7 @@ export default function CommissionPackageTable({
       });
     }
     setConfirmOpen(false);
-    setSelectedPackageId(null);
+    setSelectedPackage(null);
   };
 
   const formatPercentage = (rate: number) => {
@@ -100,6 +107,16 @@ export default function CommissionPackageTable({
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
+                    {pkg.isActive && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        title="Assign to Hotels"
+                        onClick={() => handleAssignClick(pkg)}
+                      >
+                        <Building className="h-4 w-4" />
+                      </Button>
+                    )}
                     <Link href={`/admin/commissions/${pkg.id}`}>
                       <Button variant="ghost" size="icon" title="Edit">
                         <Edit className="h-4 w-4" />
@@ -140,6 +157,11 @@ export default function CommissionPackageTable({
         isLoading={deactivateMutation.isPending}
         onConfirm={handleConfirmDeactivate}
         onCancel={() => setConfirmOpen(false)}
+      />
+      <CommissionAssignToHotelsDialog
+        open={assignOpen}
+        onOpenChange={setAssignOpen}
+        commissionPackage={selectedPackage}
       />
     </>
   );

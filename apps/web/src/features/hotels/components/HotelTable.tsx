@@ -14,10 +14,11 @@ import {
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, CirclePercent } from 'lucide-react';
 import { Hotel } from '../types';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import CommissionAssignToHotelDialog from '@/features/commissions/components/CommissionAssignToHotelDialog';
 
 interface HotelTableProps {
   hotels: Hotel[];
@@ -25,17 +26,23 @@ interface HotelTableProps {
 
 export default function HotelTable({ hotels }: HotelTableProps) {
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+  const [assignOpen, setAssignOpen] = useState(false);
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const deleteMutation = useDeleteHotelMutation();
 
   const handleDeleteClick = (id: string) => {
-    setSelectedHotelId(id);
+    setSelectedHotel(hotels.find((h) => h.id === id) || null);
     setConfirmOpen(true);
   };
 
+  const handleAssignClick = (hotel: Hotel) => {
+    setSelectedHotel(hotel);
+    setAssignOpen(true);
+  };
+
   const handleConfirmDelete = () => {
-    if (selectedHotelId) {
-      deleteMutation.mutate(selectedHotelId, {
+    if (selectedHotel) {
+      deleteMutation.mutate(selectedHotel.id, {
         onSuccess: () => {
           toast.success('Hotel deleted successfully');
         },
@@ -45,7 +52,7 @@ export default function HotelTable({ hotels }: HotelTableProps) {
       });
     }
     setConfirmOpen(false);
-    setSelectedHotelId(null);
+    setSelectedHotel(null);
   };
 
   return (
@@ -57,6 +64,7 @@ export default function HotelTable({ hotels }: HotelTableProps) {
               <TableHead className="text-foreground">Image</TableHead>
               <TableHead className="text-foreground">Name</TableHead>
               <TableHead className="text-foreground">Email Owner</TableHead>
+              <TableHead className="text-foreground">Commission</TableHead>
               <TableHead className="text-foreground">Status</TableHead>
               <TableHead className="text-right text-foreground">
                 Actions
@@ -89,6 +97,15 @@ export default function HotelTable({ hotels }: HotelTableProps) {
                     {hotel.owner.email}
                   </TableCell>
                   <TableCell>
+                    {hotel.commissionPackage ? (
+                      <Badge variant="outline">
+                        {hotel.commissionPackage.name} ({(hotel.commissionPackage.commissionRate * 100).toFixed(1)}%)
+                      </Badge>
+                    ) : (
+                      <span className="text-muted-foreground text-xs italic">Not assigned</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
                     <Badge
                       variant={
                         hotel.status === 'ACTIVE' ? 'default' : 'secondary'
@@ -99,6 +116,14 @@ export default function HotelTable({ hotels }: HotelTableProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        title="Assign Commission"
+                        onClick={() => handleAssignClick(hotel)}
+                      >
+                        <CirclePercent className="h-4 w-4" />
+                      </Button>
                       <Link href={`/admin/hotels/${hotel.id}`}>
                         <Button variant="ghost" size="icon" title="Edit">
                           <Edit className="h-4 w-4" />
@@ -136,6 +161,11 @@ export default function HotelTable({ hotels }: HotelTableProps) {
         isLoading={deleteMutation.isPending}
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmOpen(false)}
+      />
+      <CommissionAssignToHotelDialog
+        open={assignOpen}
+        onOpenChange={setAssignOpen}
+        hotel={selectedHotel}
       />
     </>
   );
