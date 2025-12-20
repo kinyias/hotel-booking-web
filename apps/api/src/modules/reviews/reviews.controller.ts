@@ -31,6 +31,18 @@ export class ReviewController {
     return this.service.listPublic(hotelId, q);
   }
 
+  // Hotel moderation: xem tất cả review của hotel (bao gồm bị ẩn)
+  @Get('hotels/:hotelId/reviews/moderation')
+  @UseGuards(JwtAuthGuard, ActionGuard)
+  @Action('reviews.moderate')
+  async listForModeration(
+    @Param('hotelId') hotelId: string,
+    @Query() q: ListReviewsDto,
+    @Req() req: any,
+  ) {
+    return this.service.listForModeration(hotelId, req.user.id, q);
+  }
+
   // User: tạo review (phải login)
   @Post('hotels/:hotelId/reviews')
   @UseGuards(JwtAuthGuard)

@@ -161,6 +161,55 @@ export class ReviewService {
     return { page, limit, total, items };
   }
 
+  async listForModeration(hotelId: string, userId: string, q: ListReviewsDto) {
+    await this.assertHotelAccess(hotelId, userId);
+
+    const page = q.page ?? 1;
+    const limit = q.limit ?? 20;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.ReviewWhereInput = {
+      hotelId,
+      deletedAt: null,
+      ...(q.q
+        ? {
+            OR: [
+              { title: { contains: q.q, mode: 'insensitive' } },
+              { content: { contains: q.q, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
+    };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.review.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          images: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              avatar: {
+                select: {
+                  id: true,
+                  secureUrl: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+      this.prisma.review.count({ where }),
+    ]);
+
+    return { page, limit, total, items };
+  }
+
   async listMy(userId: string, q: ListReviewsDto) {
     const page = q.page ?? 1;
     const limit = q.limit ?? 20;
