@@ -38,6 +38,7 @@ model User {
   hotelMemberships HotelMember[]        @relation("UserHotelMemberships")
   galleries        ImageGallery[]
   folderGalleries  FolderGallery[]
+  reviews Review[]
 }
 
 model Hotel {
@@ -58,6 +59,7 @@ model Hotel {
   rooms     Room[]
   members   HotelMember[]
   images    HotelImage[]
+  reviews Review[]
   commissionPackageId String?
   commissionPackage   CommissionPackage? @relation(fields: [commissionPackageId], references: [id], onDelete: SetNull)
 
@@ -353,7 +355,7 @@ model Booking {
 
   items       BookingItem[] 
   payments    Payment[]
-
+  review Review?
 
   @@index([hotelId])
   @@index([userId])
@@ -375,7 +377,43 @@ model BookingItem {
   @@index([roomTypeId])
 }
 
+model Review {
+  id        String   @id @default(cuid())
 
+  hotelId   String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  rating    Int      // 1..5
+  title     String?
+  content   String?
+
+  isHidden  Boolean  @default(false)
+  deletedAt DateTime?
+
+  images    ReviewImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hotelId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model ReviewImage {
+  id       String @id @default(cuid())
+  reviewId String
+  url      String
+
+  review   Review  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+}
 enum PaymentProvider {
   VNPAY
 }

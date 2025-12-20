@@ -22,6 +22,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { CommissionPackageModule } from './modules/commission-package/commission-package.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { CommissionPackageModule } from './modules/commission-package/commission
     BookingModule,
     PaymentModule,
     CommissionPackageModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [
