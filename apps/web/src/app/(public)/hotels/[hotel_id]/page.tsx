@@ -23,6 +23,7 @@ import { useHotelDetailQuery } from "@/features/hotels/queries";
 import { useQueryRoomTypesAvailable } from "@/features/room-types/queries";
 import { formatCurrency } from "@/utils/currency";
 import { HotelGallery } from "@/features/hotels/components/HotelGallery";
+import ReviewList from "@/features/reviews/components/ReviewList";
 
 export type GalleryImage = {
   id: string;
@@ -63,8 +64,6 @@ export default function HotelDetailPage() {
   const { data: hotel, isLoading: isLoadingHotel } = useHotelDetailQuery(hotelId);
   
   // Use URL params for query if available, otherwise fallback to default date logic
-  // But strictly speaking, if we want "Change Search" behavior, we should prioritize URL params context
-  // If URL params are present, use them. If not, use the default dates (which we also initialized state with).
   const queryFrom = searchFrom || (date?.from ? format(date.from, "yyyy-MM-dd") : undefined);
   const queryTo = searchTo || (date?.to ? format(date.to, "yyyy-MM-dd") : undefined);
 
@@ -100,11 +99,6 @@ export default function HotelDetailPage() {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   // Derived Values
-  // Calculate nights based on QUERY params (actual availability), not just picker state, 
-  // though typically they align. Let's use the date state for UI consistency,
-  // knowing the user hits "Search" to align them.
-  // Actually, for booking calculation, we should use the dates that resulted in the current roomTypes.
-  // So we should parse queryFrom/queryTo back to dates.
   const checkInDate = queryFrom ? new Date(queryFrom) : new Date();
   const checkOutDate = queryTo ? new Date(queryTo) : addDays(new Date(), 1);
   const nights = Math.max(1, differenceInDays(checkOutDate, checkInDate));
@@ -300,6 +294,11 @@ export default function HotelDetailPage() {
                  nights={nights} 
                  onUpdateQuantity={updateQuantity} 
                />
+             </div>
+
+             {/* Reviews */}
+             <div className="mt-12 pt-8 border-t border-gray-100">
+                <ReviewList hotelId={hotel.id} />
              </div>
            </div>
         </div>

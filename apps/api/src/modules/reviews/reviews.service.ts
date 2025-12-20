@@ -138,12 +138,19 @@ export class ReviewService {
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
+          images:true,
           user: {
             select: {
               id: true,
               firstName: true,
               lastName: true,
-              avatarId: true,
+              avatar: {
+                select: {
+                  id: true,
+                  secureUrl: true,
+                  publicId: true,
+                },
+              },
             },
           },
         },

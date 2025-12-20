@@ -38,5 +38,8 @@ export const API_ENDPOINTS = {
   },
   COMMISSION_PACKAGES: {
     COMMISSION_PACKAGES: "/admin/commission-packages",
+  },
+  REVIEWS: {
+    REVIEWS: "/reviews",
   }
 };

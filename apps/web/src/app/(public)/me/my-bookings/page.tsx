@@ -26,17 +26,25 @@ import EllipsisPagination from "@/components/ui/EllipsisPagination";
 import { useMyBookingsQuery } from "@/features/bookings/queries";
 import { formatCurrency } from "@/utils/currency";
 import Link from "next/link";
+import CreateReviewDialog from "@/features/reviews/components/CreateReviewDialog";
+import { MessageSquarePlus } from "lucide-react";
 
 export default function MyBookingsPage() {
   const [page, setPage] = useState(1);
   const limit = 10;
+  
+  // Review Dialog State
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [selectedReviewData, setSelectedReviewData] = useState<{
+    bookingId: string;
+    hotelId: string;
+  } | null>(null);
 
   // Fetch My Bookings
   const { data: bookingsResponse, isLoading } = useMyBookingsQuery({ 
       page, 
       limit 
   });
-console.log(bookingsResponse)
   const bookings = bookingsResponse?.data || [];
   const meta = bookingsResponse?.meta;
   const total = meta?.total || 0;
@@ -52,6 +60,11 @@ console.log(bookingsResponse)
       case 'COMPLETED': return <Badge variant="outline" className="border-green-500 text-green-600">Completed</Badge>;
       default: return <Badge variant="outline">{status}</Badge>;
     }
+  };
+  
+  const handleOpenReview = (bookingId: string, hotelId: string) => {
+    setSelectedReviewData({ bookingId, hotelId });
+    setReviewDialogOpen(true);
   };
 
   return (
@@ -136,9 +149,21 @@ console.log(bookingsResponse)
                                     {getStatusBadge(booking.status)}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    <Link href={`/me/my-bookings/${booking.id}`}>
-                                    <Button variant="outline" size="sm">Details</Button>
-                                    </Link>
+                                    <div className="flex justify-end gap-2">
+                                        {booking.status === 'COMPLETED' && (
+                                            <Button 
+                                                variant="secondary" 
+                                                size="sm"
+                                                onClick={() => handleOpenReview(booking.id, (booking as any).hotelId)}
+                                            >
+                                                <MessageSquarePlus className="w-4 h-4 mr-1" />
+                                                Review
+                                            </Button>
+                                        )}
+                                        <Link href={`/me/my-bookings/${booking.id}`}>
+                                            <Button variant="outline" size="sm">Details</Button>
+                                        </Link>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -167,6 +192,16 @@ console.log(bookingsResponse)
             </div>
           )}
       </Card>
+      
+      {selectedReviewData && (
+        <CreateReviewDialog
+            key={selectedReviewData.bookingId}
+            open={reviewDialogOpen}
+            onOpenChange={setReviewDialogOpen}
+            bookingId={selectedReviewData.bookingId}
+            hotelId={selectedReviewData.hotelId}
+        />
+      )}
     </div>
   );
 }
