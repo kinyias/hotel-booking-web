@@ -41,6 +41,7 @@ export class RoomTypeController {
   }
   
   @Get('hotels/:hotelId/room-types')
+  @Action('room-types.list')
   async list(
     @Param('hotelId') hotelId: string,
     @Query() query: ListRoomTypeDto,

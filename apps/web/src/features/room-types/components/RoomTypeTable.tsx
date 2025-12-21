@@ -72,7 +72,7 @@ export function RoomTypeTable({ roomTypes, hotelId }: RoomTypeTableProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Link href={`/admin/hotels/${room.hotelId}/room-types/${room.id}`}>
+                      <Link href={`/admin/room-types/${room.hotelId}/manage/${room.id}`}>
                       <Button variant="ghost" size="icon" title="Edit">
                         <Edit className="h-4 w-4" />
                       </Button>

@@ -21,4 +21,6 @@ export const ROUTES = {
   ADMIN_MEMBER_HOTELS: '/admin/member-hotels',
   ADMIN_COMMISSIONS: '/admin/commissions',
   ADMIN_REVIEW: '/admin/reviews',
+  ADMIN_ROOM_TYPES: '/admin/room-types',
+  ADMIN_ROOMS: '/admin/rooms',
 };

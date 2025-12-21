@@ -1,6 +1,6 @@
 'use client';
 
-import { CirclePercent, FileText, Hotel, Receipt, Settings, Star, Tags } from 'lucide-react';
+import { BedSingle, CirclePercent, FileText, Hotel, Layers, Receipt, Settings, Sparkles, Star, Tags } from 'lucide-react';
 import {
   ChevronDown,
   Home,
@@ -57,9 +57,20 @@ export const navItems: NavItem[] = [
     submenu: [
       { title: 'Hotels', href: ROUTES.ADMIN_HOTELS, action: "hotels.admin.list" },
       { title: 'Members', href: ROUTES.ADMIN_MEMBER_HOTELS, action: "hotels.admin.list" },
-      { title: 'Amenities', href: ROUTES.ADMIN_AMENITIES, action: "amenities.list" },
       { title: 'Inventory', href: ROUTES.ADMIN_INVENTORY, action: "inventories.list" },
     ]
+  },
+  {
+    title: "Room types",
+    href: ROUTES.ADMIN_ROOM_TYPES,
+    icon: BedSingle,
+    action: "room-types.list",
+  },
+  {
+    title: 'Amenities',
+    href: ROUTES.ADMIN_AMENITIES,
+    icon: Sparkles,
+    action: "amenities.list",
   },
   {
     title: 'Bookings',

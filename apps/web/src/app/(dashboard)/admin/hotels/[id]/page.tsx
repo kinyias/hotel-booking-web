@@ -95,22 +95,6 @@ export default function HotelEditPage() {
             isLoading={isSaving}
         />
       </div>
-
-      {/* Room Types Section - Only Show when Editing */}
-      {isEditing && (
-          <div className="space-y-4 w-full">
-            <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Room Types</h2>
-                <Link href={`/admin/hotels/${id}/room-types/new`}>
-                <Button size="sm" variant="outline">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Room Type
-                </Button>
-                </Link>
-            </div>
-            <RoomTypeTable roomTypes={roomTypes} hotelId={id} />
-          </div>
-      )}
     </div>
   );
 }

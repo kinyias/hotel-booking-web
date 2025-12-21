@@ -20,7 +20,7 @@ export default function RoomTypePage() {
   const params = useParams();
   const router = useRouter();
   
-  const hotelId = params.id as string;
+  const hotelId = params.hotel_id as string;
   const roomTypeId = params.type_id as string;
   
   const isEditing = !!roomTypeId && roomTypeId !== 'new';
@@ -59,7 +59,7 @@ export default function RoomTypePage() {
         await createMutation.mutateAsync(data);
         toast.success("Room Type created successfully");
       }
-      router.push(`/admin/hotels/${hotelId}`);
+      router.push(`/admin/room-types/${hotelId}`);
     } catch (error) {
       console.error(error);
       toast.error("Failed to save room type. Please try again.");
@@ -120,7 +120,7 @@ export default function RoomTypePage() {
            <div className="space-y-4">
                <div className="flex items-center justify-between">
                    <h2 className="text-lg font-semibold">Rooms ({rooms.length})</h2>
-                   <Link href={`/admin/hotels/${hotelId}/room-types/${roomTypeId}/room/new`}>
+                   <Link href={`/admin/room-types/${hotelId}/manage/${roomTypeId}/room/new`}>
                        <Button>
                            <Plus className="mr-2 h-4 w-4" />
                            Add Room

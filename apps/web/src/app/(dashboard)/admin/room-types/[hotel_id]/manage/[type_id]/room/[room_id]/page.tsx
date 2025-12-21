@@ -13,7 +13,7 @@ export default function RoomPage() {
     const params = useParams();
     const router = useRouter();
 
-    const hotelId = params.id as string;
+    const hotelId = params.hotel_id as string;
     const roomTypeId = params.type_id as string;
     const roomId = params.room_id as string;
 
@@ -56,7 +56,7 @@ export default function RoomPage() {
                 });
                 toast.success('Room created successfully');
             }
-            router.push(`/admin/hotels/${hotelId}/room-types/${roomTypeId}`);
+            router.push(`/admin/room-types/${hotelId}/manage/${roomTypeId}`);
         } catch (error) {
             console.error(error);
             toast.error('Failed to save room. Please try again.');
