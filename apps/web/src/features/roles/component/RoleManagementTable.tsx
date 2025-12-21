@@ -26,7 +26,7 @@ function RoleManagementTable({ roles, onEdit, onDelete, onAssign }: RoleTablePro
               <TableHead className="text-foreground">Role Name</TableHead>
               <TableHead className="text-foreground">Description</TableHead>
               <TableHead className="text-foreground">Permissions</TableHead>
-              <TableHead className="text-foreground">Actions</TableHead>
+              <TableHead className="text-foreground flex justify-end">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -39,9 +39,9 @@ function RoleManagementTable({ roles, onEdit, onDelete, onAssign }: RoleTablePro
                   </div>
                 </TableCell>
                 <TableCell className="text-muted-foreground text-sm">{role.description}</TableCell>
-                <TableCell className="text-foreground font-medium">{role.permissions.map(permission => permission.permission.name).join(', ')}</TableCell>
+                <TableCell className="text-foreground font-medium max-w-xs whitespace-normal break-words">{role.permissions.map(permission => permission.permission.name).join(', ')}</TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-end">
                      <Button
                       variant="ghost"
                       size="icon"
