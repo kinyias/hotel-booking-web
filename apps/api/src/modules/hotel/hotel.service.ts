@@ -233,16 +233,37 @@ export class HotelService {
     });
   }
 
-  async listHotelsAdmin(query: ListHotelsQueryDto) {
+  async listHotelsAdmin(query: ListHotelsQueryDto, userId: string) {
     const page = query.page ?? 1;
     const limit = query.limit ?? 20;
     const offset = (page - 1) * limit;
+
+    // Check if user has ADMIN role
+    const userRoles = await this.prisma.userRole.findMany({
+      where: { userId },
+      include: { role: true },
+    });
+
+    const isAdmin = userRoles.some(
+      (ur) => ur.role.name.toUpperCase() === 'ADMIN',
+    );
 
     const andWhere: Prisma.HotelWhereInput[] = [];
 
     // soft delete
     if (!query.includeDeleted) {
       andWhere.push({ deletedAt: null });
+    }
+
+    // 🔑 ROLE-BASED FILTER: If not ADMIN, only show hotels where user is a member
+    if (!isAdmin) {
+      andWhere.push({
+        members: {
+          some: {
+            userId,
+          },
+        },
+      });
     }
 
     if (query.ownerId) {

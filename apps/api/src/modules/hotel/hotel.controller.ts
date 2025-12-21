@@ -90,10 +90,9 @@ export class HotelController {
     return this.hotelService.softDeleteHotel(hotelId, req.user.id);
   }
   
-  @Public()
   @Get()
   @Action('hotels.admin.list')
-  listHotelsAdmin(@Query() query: ListHotelsQueryDto) {
-    return this.hotelService.listHotelsAdmin(query);
+  listHotelsAdmin(@Query() query: ListHotelsQueryDto, @Req() req: any) {
+    return this.hotelService.listHotelsAdmin(query, req.user.id);
   }
 }
