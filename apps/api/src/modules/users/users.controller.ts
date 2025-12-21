@@ -17,6 +17,7 @@ import { ListUsersQuery } from '../users/dto/list-users.query';
 import { plainToInstance } from 'class-transformer';
 import { PublicUserDto } from '../users/dto/public-user.dto';
 import { UpdateMeDto } from '../users/dto/update-me.dto';
+import { Action } from '../auth/decorator/action.decorator';
 
 
 @Controller('users')
@@ -58,6 +59,7 @@ export class UsersController {
 
 
   @Get()
+  @Action('users.list')
   async list(@Query() query: ListUsersQuery) {
     const { items, meta } = await this.users.listUsers(query);
     return {

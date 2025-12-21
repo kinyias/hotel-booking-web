@@ -1,16 +1,19 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
+import { Action } from '../auth/decorator/action.decorator';
 
 @Controller('dashboard')
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('stats')
+  @Action('dashboard.read')
   getStats(@Query('hotelId') hotelId?: string) {
     return this.dashboardService.getStats(hotelId);
   }
 
   @Get('revenue-chart')
+  @Action('dashboard.read')
   getRevenueChart(
     @Query('hotelId') hotelId?: string,
     @Query('groupBy') groupBy?: 'day' | 'week' | 'month',
@@ -22,6 +25,7 @@ export class DashboardController {
   }
 
   @Get('latest-reviews')
+  @Action('dashboard.read')
   getLatestReviews(
     @Query('hotelId') hotelId?: string,
     @Query('limit') limit?: number,
@@ -30,6 +34,7 @@ export class DashboardController {
   }
 
   @Get('newest-bookings')
+  @Action('dashboard.read')
   getNewestBookings(
     @Query('hotelId') hotelId?: string,
     @Query('limit') limit?: number,

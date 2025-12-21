@@ -15,6 +15,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { Permissions } from '../auth/decorator/permissions.decorator';
+import { Action } from '../auth/decorator/action.decorator';
 
 @Controller('actions')
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
@@ -27,6 +28,7 @@ export class ActionsController {
   }
 
   @Get()
+  @Action('actions.list')
   list() {
     return this.service.findAll();
   }

@@ -15,6 +15,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { AssignRolesToUserDto } from './dto/assign-roles-to-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AssignPermissionsDto } from './dto/assign-permissions.dto';
+import { Action } from '../auth/decorator/action.decorator';
 
 @Controller('roles')
 @UseGuards(JwtAuthGuard)
@@ -27,6 +28,7 @@ export class RolesController {
   }
 
   @Get()
+  @Action('roles.list')
   findAll(
     @Query('search') search?: string,
     @Query('skip') skip?: string,

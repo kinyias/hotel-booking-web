@@ -17,6 +17,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { Permissions } from '../auth/decorator/permissions.decorator';
 import { MANAGE_USER } from '../permissions/permissions.constant';
+import { Action } from '../auth/decorator/action.decorator';
 
 @Controller('permissions')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -29,6 +30,7 @@ export class PermissionsController {
   }
 
   @Get()
+  @Action('permissions.list')
   findAll(q?: { search?: string; skip?: number; take?: number }) {
   return this.service.listPermissions({
     q: q?.search,

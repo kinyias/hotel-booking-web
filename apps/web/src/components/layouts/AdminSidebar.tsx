@@ -29,44 +29,55 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { ROUTES } from '@/constants';
+import { usePermission } from '@/providers/PermissionProvider';
 interface NavItem {
   title: string;
   href: string;
   icon: React.ElementType;
-  submenu?: { title: string; href: string }[];
+  submenu?: SubMenuItem[];
+  action: string;
 }
-
+interface SubMenuItem {
+  title: string;
+  href: string;
+  action: string;
+}
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
     href: ROUTES.ADMIN_DASHBOARD,
     icon: Home,
+    action: "dashboard.read",
   },
   {
     title: 'Hotel',
     href: ROUTES.ADMIN_HOTELS,
     icon: Hotel,
+    action: "hotels.admin.list",
     submenu: [
-      { title: 'Hotels', href: ROUTES.ADMIN_HOTELS },
-      { title: 'Members', href: ROUTES.ADMIN_MEMBER_HOTELS },
-      { title: 'Amenities', href: ROUTES.ADMIN_AMENITIES },
-      { title: 'Inventory', href: ROUTES.ADMIN_INVENTORY },
+      { title: 'Hotels', href: ROUTES.ADMIN_HOTELS, action: "hotels.admin.list" },
+      { title: 'Members', href: ROUTES.ADMIN_MEMBER_HOTELS, action: "hotels.admin.list" },
+      { title: 'Amenities', href: ROUTES.ADMIN_AMENITIES, action: "amenities.list" },
+      { title: 'Inventory', href: ROUTES.ADMIN_INVENTORY, action: "inventories.list" },
     ]
   },
   {
     title: 'Bookings',
     href: ROUTES.ADMIN_BOOKINGS,
     icon: Receipt,
+    action: "bookings.list",
   },
   {
     title: 'News',
     href: ROUTES.ADMIN_NEWS,
     icon: FileText,
+    action: "news.read",
   },
   {
     title: 'Reviews',
     href: ROUTES.ADMIN_REVIEWS,
     icon: Star,
+    action: "reviews.moderate",
   },
   // {
   //   title: 'Promotions',
@@ -81,27 +92,44 @@ export const navItems: NavItem[] = [
     title: 'Commissions',
     href: ROUTES.ADMIN_COMMISSIONS,
     icon: CirclePercent,
+    action: "commission-packages.list",
   },
   {
     title: 'Users',
     href: ROUTES.ADMIN_USERS,
     icon: Users,
+    action: "users.list",
     submenu: [
-      { title: 'Users', href: ROUTES.ADMIN_USERS },
-      { title: 'Roles', href: ROUTES.ADMIN_ROLES },
-      { title: 'Permissions', href: ROUTES.ADMIN_PERMISSIONS },
-      { title: 'Actions', href: ROUTES.ADMIN_ACTIONS },
+      { title: 'Users', href: ROUTES.ADMIN_USERS, action: "users.list" },
+      { title: 'Roles', href: ROUTES.ADMIN_ROLES, action: "roles.list" },
+      { title: 'Permissions', href: ROUTES.ADMIN_PERMISSIONS, action: "permissions.list" },
+      { title: 'Actions', href: ROUTES.ADMIN_ACTIONS, action: "actions.list" },
     ]
   },
   {
     title: 'Settings',
     href: ROUTES.ADMIN_SETTINGS,
     icon: Settings,
+    action: "banners.read",
   },
 ];
 export default function AdminSidebar() {
   const pathname = usePathname();
-
+  const { can } = usePermission();
+  
+  function filterMenu(menu: NavItem[], can: (action: string) => boolean): NavItem[] {
+    return menu
+      .filter((item) => !item.action || can(item.action))
+      .map((item) => ({
+        ...item,
+        submenu: item.submenu
+          ? item.submenu.filter((subItem) => !subItem.action || can(subItem.action))
+          : undefined,
+      }));
+  }
+  
+  const filteredMenu = filterMenu(navItems, can);
+  // const filteredMenu = navItems;
   return (
     <Sidebar collapsible="icon" className="h-screen">
       <SidebarHeader>
@@ -115,7 +143,7 @@ export default function AdminSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => {
+              {filteredMenu.map((item) => {
                 const isActive =
                   pathname === item.href ||
                   pathname?.startsWith(item.href + '/');

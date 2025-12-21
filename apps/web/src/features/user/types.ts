@@ -18,6 +18,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   avatar: Avatar;
+  allowedActions: string[];
 }
 export interface UsersQueryParams {
   limit?: number;
