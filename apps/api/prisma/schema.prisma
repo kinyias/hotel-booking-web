@@ -40,6 +40,7 @@ model User {
   folderGalleries  FolderGallery[]
   reviews Review[]
   news News[]
+  banners Banner[]
 }
 
 model Hotel {
@@ -446,6 +447,48 @@ model NewsImage {
 
   @@index([newsId])
 }
+
+model Banner {
+  id        String @id @default(cuid())
+  title     String?
+  subtitle  String?
+
+  link      String?
+  linkType  BannerLinkType @default(URL)
+
+  position  Int     @default(0)
+  isActive  Boolean @default(true)
+
+  startAt   DateTime?
+  endAt     DateTime?
+
+  images    BannerImage[]
+
+  createdById String?
+  createdBy   User?     @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, position])
+}
+
+model BannerImage {
+  id       String @id @default(cuid())
+  bannerId String
+  url      String
+
+  banner   Banner @relation(fields: [bannerId], references: [id], onDelete: Cascade)
+
+  @@index([bannerId])
+}
+
+enum BannerLinkType {
+  URL
+  HOTEL
+  NEWS
+}
+
 
 enum NewsStatus {
   DRAFT

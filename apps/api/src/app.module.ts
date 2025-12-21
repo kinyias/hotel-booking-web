@@ -25,6 +25,7 @@ import { CommissionPackageModule } from './modules/commission-package/commission
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { NewsModule } from './modules/news/news.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { BannerModule } from './modules/banner/banner.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     ReviewsModule,
     NewsModule,
     DashboardModule,
+    BannerModule,
   ],
   controllers: [AppController],
   providers: [
