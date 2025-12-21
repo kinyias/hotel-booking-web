@@ -69,7 +69,12 @@ api.interceptors.response.use(
       }
     }
     if (error.response?.status === 403) {
-      toast.error('Bạn không có quyền truy cập chức năng này');
+      toast.error('You do not have permission to access this feature');
+      if (window.location.pathname !== ROUTES.FORBIDDEN) {
+        setTimeout(() => {
+          window.location.href = ROUTES.FORBIDDEN;
+        }, 200);
+      }
       return Promise.reject(error);
     }
     return Promise.reject(error);
