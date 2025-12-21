@@ -54,7 +54,7 @@ function RoleAssignUserDialog({
   const form = useForm<RoleAssignUserFormValues>({
     resolver: zodResolver(roleAssignUserFormSchema),
     defaultValues: {
-      roleIds: user?.roles.map((r) => r.role.id) || [],
+      roleIds: user?.roles.map((r) => r.id) || [],
     },
   });
   const { data } = useRolesQuery();
@@ -74,7 +74,7 @@ function RoleAssignUserDialog({
 
   useEffect(() => {
     if (user) {
-      form.reset({ roleIds: user?.roles.map((r) => r.role.id) || [] });
+      form.reset({ roleIds: user?.roles.map((r) => r.id) || [] });
     }
   }, [user, form]);
 
@@ -107,7 +107,7 @@ function RoleAssignUserDialog({
                 const selectedIds = [
                   ...(field.value ?? []),
                   ...(user?.roles
-                    .map((r) => r.role.id)
+                    .map((r) => r.id)
                     .filter((id) => !removedBaseRoles.includes(id)) ??
                     []),
                 ];
@@ -129,7 +129,7 @@ function RoleAssignUserDialog({
                 };
 
                 const removeRole = (id: string) => {
-                  if (user?.roles.some((r) => r.role.id === id)) {
+                  if (user?.roles.some((r) => r.id === id)) {
                     setRemovedBaseRoles((prev) => [...prev, id]);
                   }
 

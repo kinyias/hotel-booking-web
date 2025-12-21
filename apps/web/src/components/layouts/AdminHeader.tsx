@@ -128,7 +128,7 @@ export default function AdminHeader() {
           </Avatar>
           <div className="text-sm">
             <p className="font-semibold">{user?.lastName || 'Admin'}</p>
-            <p className="text-muted-foreground text-xs">{user?.roles[0].role.name}</p>
+            <p className="text-muted-foreground text-xs">{user?.roles[0].name}</p>
           </div>
         </div>
       </div>

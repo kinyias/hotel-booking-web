@@ -36,6 +36,9 @@ export class PublicUserDto {
   @Expose()
   updatedAt: Date;
 
+  @Expose({ groups: ['private'] })
+  allowedActions?: string[];
+
   @Type(() => PublicImageDto)
   @Expose()
   avatar?: PublicImageDto | null;

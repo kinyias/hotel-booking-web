@@ -43,7 +43,7 @@ function DashboardPage() {
     const total = hotelsResponse?.meta.total || 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
     const isAdmin = (user: User | null): boolean => {
-      return user?.roles.some(role => role.role.name === 'ADMIN') || false;
+      return user?.roles.some(role => role.name === 'ADMIN') || false;
     };
   return (
     <div className='m-4 md:m-6'>
