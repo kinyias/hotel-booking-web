@@ -68,15 +68,15 @@ export const navItems: NavItem[] = [
     href: ROUTES.ADMIN_REVIEWS,
     icon: Star,
   },
-  {
-    title: 'Promotions',
-    href: ROUTES.ADMIN_PROMOTIONS,
-    icon: Tags,
-    submenu: [
-      { title: 'Promotions', href: ROUTES.ADMIN_PROMOTIONS },
-      { title: 'Promotion types', href: ROUTES.ADMIN_PROMOTION_TYPES },
-    ]
-  },
+  // {
+  //   title: 'Promotions',
+  //   href: ROUTES.ADMIN_PROMOTIONS,
+  //   icon: Tags,
+  //   submenu: [
+  //     { title: 'Promotions', href: ROUTES.ADMIN_PROMOTIONS },
+  //     { title: 'Promotion types', href: ROUTES.ADMIN_PROMOTION_TYPES },
+  //   ]
+  // },
   {
     title: 'Commissions',
     href: ROUTES.ADMIN_COMMISSIONS,

@@ -12,7 +12,9 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  roles: Role[];
+  roles: {
+    role: Role;
+  }[];
   createdAt: string;
   updatedAt: string;
   avatar: Avatar;
