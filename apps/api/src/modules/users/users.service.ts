@@ -87,7 +87,81 @@ export class UsersService {
       where: { id: userId },
       select: userPublicSelect,
     });
-    return result;
+
+    // Get user's allowed API actions
+    const allowedActions = await this.getAllowedActions(userId);
+
+    return {
+      ...result,
+      allowedActions,
+    };
+  }
+
+  /**
+   * Get all API actions that the user has permission to access
+   */
+  private async getAllowedActions(userId: string): Promise<string[]> {
+    // 1. Get user's roles and their permissions
+    const userRoles = await this.prisma.userRole.findMany({
+      where: { userId },
+      include: {
+        role: {
+          include: {
+            permissions: {
+              include: {
+                permission: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // 2. Collect all permission names the user has
+    const userPermissions = new Set<string>();
+    userRoles.forEach((ur) =>
+      ur.role.permissions.forEach((rp) =>
+        userPermissions.add(rp.permission.name),
+      ),
+    );
+
+    // 3. Get all enabled API actions with their policies
+    const apiActions = await this.prisma.apiAction.findMany({
+      where: { enabled: true },
+      include: {
+        policies: {
+          include: {
+            permission: true,
+          },
+        },
+      },
+    });
+
+    // 4. Filter actions based on user's permissions and action mode
+    const allowedActionKeys: string[] = [];
+
+    for (const action of apiActions) {
+      const requiredPermissions = action.policies.map((p) => p.permission.name);
+
+      // If action has no policies, skip it (shouldn't happen but safe guard)
+      if (requiredPermissions.length === 0) continue;
+
+      let hasAccess = false;
+
+      if (action.mode === 'ALL') {
+        // User must have ALL required permissions
+        hasAccess = requiredPermissions.every((p) => userPermissions.has(p));
+      } else {
+        // mode === 'ANY': User needs at least ONE required permission
+        hasAccess = requiredPermissions.some((p) => userPermissions.has(p));
+      }
+
+      if (hasAccess) {
+        allowedActionKeys.push(action.key);
+      }
+    }
+
+    return allowedActionKeys.sort();
   }
 
   async updateMe(userId: string, dto: UpdateMeDto) {
