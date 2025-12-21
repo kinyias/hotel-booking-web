@@ -20,4 +20,5 @@ export const ROUTES = {
   ADMIN_INVENTORY: '/admin/inventory',
   ADMIN_MEMBER_HOTELS: '/admin/member-hotels',
   ADMIN_COMMISSIONS: '/admin/commissions',
+  ADMIN_REVIEW: '/admin/reviews',
 };

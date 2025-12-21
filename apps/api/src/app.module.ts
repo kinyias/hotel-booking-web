@@ -24,6 +24,7 @@ import { PaymentModule } from './modules/payment/payment.module';
 import { CommissionPackageModule } from './modules/commission-package/commission-package.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { NewsModule } from './modules/news/news.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { NewsModule } from './modules/news/news.module';
     CommissionPackageModule,
     ReviewsModule,
     NewsModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [

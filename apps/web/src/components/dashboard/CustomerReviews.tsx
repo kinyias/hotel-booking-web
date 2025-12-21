@@ -1,33 +1,42 @@
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Star, Check, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Star, ChevronRight } from "lucide-react";
+import { useLatestReviewsQuery } from "@/features/dashboard/queries";
+import { formatDistanceToNow } from 'date-fns';
+import { Skeleton } from "@/components/ui/skeleton";
+import Link from 'next/link';
+import { ROUTES } from "@/constants";
 
-const reviews = [
-  {
-    name: "Ali Muzar",
-    date: "Posted on 24/04/2025, 12:42 AM",
-    rating: 4,
-    text: "I have been there many times.Rooms ,Food and Service are excellent,we did lots of Excursions and all the places are from the Hotel reachable, we visited Long Waterfall and was very helpful and excellent",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ali"
-  },
-  {
-    name: "Keanu Repes",
-    date: "Posted on 24/04/2025, 12:42 AM",
-    rating: 2,
-    text: "I have been there many times.Rooms ,Food and Service are excellent,we did lots of Excursions and all the places are from the Hotel reachable, we visited Long Waterfall and was very helpful and excellent",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Keanu"
-  },
-  {
-    name: "Chintya Clara",
-    date: "Posted on 24/04/2025, 12:42 AM",
-    rating: 3,
-    text: "I have been there many times.Rooms ,Food and Service are excellent,we did lots of Excursions and all the places are from the Hotel reachable, we visited Long Waterfall and was very helpful and excellent",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Chintya"
-  },
-];
+interface CustomerReviewsProps {
+  hotelId?: string;
+}
 
-export function CustomerReviews() {
+export function CustomerReviews({ hotelId }: CustomerReviewsProps) {
+  const { data: reviews, isLoading } = useLatestReviewsQuery(hotelId);
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+           <Skeleton className="h-6 w-48" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+           {[1,2,3].map(i => (
+             <div key={i} className="flex gap-4">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="flex-1 space-y-2">
+                   <Skeleton className="h-4 w-1/3" />
+                   <Skeleton className="h-16 w-full" />
+                </div>
+             </div>
+           ))}
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -36,17 +45,18 @@ export function CustomerReviews() {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {reviews.map((review, index) => (
-          <div key={index} className="border-b last:border-0 pb-4 last:pb-0">
+        {reviews?.map((review) => (
+          <div key={review.id} className="border-b last:border-0 pb-4 last:pb-0">
+            <Link href={ROUTES.ADMIN_REVIEW + '/' + hotelId}>
             <div className="flex items-start justify-between mb-2">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={review.avatar} />
-                  <AvatarFallback>{review.name[0]}</AvatarFallback>
+                  <AvatarImage src={review.user.avatar?.secureUrl} />
+                  <AvatarFallback>{review.user.firstName[0]}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold text-sm">{review.name}</p>
-                  <p className="text-xs text-muted-foreground">{review.date}</p>
+                  <p className="font-semibold text-sm">{review.user.firstName} {review.user.lastName}</p>
+                  <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(review.createdAt), { addSuffix: true })}</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -62,19 +72,17 @@ export function CustomerReviews() {
                 ))}
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-3">{review.text}</p>
-            <div className="flex items-center gap-2">
-              <Button size="sm" className="bg-green-400 hover:bg-success/90 rounded-full h-8 w-8 p-0">
-                <Check className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="destructive" className="rounded-full h-8 w-8 p-0">
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+            <p className="text-sm text-muted-foreground mb-3">{review.content}</p>
+            </Link>
           </div>
         ))}
-        <Button variant="ghost" className="w-full">
-          See more<ChevronRight className="h-4 w-4" />
+         {reviews?.length === 0 && (
+            <p className="text-center text-muted-foreground py-4">No reviews yet.</p>
+         )}
+        <Button variant="ghost" className="w-full" asChild>
+          <Link href={`/admin/reviews${hotelId ? '/' + hotelId : ''}`}>
+             See more<ChevronRight className="h-4 w-4" />
+          </Link>
         </Button>
       </CardContent>
     </Card>

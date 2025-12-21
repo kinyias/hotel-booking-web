@@ -41,5 +41,8 @@ export const API_ENDPOINTS = {
   },
   REVIEWS: {
     REVIEWS: "/reviews",
+  },
+  DASHBOARD: {
+    DASHBOARD: "/dashboard",
   }
 };

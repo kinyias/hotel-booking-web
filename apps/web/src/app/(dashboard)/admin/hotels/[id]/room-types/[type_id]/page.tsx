@@ -15,7 +15,6 @@ import {
 } from '@/features/room-types';
 import { useQueryRooms } from '@/features/rooms/queries';
 import toast from 'react-hot-toast';
-import { formatNumber } from '@/utils/currency';
 
 export default function RoomTypePage() {
   const params = useParams();
