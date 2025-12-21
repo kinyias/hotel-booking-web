@@ -16,12 +16,19 @@ export default function CommissionsPage() {
         <h1 className="text-2xl font-bold text-foreground">
           Commission Packages
         </h1>
-        <Link href="/admin/commissions/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            New Package
-          </Button>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/admin/commissions/hotels">
+            <Button variant="outline">
+              See Hotel Commissions
+            </Button>
+          </Link>
+          <Link href="/admin/commissions/new">
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              New Package
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <CommissionRevenue />
