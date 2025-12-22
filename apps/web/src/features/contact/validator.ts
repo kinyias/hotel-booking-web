@@ -15,3 +15,11 @@ export const createContactSchema = z.object({
 );
 
 export type CreateContactFormValues = z.infer<typeof createContactSchema>;
+
+export const updateContactSchema = z.object({
+  status: z.enum(['NEW', 'IN_PROGRESS', 'RESOLVED', 'SPAM']).optional(),
+  handledById: z.string().optional().nullable(),
+  note: z.string().max(2000, 'Note is too long').optional().nullable(),
+});
+
+export type UpdateContactFormValues = z.infer<typeof updateContactSchema>;

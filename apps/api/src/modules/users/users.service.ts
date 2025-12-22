@@ -220,7 +220,8 @@ export class UsersService {
           ? {
               OR: [
                 { email: { contains: q, mode: 'insensitive' } },
-                { fullName: { contains: q, mode: 'insensitive' } },
+                { firstName: { contains: q, mode: 'insensitive' } },
+                { lastName: { contains: q, mode: 'insensitive' } },
               ],
             }
           : {},

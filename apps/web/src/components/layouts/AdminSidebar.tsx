@@ -1,6 +1,6 @@
 'use client';
 
-import { BedSingle, CirclePercent, FileText, Hotel, Layers, Receipt, Settings, Sparkles, Star, Tags } from 'lucide-react';
+import { BedSingle, CirclePercent, Contact, FileText, Hotel, Layers, Receipt, Settings, Sparkles, Star, Tags } from 'lucide-react';
 import {
   ChevronDown,
   Home,
@@ -116,6 +116,12 @@ export const navItems: NavItem[] = [
       { title: 'Permissions', href: ROUTES.ADMIN_PERMISSIONS, action: "permissions.list" },
       { title: 'Actions', href: ROUTES.ADMIN_ACTIONS, action: "actions.list" },
     ]
+  },
+  {
+    title: "Contacts",
+    href: ROUTES.ADMIN_CONTACTS,
+    icon: Contact,
+    action: "contacts.read",
   },
   {
     title: 'Settings',

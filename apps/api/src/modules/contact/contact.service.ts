@@ -78,6 +78,9 @@ export class ContactService {
         where,
         take: limit,
         skip: offset,
+        include: {
+          handledBy: {select: {id: true, email: true}},
+        },
         orderBy: { createdAt: 'desc' },
       }),
       this.prisma.contactMessage.count({ where }),

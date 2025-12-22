@@ -18,13 +18,14 @@ import UserEditFormDialog from '@/features/user/components/UserEditFormDialog';
 import RoleAssignUserDialog from '@/features/user/components/RoleAssignUserDialog';
 import { MESSAGES } from '@/constants/message';
 import { ApiError } from '@/types';
+import { useDebounce } from '@/hooks/useDebounce';
 
 function UserManagementPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState<string>('all');
   const [page, setPage] = useState(1);
   const limit = 10;
-
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   // Edit user dialog state
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [roleDialogOpen, setRoleDialogOpen] = useState(false);
@@ -37,7 +38,7 @@ function UserManagementPage() {
   const { data, isLoading, isError } = useUsersQuery({
     limit,
     offset,
-    q: searchTerm || undefined,
+    q: debouncedSearchTerm || undefined,
     role: filterRole !== 'all' ? filterRole : undefined,
   });
 
