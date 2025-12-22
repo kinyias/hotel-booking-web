@@ -24,6 +24,7 @@ import { useQueryRoomTypesAvailable } from "@/features/room-types/queries";
 import { formatCurrency } from "@/utils/currency";
 import { HotelGallery } from "@/features/hotels/components/HotelGallery";
 import ReviewList from "@/features/reviews/components/ReviewList";
+import { PolicyList } from "@/features/policies";
 
 export type GalleryImage = {
   id: string;
@@ -299,6 +300,11 @@ export default function HotelDetailPage() {
              {/* Reviews */}
              <div className="mt-12 pt-8 border-t border-gray-100">
                 <ReviewList hotelId={hotel.id} />
+             </div>
+
+             {/* Policies */}
+             <div className="mt-12 pt-8 border-t border-gray-100">
+                <PolicyList hotelId={hotel.id} />
              </div>
            </div>
         </div>
