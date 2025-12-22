@@ -1,10 +1,45 @@
+'use client';
+
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form';
+import { useCreateContactMutation } from '@/features/contact/mutations';
+import { createContactSchema, CreateContactFormValues } from '@/features/contact/validator';
 
 function ContactSection() {
+  const mutation = useCreateContactMutation();
+
+  const form = useForm<CreateContactFormValues>({
+    resolver: zodResolver(createContactSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: '',
+    },
+  });
+
+  const onSubmit = (data: CreateContactFormValues) => {
+    mutation.mutate(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
+  };
+
   return (
     <section
       id="contact"
@@ -52,36 +87,110 @@ function ContactSection() {
           </div>
 
           <div className="bg-card rounded-lg p-8">
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="First Name"
-                  className="bg-background border-border text-foreground"
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-card-foreground">Full Name *</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Your full name"
+                          className="bg-background border-border text-foreground"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Input
-                  placeholder="Last Name"
-                  className="bg-background border-border text-foreground"
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-card-foreground">Email Address</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="your.email@example.com"
+                          className="bg-background border-border text-foreground"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <Input
-                type="email"
-                placeholder="Email Address"
-                className="bg-background border-border text-foreground"
-              />
-              <Input
-                type="tel"
-                placeholder="Phone Number"
-                className="bg-background border-border text-foreground"
-              />
-              <Textarea
-                placeholder="Your Message"
-                rows={4}
-                className="bg-background border-border text-foreground"
-              />
-              <Button className="w-full bg-accent hover:bg-black/90 hover:text-white text-accent-foreground">
-                Send Message
-              </Button>
-            </form>
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-card-foreground">Phone Number</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="+84 123 456 789"
+                          className="bg-background border-border text-foreground"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="subject"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-card-foreground">Subject</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="What is this about?"
+                          className="bg-background border-border text-foreground"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-card-foreground">Message *</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Tell us more about your inquiry..."
+                          rows={4}
+                          className="bg-background border-border text-foreground resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button 
+                  type="submit" 
+                  className="w-full bg-accent hover:bg-black/90 hover:text-white text-accent-foreground"
+                  disabled={mutation.isPending}
+                >
+                  {mutation.isPending ? 'Sending...' : 'Send Message'}
+                </Button>
+              </form>
+            </Form>
           </div>
         </div>
       </div>
