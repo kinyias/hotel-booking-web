@@ -33,7 +33,13 @@ export class UsersController {
   @Get('me')
   async me(@Req() req: Request) {
     const user = req.user as any;
-    return { data: await this.users.me(user.id) };
+    const data = await this.users.me(user.id);
+    return {
+      data: plainToInstance(PublicUserDto, data, {
+        groups: ['private'],
+        excludeExtraneousValues: true,
+      }),
+    };
   }
 
   @Patch('me')
