@@ -65,3 +65,51 @@ export interface BookingQueryParams {
     page?: number;
     limit?: number;
 }
+
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+
+export interface CheckInGuestDto {
+    userId?: string;
+    fullName: string;
+    email?: string;
+    phone?: string;
+    idNumber?: string;
+    nationality?: string;
+    gender?: Gender;
+    dateOfBirth?: string;
+}
+
+export interface CheckInDto {
+    note?: string;
+    primary: CheckInGuestDto;
+    companions?: CheckInGuestDto[];
+}
+
+export interface BookingGuest {
+    id: string;
+    bookingId: string;
+    userId?: string;
+    fullName: string;
+    email?: string;
+    phone?: string;
+    idNumber?: string;
+    nationality?: string;
+    gender?: Gender;
+    dateOfBirth?: string;
+}
+
+export interface CheckInRecord {
+    id: string;
+    bookingId: string;
+    checkedInBy: string;
+    note?: string;
+    checkedInAt: string;
+}
+
+export interface CheckInResponse {
+    data: {
+        checkIn: CheckInRecord | null;
+        guests: BookingGuest[];
+    }
+}
+

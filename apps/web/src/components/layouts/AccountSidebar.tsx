@@ -30,13 +30,6 @@ const navigationItems = [
     description: 'View and manage your reviews',
     href: '/me/my-reviews',
   },
-  // {
-  //   id: 'contact',
-  //   label: 'Contact & Feedback',
-  //   icon: MessageSquare,
-  //   description: 'Contact us or give us feedback',
-  //   href: '/me/contact',
-  // },
 ];
 
 export function AccountSidebar() {

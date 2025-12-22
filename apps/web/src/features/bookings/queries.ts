@@ -31,3 +31,12 @@ export const useMyBookingByIdQuery = (bookingId: string) => {
         enabled: !!bookingId,
     });
 }
+
+export const useCheckInQuery = (bookingId: string, enabled: boolean = true) => {
+    return useQuery({
+        queryKey: ['booking-check-in', bookingId],
+        queryFn: () => import("./api").then(mod => mod.getCheckIn(bookingId)),
+        enabled: !!bookingId && enabled,
+    });
+}
+

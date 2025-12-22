@@ -16,8 +16,6 @@ import {
   Clock,
   CheckCircle2
 } from "lucide-react";
-
-import PageTitle from "@/components/sections/PageTitle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,9 +29,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useBookingByIdQuery } from "@/features/bookings/queries";
+import { useBookingByIdQuery, useCheckInQuery } from "@/features/bookings/queries";
 import { formatCurrency } from "@/utils/currency";
 import { UpdateStatusBookingDialog } from "@/features/bookings/components/UpdateStatusBookingDialog";
+import { BookingCheckInInfo } from "@/features/bookings/components/BookingCheckInInfo";
+
+function BookingCheckInInfoWrapper({ bookingId }: { bookingId: string }) {
+    const { data: checkInData, isLoading } = useCheckInQuery(bookingId);
+    
+    if (isLoading || !checkInData?.data) return null;
+    
+    // checkInData.data matches CheckInResponse['data'] which is { checkIn, guests }
+    return <BookingCheckInInfo checkIn={checkInData.data.checkIn} guests={checkInData.data.guests} />;
+}
+
 
 export default function BookingDetailPage() {
   const params = useParams();
@@ -182,7 +191,7 @@ export default function BookingDetailPage() {
               </Card>
           </div>
 
-          {/* Sidebar Info */}
+      {/* Sidebar Info */}
           <div className="space-y-6">
               
               {/* Guest Info */}
@@ -254,6 +263,12 @@ export default function BookingDetailPage() {
 
           </div>
       </div>
+      
+      {/* Check-in Info Section */}
+      <div className="mt-6">
+         <BookingCheckInInfoWrapper bookingId={bookingId} />
+      </div>
+
       <UpdateStatusBookingDialog
         hotelId={hotelId}
         bookingId={bookingId}

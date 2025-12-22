@@ -22,6 +22,7 @@ import {
 import { useUpdateBookingStatusMutation } from "../mutations";
 import { BookingStatus } from "../types";
 import { Badge } from "@/components/ui/badge";
+import { CheckInGuestsDialog } from "./CheckInGuestsDialog";
 
 interface UpdateStatusBookingDialogProps {
   hotelId: string;
@@ -29,6 +30,9 @@ interface UpdateStatusBookingDialogProps {
   currentStatus: BookingStatus;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  // Optional: pass guest info if available from parent, 
+  // though currently simpler to just rely on user input or fetch inside if needed.
+  // For now we won't change the props signature too much unless necessary.
 }
 
 // Define available transitions
@@ -105,11 +109,13 @@ export function UpdateStatusBookingDialog({
   onOpenChange,
 }: UpdateStatusBookingDialogProps) {
   const [targetStatus, setTargetStatus] = useState<BookingStatus | null>(null);
+  const [showCheckInDialog, setShowCheckInDialog] = useState(false);
   
   // Reset state when dialog closes/opens
   useEffect(() => {
     if (open) {
       setTargetStatus(null);
+      setShowCheckInDialog(false);
     }
   }, [open]);
 
@@ -121,6 +127,14 @@ export function UpdateStatusBookingDialog({
   const availableTransitions = TRANSITIONS[currentStatus] || [];
 
   const handleActionClick = (status: BookingStatus) => {
+    if (status === "CHECKED_IN") {
+         setShowCheckInDialog(true);
+         // Don't close the main dialog yet, or maybe cancel the main dialog?
+         // User might want to go back.
+         // But usually opening a sub-dialog implies focusing on that.
+         return; 
+    }
+
     const config = STATUS_CONFIG[status];
     if (config.requiresConfirmation) {
       setTargetStatus(status);
@@ -143,6 +157,18 @@ export function UpdateStatusBookingDialog({
   };
 
   const currentConfig = STATUS_CONFIG[currentStatus];
+
+  if(showCheckInDialog) {
+       return (
+           <CheckInGuestsDialog 
+                hotelId={hotelId}
+                bookingId={bookingId}
+                open={showCheckInDialog}
+                onOpenChange={setShowCheckInDialog}
+                onSuccess={() => onOpenChange(false)}
+           />
+       )
+  }
 
   // Render Confirmation View
   if (targetStatus) {
@@ -250,3 +276,4 @@ export function UpdateStatusBookingDialog({
     </Dialog>
   );
 }
+

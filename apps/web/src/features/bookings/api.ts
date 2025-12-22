@@ -42,3 +42,15 @@ export const createPayment = async(bookingId: string)=>{
     const response = await api.post<Payment>(`${API_ENDPOINTS.BOOKING.BOOKINGS}/${bookingId}/payments/vnpay`, {locale: 'vn', bankCode: 'NCB'});
     return response.data;
 }
+
+export const checkInBooking = async (bookingId: string, payload: any) => {
+    const response = await api.post(`${API_ENDPOINTS.BOOKING.BOOKINGS}/${bookingId}/check-in`, payload);
+    return response.data;
+}
+
+export const getCheckIn = async (bookingId: string) => {
+    const response = await api.get(`${API_ENDPOINTS.BOOKING.BOOKINGS}/${bookingId}/check-in`);
+    return response.data;
+}
+
+

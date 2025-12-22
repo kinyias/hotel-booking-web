@@ -40,3 +40,15 @@ export const useCreatePaymentMutation = (bookingId: string) => {
         mutationFn: ()=> createPayment(bookingId),
     })
 }
+
+export const useCheckInBookingMutation = (hotelId: string, bookingId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (payload: any) => import("./api").then(mod => mod.checkInBooking(bookingId, payload)),
+        onSuccess: () => {
+             queryClient.invalidateQueries({ queryKey: ['bookings', hotelId] });
+             queryClient.invalidateQueries({ queryKey: ['booking', hotelId, bookingId] });
+        }
+    });
+}
+
