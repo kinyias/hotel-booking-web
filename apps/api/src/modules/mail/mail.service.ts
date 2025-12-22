@@ -48,7 +48,7 @@ export class MailService {
       html,
     });
   }
-  
+
   async sendPaymentSucceededEmail(input: {
     to: string;
     guestName?: string | null;
@@ -87,5 +87,32 @@ export class MailService {
       subject: `Thanh toán thành công – ${brand}`,
       html,
     });
+  }
+
+  async sendContactNotification(input: {
+    id: string;
+    name: string;
+    email?: string;
+    phone?: string;
+    subject?: string;
+    message: string;
+    createdAt: Date;
+  }) {
+    const to = process.env.SUPPORT_EMAIL || process.env.SMTP_USER;
+
+    const subject = `[Contact] ${input.subject ?? 'New message'} (#${input.id})`;
+    const text = `New contact message
+          Name: ${input.name}
+          Email: ${input.email ?? '-'}
+          Phone: ${input.phone ?? '-'}
+          Subject: ${input.subject ?? '-'}
+
+          Message:
+          ${input.message}
+
+          At: ${input.createdAt.toISOString()}
+          `;
+
+    await this.mailer.sendMail({ to, subject, text }); // dùng hàm sendMail bạn đã có
   }
 }

@@ -41,6 +41,8 @@ model User {
   reviews Review[]
   news News[]
   banners Banner[]
+  contactMessages ContactMessage[]
+  handledContacts ContactMessage[] @relation("ContactHandledBy")
 }
 
 model Hotel {
@@ -481,6 +483,48 @@ model BannerImage {
   banner   Banner @relation(fields: [bannerId], references: [id], onDelete: Cascade)
 
   @@index([bannerId])
+}
+
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  SPAM
+}
+
+model ContactMessage {
+  id        String        @id @default(cuid())
+
+  // Người gửi (public)
+  name      String
+  email     String?
+  phone     String?
+  subject   String?
+  message   String
+
+  // Metadata chống spam / trace
+  ip        String?
+  userAgent String?
+
+  status    ContactStatus @default(NEW)
+
+  // (Tuỳ chọn) nếu user đã đăng nhập và bạn muốn lưu
+  userId    String?
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Admin xử lý
+  handledById String?
+  handledBy   User?        @relation("ContactHandledBy", fields: [handledById], references: [id], onDelete: SetNull)
+
+  // Ghi chú nội bộ
+  note      String?
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
+  @@index([phone])
 }
 
 enum BannerLinkType {

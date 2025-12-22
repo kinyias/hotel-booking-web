@@ -69,7 +69,7 @@ export class UsersController {
           excludeExtraneousValues: true,
         }),
       ),
-      meta,
+      meta, 
     };
   }
 }
