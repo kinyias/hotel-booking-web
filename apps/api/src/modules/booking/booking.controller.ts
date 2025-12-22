@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ListMyBookingDto } from './dto/list-my-bookings.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { Action } from '../auth/decorator/action.decorator';
+import { CheckInDto } from 'src/modules/booking/dto/check-in.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller()
@@ -71,5 +72,17 @@ export class BookingController {
   ) {
     const userId = req.user?.id;
     return this.service.updateStatus(hotelId, userId, id, dto);
+  }
+
+  @Post('bookings/:id/check-in')
+  @Action('bookings.checkin') // bạn seed ApiAction key này
+  async checkIn(@Param('id') bookingId: string, @Body() dto: CheckInDto, @Req() req: any) {
+    return this.service.checkIn(bookingId, req.user.id, dto);
+  }
+
+  @Get('bookings/:id/check-in')
+  @Action('bookings.checkin.read')
+  async getCheckIn(@Param('id') bookingId: string, @Req() req: any) {
+    return this.service.getCheckIn(bookingId, req.user.id);
   }
 }

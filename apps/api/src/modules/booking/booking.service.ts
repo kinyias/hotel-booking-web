@@ -2,26 +2,20 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { Prisma, BookingStatus } from '@prisma/client';
+import { Prisma, BookingStatus, PaymentStatus, Gender } from '@prisma/client';
 import { parseISO, startOfDay } from 'date-fns';
 import { ListMyBookingDto } from './dto/list-my-bookings.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
-
-function eachDate(from: Date, to: Date) {
-  const dates: Date[] = [];
-  const d = new Date(from);
-  while (d < to) {
-    dates.push(new Date(d));
-    d.setHours(0, 0, 0, 0);
-    dates.push(new Date(d));
-    d.setDate(d.getDate() + 1);
-  }
-  // NOTE: ở trên bị push 2 lần nếu copy nhầm — dùng bản đúng dưới:
-}
+import { Cron, CronExpression } from '@nestjs/schedule';
+import {
+  CheckInDto,
+  CheckInGuestDto,
+} from 'src/modules/booking/dto/check-in.dto';
 
 function eachDateFixed(from: Date, to: Date) {
   const dates: Date[] = [];
@@ -46,6 +40,51 @@ function toDateOnly(d: string) {
 @Injectable()
 export class BookingService {
   constructor(private prisma: PrismaService) {}
+  private readonly PENDING_TTL_MINUTES = 15;
+  private readonly logger = new Logger(BookingService.name);
+
+  private async assertHotelAccessByBooking(bookingId: string, userId: string) {
+    const booking = await this.prisma.booking.findUnique({
+      where: { id: bookingId },
+      select: {
+        id: true,
+        status: true,
+        hotelId: true,
+        hotel: { select: { ownerId: true } },
+      },
+    });
+    if (!booking) throw new NotFoundException('Booking not found');
+
+    if (booking.hotel.ownerId === userId) return booking;
+
+    const member = await this.prisma.hotelMember.findUnique({
+      where: { hotelId_userId: { hotelId: booking.hotelId, userId } },
+      select: { userId: true },
+    });
+    if (member) return booking;
+
+    throw new ForbiddenException(
+      'You are not allowed to check-in this booking',
+    );
+  }
+
+  private normalizeGuests(dto: CheckInDto): CheckInGuestDto[] {
+    const companions = dto.companions ?? [];
+    const all = [dto.primary, ...companions];
+
+    // lọc trùng cơ bản
+    const seen = new Set<string>();
+    const res: CheckInGuestDto[] = [];
+    for (const g of all) {
+      const userKey = g.userId ? `u:${g.userId}` : null;
+      const naturalKey = `n:${(g.fullName || '').trim().toLowerCase()}|${g.idNumber || ''}|${g.email || ''}`;
+      const key = userKey ?? naturalKey;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      res.push(g);
+    }
+    return res;
+  }
 
   private async assertHotelAccess(hotelId: string, userId: string) {
     const hotel = await this.prisma.hotel.findUnique({
@@ -187,7 +226,6 @@ export class BookingService {
         (sum, x) => sum.add(x.lineTotal),
         new Prisma.Decimal(0),
       );
-
 
       const commissionAmount = totalAmount
         .mul(new Prisma.Decimal(commissionRate))
@@ -470,5 +508,162 @@ export class BookingService {
 
     if (!booking) throw new NotFoundException('Booking not found');
     return booking;
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async cancelExpiredPendingBookings() {
+    const cutoff = new Date(Date.now() - this.PENDING_TTL_MINUTES * 60 * 1000);
+
+    // 1) lấy các booking pending quá hạn và chưa có payment thành công
+    // (PaymentStatus tuỳ schema bạn đặt: SUCCESS/PAID/... bạn sửa lại đúng enum)
+    const expired = await this.prisma.booking.findMany({
+      where: {
+        status: BookingStatus.PENDING,
+        createdAt: { lt: cutoff },
+        payments: {
+          none: {
+            // sửa lại cho đúng PaymentStatus của bạn
+            status: { in: [PaymentStatus.SUCCEEDED] },
+          },
+        },
+      },
+      select: {
+        id: true,
+        hotelId: true,
+        checkIn: true,
+        checkOut: true,
+        items: { select: { roomTypeId: true, quantity: true } },
+      },
+      take: 100, // tránh “quét” quá nặng mỗi phút
+    });
+
+    if (!expired.length) return;
+
+    let cancelledCount = 0;
+
+    for (const b of expired) {
+      try {
+        await this.prisma.$transaction(async (tx) => {
+          // 2) chống race: chỉ cancel nếu vẫn còn PENDING
+          const updated = await tx.booking.updateMany({
+            where: { id: b.id, status: BookingStatus.PENDING },
+            data: { status: BookingStatus.CANCELLED },
+          });
+          if (updated.count !== 1) return; // đã được thanh toán / đổi trạng thái bởi luồng khác
+
+          // 3) trả tồn
+          const nights = eachDateFixed(b.checkIn, b.checkOut);
+
+          for (const item of b.items) {
+            for (const day of nights) {
+              await tx.inventory.updateMany({
+                where: {
+                  hotelId: b.hotelId,
+                  roomTypeId: item.roomTypeId,
+                  date: day,
+                },
+                data: { availableRooms: { increment: item.quantity } },
+              });
+            }
+          }
+        });
+
+        cancelledCount++;
+      } catch (e: any) {
+        this.logger.warn(
+          `Cancel expired booking failed: ${b.id} - ${e?.message ?? e}`,
+        );
+      }
+    }
+
+    if (cancelledCount) {
+      this.logger.log(
+        `Auto-cancelled ${cancelledCount} expired pending booking(s).`,
+      );
+    }
+  }
+
+  async checkIn(bookingId: string, actorUserId: string, dto: CheckInDto) {
+    const booking = await this.assertHotelAccessByBooking(
+      bookingId,
+      actorUserId,
+    );
+
+    // rule theo enum BookingStatus của bạn
+    if (booking.status === BookingStatus.CANCELLED) {
+      throw new BadRequestException('Booking is cancelled');
+    }
+    if (booking.status === BookingStatus.COMPLETED) {
+      throw new BadRequestException('Booking already completed');
+    }
+
+    const guests = this.normalizeGuests(dto);
+    if (!guests.length) throw new BadRequestException('Guests are required');
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      // 1) tạo/ cập nhật CheckIn record
+      const checkIn = await tx.checkIn.upsert({
+        where: { bookingId },
+        create: {
+          bookingId,
+          checkedInBy: actorUserId,
+          note: dto.note ?? null,
+          checkedInAt: new Date(),
+        },
+        update: {
+          checkedInBy: actorUserId,
+          note: dto.note ?? null,
+          checkedInAt: new Date(),
+        },
+      });
+
+      // 2) replace toàn bộ BookingGuest của booking (đơn giản & ít bug)
+      await tx.bookingGuest.deleteMany({ where: { bookingId } });
+
+      await tx.bookingGuest.createMany({
+        data: guests.map((g) => ({
+          bookingId,
+          userId: g.userId ?? null,
+          fullName: g.fullName,
+          email: g.email ?? null,
+          phone: g.phone ?? null,
+          dateOfBirth: g.dateOfBirth ? new Date(g.dateOfBirth) : null,
+          gender: (g.gender as Gender) ?? null,
+          idNumber: g.idNumber ?? null,
+          nationality: g.nationality ?? null,
+        })),
+      });
+
+      // 3) cập nhật status booking -> CHECKED_IN (nếu bạn muốn)
+      //    (bạn đã có enum CHECKED_IN trong schema)
+      await tx.booking.update({
+        where: { id: bookingId },
+        data: { status: BookingStatus.CHECKED_IN },
+      });
+
+      const guestsAfter = await tx.bookingGuest.findMany({
+        where: { bookingId },
+        orderBy: { createdAt: 'asc' },
+      });
+
+      return { checkIn, guests: guestsAfter };
+    });
+
+    return { data: result };
+  }
+
+  async getCheckIn(bookingId: string, actorUserId: string) {
+    await this.assertHotelAccessByBooking(bookingId, actorUserId);
+
+    const checkIn = await this.prisma.checkIn.findUnique({
+      where: { bookingId },
+    });
+
+    const guests = await this.prisma.bookingGuest.findMany({
+      where: { bookingId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    return { data: { checkIn, guests } };
   }
 }

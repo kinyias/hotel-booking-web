@@ -28,6 +28,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { BannerModule } from './modules/banner/banner.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { PolicyModule } from './modules/policy/policy.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { PolicyModule } from './modules/policy/policy.module';
         },
       ],
     }),
+    ScheduleModule.forRoot(),
     PrismaModule,
     AuthModule,
     MailModule,
