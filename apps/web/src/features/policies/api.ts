@@ -25,3 +25,8 @@ export const deletePolicy = async (hotelId: string, policyId: string) => {
   const response = await api.delete(`/admin/hotels/${hotelId}/policies/${policyId}`);
   return response.data;
 };
+
+export const getPublicPoliciesByHotel = async (hotelId: string) => {
+  const response = await api.get<Policy[]>(`/hotels/${hotelId}/policies`);
+  return response.data;
+};
