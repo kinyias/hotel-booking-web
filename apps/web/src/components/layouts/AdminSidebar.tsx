@@ -1,6 +1,6 @@
 'use client';
 
-import { BedSingle, CirclePercent, Contact, FileText, Hotel, Layers, Receipt, Settings, Sparkles, Star, Tags } from 'lucide-react';
+import { BedSingle, CirclePercent, Contact, FileText, Hotel, Layers, Receipt, Scale, Settings, Sparkles, Star, Tags } from 'lucide-react';
 import {
   ChevronDown,
   Home,
@@ -122,6 +122,12 @@ export const navItems: NavItem[] = [
     href: ROUTES.ADMIN_CONTACTS,
     icon: Contact,
     action: "contacts.read",
+  },
+  {
+    title: "Policies",
+    href: ROUTES.ADMIN_POLICIES,
+    icon: Scale,
+    action: "policies.read",
   },
   {
     title: 'Settings',

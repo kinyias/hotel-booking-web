@@ -35,6 +35,17 @@ export class PolicyController {
   }
 
   @UseGuards(JwtAuthGuard, ActionGuard)
+  @Get('admin/hotels/:hotelId/policies/:id')
+  @Action('policies.read')
+  async getOne(
+    @Param('hotelId') hotelId: string,
+    @Param('id') id: string,
+    @Req() req: any,
+  ) {
+    return this.service.getOne(hotelId, req.user.id, id);
+  }
+
+  @UseGuards(JwtAuthGuard, ActionGuard)
   @Post('admin/hotels/:hotelId/policies')
   @Action('policies.create')
   async create(

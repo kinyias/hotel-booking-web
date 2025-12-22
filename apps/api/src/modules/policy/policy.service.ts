@@ -40,6 +40,20 @@ export class PolicyService {
     });
   }
 
+  async getOne(hotelId: string, userId: string, id: string) {
+    await this.assertHotelAccess(hotelId, userId);
+
+    const policy = await this.prisma.hotelPolicy.findUnique({
+      where: { id },
+    });
+
+    if (!policy || policy.hotelId !== hotelId) {
+      throw new NotFoundException('Policy not found');
+    }
+
+    return policy;
+  }
+
   async create(hotelId: string, userId: string, dto: CreatePolicyDto) {
     await this.assertHotelAccess(hotelId, userId);
 
