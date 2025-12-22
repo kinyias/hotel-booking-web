@@ -27,6 +27,7 @@ import { NewsModule } from './modules/news/news.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { BannerModule } from './modules/banner/banner.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { PolicyModule } from './modules/policy/policy.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { ContactModule } from './modules/contact/contact.module';
     DashboardModule,
     BannerModule,
     ContactModule,
+    PolicyModule,
   ],
   controllers: [AppController],
   providers: [

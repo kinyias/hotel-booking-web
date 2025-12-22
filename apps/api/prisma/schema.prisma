@@ -66,7 +66,7 @@ model Hotel {
   reviews Review[]
   commissionPackageId String?
   commissionPackage   CommissionPackage? @relation(fields: [commissionPackageId], references: [id], onDelete: SetNull)
-
+  policies HotelPolicy[]
 
   inventories Inventory[]
 
@@ -603,7 +603,37 @@ model CommissionPackage {
   hotels        Hotel[]
 }
 
+
+model HotelPolicy {
+  id        String     @id @default(cuid())
+  hotelId  String
+  type      PolicyType
+  title     String
+  content   String
+  enabled   Boolean    @default(true)
+  order     Int        @default(0)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  hotel     Hotel      @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@unique([hotelId, type])
+  @@index([hotelId])
+}
+
 // ==================== ENUM ====================
+
+enum PolicyType {
+  CHECKIN
+  CANCELLATION
+  PAYMENT
+  CHILDREN
+  PET
+  SMOKING
+  GENERAL
+}
+
 enum AuthProvider {
   LOCAL
   GOOGLE
