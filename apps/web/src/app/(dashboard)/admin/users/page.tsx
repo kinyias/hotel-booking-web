@@ -144,7 +144,6 @@ function UserManagementPage() {
           <UserManagementTable
             users={users}
             onEdit={handleEdit}
-            onDelete={handleDelete}
             onAssignRole={handleAssignRole}
           />
 

@@ -17,10 +17,9 @@ import { formatDate } from '@/utils/formatTime';
 interface UsersTableProps {
   users: User[];
   onEdit: (user: User) => void;
-  onDelete: (id: string) => void;
   onAssignRole: (user: User) => void;
 }
-function UserManagementTable({ users, onEdit, onDelete, onAssignRole }: UsersTableProps) {
+function UserManagementTable({ users, onEdit, onAssignRole }: UsersTableProps) {
   return (
     <Card className="bg-card border-border overflow-hidden">
       <Table>
@@ -68,14 +67,6 @@ function UserManagementTable({ users, onEdit, onDelete, onAssignRole }: UsersTab
                     onClick={() => onEdit(user)}
                   >
                     <Edit2 size={18} />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-destructive hover:text-destructive/80"
-                    onClick={() => onDelete(user.id)}
-                  >
-                    <Trash2 size={18} />
                   </Button>
                 </div>
               </TableCell>
