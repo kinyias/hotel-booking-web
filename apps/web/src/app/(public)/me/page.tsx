@@ -149,7 +149,7 @@ const Profile = () => {
               ) : (
                 <Avatar className="h-24 w-24">
                   <AvatarImage
-                    src={user?.avatar?.secureUrl || undefined}
+                    src={user?.avatar?.url || undefined}
                     alt="Profile"
                   />
                   <AvatarFallback className="bg-accent text-accent-foreground">

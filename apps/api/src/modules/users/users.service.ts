@@ -27,6 +27,7 @@ const userPublicSelect = {
   avatar: {
     select: {
       id: true,
+      url: true,
       secureUrl: true,
       publicId: true,
     },
