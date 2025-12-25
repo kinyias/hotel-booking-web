@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CreatePermissionDto } from '../permissions/dto/create-permission.dto';
 import { UpdatePermissionDto } from '../permissions/dto/update-permission.dto';
@@ -92,6 +92,17 @@ export class PermissionsService {
 
   async remove(id: string) {
     await this.findOne(id);
-    return this.prisma.permission.delete({ where: { id } });
+    try {
+      return await this.prisma.permission.delete({ where: { id } });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2003') {
+          throw new BadRequestException(
+            'Cannot delete permission because it is assigned to roles.',
+          );
+        }
+      }
+      throw error;
+    }
   }
 }

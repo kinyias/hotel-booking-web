@@ -7,10 +7,12 @@ import { PermissionAssignRoleFormValues, Role, RoleFormValues, useRolesQuery } f
 import PermissionAssignRoleDialog from '@/features/roles/component/PermissionAssignRoleDialog';
 import RoleFormDialog from '@/features/roles/component/RoleFormDialog';
 import RoleManagementTable from '@/features/roles/component/RoleManagementTable';
+import { ConfirmDialog } from '@/components/common/CofirmDialog';
 import {
   useAssignPermissionToRole,
   useCreateRoleMutation,
   useUpdateRoleMutation,
+  useDeleteRoleMutation,
 } from '@/features/roles/mutations';
 import { ApiError } from '@/types';
 import { Plus, Search } from 'lucide-react';
@@ -27,6 +29,10 @@ function RolesPage() {
   const updateRoleMutation = useUpdateRoleMutation();
   const createRoleMutation = useCreateRoleMutation();
   const assignPermissionToRoleMutation = useAssignPermissionToRole();
+  const deleteRoleMutation = useDeleteRoleMutation();
+  
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const handleEdit = (role: Role) => {
     setRoleToEdit(role);
     setOpenDialog(true);
@@ -36,7 +42,24 @@ function RolesPage() {
     setOpenDialog(true);
   };
   const handleDelete = (id: string) => {
-    console.log(id);
+    setDeleteId(id);
+    setOpenDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteId) {
+      deleteRoleMutation.mutate(deleteId, {
+        onSuccess: () => {
+          toast.success('Role deleted successfully');
+          setOpenDeleteDialog(false);
+          setDeleteId(null);
+        },
+        onError: (error: any) => {
+           const err = error as ApiError;
+           toast.error(err?.response?.data.message || 'Failed to delete role');
+        },
+      });
+    }
   };
   const handleSave = async (data: RoleFormValues) => {
     if (roleToEdit) {
@@ -175,6 +198,16 @@ function RolesPage() {
             role={roleToEdit || null}
             onSubmit={handleAssignSave}
             isSubmitting={assignPermissionToRoleMutation.isPending}
+          />
+
+          <ConfirmDialog
+            open={openDeleteDialog}
+            onConfirm={confirmDelete}
+            onCancel={() => setOpenDeleteDialog(false)}
+            title="Delete Role"
+            description="Are you sure you want to delete this role? This action cannot be undone."
+            confirmText="Delete"
+            isLoading={deleteRoleMutation.isPending}
           />
         </>
       )}

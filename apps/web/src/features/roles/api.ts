@@ -19,3 +19,8 @@ export const assignPermissionsToRole = async (id: string, data: PermissionAssign
   const response = await api.post(`${API_ENDPOINTS.USER.ROLES}/${id}/permissions`, data)
   return response.data;
 }
+
+export const deleteRole = async (id: string) => {
+  const response = await api.delete(`${API_ENDPOINTS.USER.ROLES}/${id}`);
+  return response.data;
+}

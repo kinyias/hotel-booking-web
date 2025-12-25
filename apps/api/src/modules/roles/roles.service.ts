@@ -73,7 +73,18 @@ export class RolesService {
 
   async remove(id: string) {
     await this.findOne(id);
-    return this.prisma.role.delete({ where: { id } });
+    try {
+      return await this.prisma.role.delete({ where: { id } });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2003') {
+          throw new BadRequestException(
+            'Cannot delete role because it is assigned to users or has permissions linked.',
+          );
+        }
+      }
+      throw error;
+    }
   }
 
   async setRolePermissions(roleId: string, dto: AssignPermissionsDto) {
