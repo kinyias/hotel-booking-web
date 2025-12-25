@@ -65,11 +65,11 @@ export default function InventoryPage() {
   )
 
   // Effect to auto-select first hotel if none selected
-  React.useEffect(() => {
-    if (hotels && hotels.length > 0 && !selectedHotelId) {
-      setSelectedHotelId(hotels[0].id)
-    }
-  }, [hotels, selectedHotelId])
+  // React.useEffect(() => {
+  //   if (hotels && hotels.length > 0 && !selectedHotelId) {
+  //     setSelectedHotelId(hotels[0].id)
+  //   }
+  // }, [hotels, selectedHotelId])
 
   // Effect to auto-select first room type if none selected
   React.useEffect(() => {
