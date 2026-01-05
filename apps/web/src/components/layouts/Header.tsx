@@ -144,47 +144,6 @@ function Header() {
 
           {/* Right Actions */}
           <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              {/* Language & Currency Dropdowns */}
-             
-              <div className="relative group">
-                <button
-                  className="flex items-center text-md font-medium transition-colors hover:text-primary relative group cursor-pointer"
-                  onClick={() => toggleDropdown('currency')}
-                  onMouseEnter={() => setActiveDropdown('currency')}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <div className="absolute left-0 top-5 z-50 w-full h-full"></div>
-                  <span>VND</span>
-                  <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
-                </button>
-
-                {activeDropdown === 'currency' && (
-                  <div
-                    className="absolute top-full left-0 mt-3 w-20 bg-white shadow-lg rounded-md overflow-hidden z-50 text-black"
-                    onMouseEnter={() => setActiveDropdown('currency')}
-                    onMouseLeave={() => closeDropdowns()}
-                  >
-                    <div className="py-2">
-                      <Link
-                        href="/"
-                        className="block px-4 py-2 text-sm hover:bg-muted transition-colors"
-                        onClick={() => closeDropdowns()}
-                      >
-                        VND
-                      </Link>
-                      <Link
-                        href="/"
-                        className="block px-4 py-2 text-sm hover:bg-muted transition-colors"
-                        onClick={() => closeDropdowns()}
-                      >
-                        USD
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -273,28 +232,7 @@ function Header() {
 
             {/* Mobile Contact & Actions */}
             <div className="border-t border-white/10 pt-4 space-y-3">
-            
-              <div className="px-4 py-2 space-y-2">
-                <div className="text-xs font-semibold text-black uppercase">
-                  Currency
-                </div>
-                <div className="flex gap-2">
-                  <Link
-                    href="/"
-                    className="text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    VND
-                  </Link>
-                  <Link
-                    href="/"
-                    className="text-sm hover:bg-white/10 px-3 py-1 rounded transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    USD
-                  </Link>
-                </div>
-              </div>
+          
               {user ? (
                 <div className="border-t border-white/10 pt-3 space-y-2">
                   <div className="px-4 py-2 flex items-center gap-2">
