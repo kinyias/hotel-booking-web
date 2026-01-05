@@ -222,9 +222,19 @@ export class HotelService {
     });
     if (!hotel) throw new NotFoundException('Hotel not found');
 
-    // rule: chỉ owner được xoá (guard cũng có thể chặn, nhưng service nên tự bảo vệ)
-    if (hotel.ownerId !== actorUserId) {
-      throw new ForbiddenException('Only owner can delete hotel');
+    // Check if user has ADMIN role
+    const userRoles = await this.prisma.userRole.findMany({
+      where: { userId: actorUserId },
+      include: { role: true },
+    });
+
+    const isAdmin = userRoles.some(
+      (ur) => ur.role.name.toUpperCase() === 'ADMIN',
+    );
+
+    // rule: chỉ owner hoặc ADMIN được xoá
+    if (hotel.ownerId !== actorUserId && !isAdmin) {
+      throw new ForbiddenException('Only owner or admin can delete hotel');
     }
 
     return this.prisma.hotel.update({

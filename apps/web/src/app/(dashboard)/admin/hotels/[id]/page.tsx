@@ -1,26 +1,19 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { HotelForm } from '@/features/hotels/components/HotelForm';
-import { RoomTypeTable } from '@/features/room-types/components/RoomTypeTable';
 import { HotelFormValues } from '@/features/hotels/validator';
 import { useHotelDetailQuery } from '@/features/hotels/queries';
-import { useQueryRoomTypes } from '@/features/room-types/queries';
 import { useCreateHotelMutation, useUpdateHotelMutation } from '@/features/hotels/mutations';
-import Link from 'next/link';
-
 export default function HotelEditPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
   const isEditing = !!id && id !== 'new';
   const { data: hotel, isLoading, isError } = useHotelDetailQuery(id, isEditing);
-  // Fetch room types
-  const { data: roomTypesData } = useQueryRoomTypes(id, isEditing);
-  const roomTypes = roomTypesData?.data ?? [];
   
   const createMutation = useCreateHotelMutation();
   const updateMutation = useUpdateHotelMutation(id);

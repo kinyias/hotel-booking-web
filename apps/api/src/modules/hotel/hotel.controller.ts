@@ -19,6 +19,7 @@ import { CreateHotelDto } from './dto/create-hotel.dto';
 import { ListHotelsQueryDto } from './dto/list-hotels.query';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { HotelMemberGuard } from './guards/hotel-member.guard';
+import { HotelMemberWithAdminGuard } from './guards/hotel-member-with-admin.guard';
 import { HotelService } from './hotel.service';
 
 @UseGuards(JwtAuthGuard, ActionGuard)
@@ -44,7 +45,7 @@ export class HotelController {
   }
 
   @Patch('/:hotelId')
-  @UseGuards(HotelMemberGuard)
+  @UseGuards(HotelMemberWithAdminGuard)
   @Action('hotels.update')
   update(@Param('hotelId') hotelId: string, @Body() dto: UpdateHotelDto) {
     return this.hotelService.updateHotel(hotelId, dto);
@@ -84,7 +85,7 @@ export class HotelController {
 
   // ✅ soft delete hotel
   @Delete('/:hotelId')
-  @UseGuards(HotelMemberGuard)
+  @UseGuards(HotelMemberWithAdminGuard)
   @Action('hotels.delete')
   deleteHotel(@Req() req: any, @Param('hotelId') hotelId: string) {
     return this.hotelService.softDeleteHotel(hotelId, req.user.id);

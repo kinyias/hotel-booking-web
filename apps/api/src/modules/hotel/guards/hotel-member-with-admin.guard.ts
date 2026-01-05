@@ -1,0 +1,51 @@
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
+
+@Injectable()
+export class HotelMemberWithAdminGuard implements CanActivate {
+  constructor(private prisma: PrismaService) {}
+
+  async canActivate(ctx: ExecutionContext) {
+    const req = ctx.switchToHttp().getRequest();
+    const userId = req.user?.id;
+    const hotelId = req.params.hotelId;
+
+    if (!userId || !hotelId) return false;
+
+    // Check if user has ADMIN role
+    const userRoles = await this.prisma.userRole.findMany({
+      where: { userId },
+      include: { role: true },
+    });
+
+    const isAdmin = userRoles.some(
+      (ur) => ur.role.name.toUpperCase() === 'ADMIN',
+    );
+
+    // If user is ADMIN, grant access immediately
+    if (isAdmin) {
+      req.hotelMemberRole = 'ADMIN';
+      return true;
+    }
+
+    // Check if user is a hotel member
+    const membership = await this.prisma.hotelMember.findUnique({
+      where: { hotelId_userId: { hotelId, userId } },
+    });
+
+    // nếu là owner nhưng chưa có member record (hiếm) vẫn có thể check ownerId
+    if (!membership) {
+      const hotel = await this.prisma.hotel.findUnique({
+        where: { id: hotelId },
+        select: { ownerId: true },
+      });
+      if (hotel?.ownerId === userId) {
+        req.hotelMemberRole = 'OWNER';
+        return true;
+      }
+      return false;
+    }
+
+    return true;
+  }
+}
