@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePolicyDto } from './dto/create-policy.dto';
 import { UpdatePolicyDto } from './dto/update-policy.dto';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
@@ -57,6 +62,19 @@ export class PolicyService {
   async create(hotelId: string, userId: string, dto: CreatePolicyDto) {
     await this.assertHotelAccess(hotelId, userId);
 
+    const order = dto.order ?? 0;
+
+    const existingPolicy = await this.prisma.hotelPolicy.findFirst({
+      where: { hotelId, order },
+    });
+
+    if (existingPolicy) {
+      const total = await this.prisma.hotelPolicy.count({ where: { hotelId } });
+      throw new BadRequestException(
+        `Order ${order} is already taken in this hotel. Total policies: ${total}`,
+      );
+    }
+
     return this.prisma.hotelPolicy.create({
       data: { hotelId, ...dto },
     });
@@ -69,6 +87,25 @@ export class PolicyService {
     dto: UpdatePolicyDto,
   ) {
     await this.assertHotelAccess(hotelId, userId);
+
+    if (dto.order !== undefined) {
+      const existingPolicy = await this.prisma.hotelPolicy.findFirst({
+        where: {
+          hotelId,
+          order: dto.order,
+          id: { not: id },
+        },
+      });
+
+      if (existingPolicy) {
+        const total = await this.prisma.hotelPolicy.count({
+          where: { hotelId },
+        });
+        throw new BadRequestException(
+          `Order ${dto.order} is already taken in this hotel. Total policies: ${total}. Please choose a different order.`,
+        );
+      }
+    }
 
     return this.prisma.hotelPolicy.update({
       where: { id },
