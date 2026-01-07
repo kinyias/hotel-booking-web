@@ -40,6 +40,7 @@ import { formatCurrency } from "@/utils/currency";
 import Link from "next/link";
 import { UpdateStatusBookingDialog } from "@/features/bookings/components/UpdateStatusBookingDialog";
 import { Booking } from "@/features/bookings/types";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function HotelBookingsPage() {
   const params = useParams();
@@ -47,6 +48,7 @@ export default function HotelBookingsPage() {
   const hotelId = params.hotel_id as string;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [isUpdateStatusOpen, setIsUpdateStatusOpen] = useState(false);
   const limit= 10
@@ -58,8 +60,8 @@ export default function HotelBookingsPage() {
     hotelId, 
     { 
         page, 
-        limit
-        // q: search // Backend might support search later
+        limit,
+        q: debouncedSearch
     }, 
     !!hotelId
   );
@@ -105,7 +107,7 @@ export default function HotelBookingsPage() {
          <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input 
-               placeholder="Search bookings by guest name or ID..." 
+               placeholder="Search bookings by guest name or email" 
                className="pl-9"
                value={search}
                onChange={(e) => setSearch(e.target.value)}

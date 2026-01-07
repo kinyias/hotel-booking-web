@@ -24,18 +24,19 @@ import {
 import  EllipsisPagination  from "@/components/ui/EllipsisPagination";
 
 import { useHotelsQuery } from "@/features/hotels/queries";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function BookingsHotelListPage() {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
   const limit = 10;
   const { data: hotelsResponse, isLoading } = useHotelsQuery({ 
       page, 
       limit,
-      q: search 
+      q: debouncedSearch 
   });
-  
   const hotels = hotelsResponse?.data || [];
   const meta = hotelsResponse?.meta;
   const total = meta?.total || 0;

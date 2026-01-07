@@ -64,6 +64,7 @@ export interface BookingQueryParams {
     to?: string;
     page?: number;
     limit?: number;
+    q?: string;
 }
 
 export type Gender = 'MALE' | 'FEMALE' | 'OTHER';

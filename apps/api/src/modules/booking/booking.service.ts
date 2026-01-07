@@ -334,6 +334,7 @@ export class BookingService {
       to?: string;
       page?: number;
       limit?: number;
+      q?: string;
     },
   ) {
     const page = Number(q.page) ?? 1;
@@ -351,6 +352,10 @@ export class BookingService {
             },
           }
         : {}),
+      ...(q.q ? { OR: [
+          { guestName: { contains: q.q, mode: Prisma.QueryMode.insensitive } },
+          { guestEmail: { contains: q.q, mode: Prisma.QueryMode.insensitive } },
+        ] } : {}),
     };
 
     const [total, items] = await this.prisma.$transaction([
