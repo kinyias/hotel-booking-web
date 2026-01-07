@@ -1,19 +1,21 @@
-import { CreditCard, CheckCircle2, Clock } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import { RoomType } from "@/features/room-types/types";
 import { formatCurrency } from "@/utils/currency";
 
 interface BookingSummaryProps {
   bookedRooms: { type: RoomType; quantity: number }[];
   finalPrice: number;
+  discountAmount?: number;
   onConfirm?: () => void;
   isPending?: boolean;
 }
 
-export const BookingSummary = ({ bookedRooms, finalPrice, onConfirm, isPending }: BookingSummaryProps) => {
+export const BookingSummary = ({ bookedRooms, finalPrice, discountAmount = 0, onConfirm, isPending }: BookingSummaryProps) => {
+  const subTotal = finalPrice + discountAmount;
+
   return (
     <div className="sticky top-8 space-y-6">
       <Card className="shadow-lg border-primary/10">
@@ -31,7 +33,24 @@ export const BookingSummary = ({ bookedRooms, finalPrice, onConfirm, isPending }
               </div>
             ))}
           </div>
+          
           <Separator />
+          
+          <div className="space-y-2 pt-2">
+             <div className="flex justify-between items-center text-gray-600 font-medium">
+               <span>Subtotal</span>
+               <span>{formatCurrency(subTotal)}</span>
+             </div>
+             {discountAmount > 0 && (
+               <div className="flex justify-between items-center text-green-600 font-medium">
+                 <span>Discount</span>
+                 <span>- {formatCurrency(discountAmount)}</span>
+               </div>
+             )}
+          </div>
+          
+          <Separator />
+          
           <div className="flex justify-between items-center pt-2">
             <span className="font-bold text-lg text-gray-900">Total Price</span>
             <span className="font-bold text-2xl text-primary">{formatCurrency(finalPrice)}</span>

@@ -5,6 +5,7 @@ export const boookingFormSchema = z.object({
     guestEmail: z.string().email('Invalid email'),
     guestPhone: z.string().min(1, 'Guest phone is required'),
     note: z.string().optional(),
+    promotionCode: z.string().optional(),
 });
 
 export type BoookingFormValues = z.infer<typeof boookingFormSchema>;

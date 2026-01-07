@@ -47,6 +47,10 @@ export class CreateBookingDto {
   @IsString()
   note?: string;
 
+  @IsOptional()
+  @IsString()
+  promotionCode?: string;
+
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })

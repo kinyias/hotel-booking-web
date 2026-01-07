@@ -11,6 +11,11 @@ export const getPromotions = async (params?: PromotionsQueryParams) => {
   return response.data;
 };
 
+export const getPublicPromotions = async (params?: PromotionsQueryParams) => {
+  const response = await api.get<PaginatedResponse<Promotion>>('/promotions/public', { params });
+  return response.data;
+};
+
 export const getPromotionById = async (id: string) => {
   const response = await api.get<Promotion>(`/promotions/${id}`);
   return response.data;

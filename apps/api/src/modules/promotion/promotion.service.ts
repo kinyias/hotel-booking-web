@@ -113,15 +113,26 @@ export class PromotionService {
       endAt: { gte: now },
     };
 
-    if (query.hotelId) {
-      where.hotelId = query.hotelId;
+    if (query.search) {
+      where.AND = [
+        {
+          OR: [
+            { code: { contains: query.search, mode: 'insensitive' } },
+            { name: { contains: query.search, mode: 'insensitive' } },
+          ],
+        },
+      ];
     }
+
+    // if (query.hotelId) {
+    //   where.hotelId = query.hotelId;
+    // }
     
     // public only sees promotions for valid hotels (active, not deleted)
-    where.hotel = {
-      deletedAt: null,
-      status: 'ACTIVE',
-    };
+    // where.hotel = {
+    //   deletedAt: null,
+    //   status: 'ACTIVE',
+    // };
 
     const [total, items] = await this.prisma.$transaction([
       this.prisma.promotion.count({ where }),

@@ -1,3 +1,5 @@
+import { Promotion } from "../promotion";
+
 export interface BookingItem{
     id: string;
     bookingId: string;
@@ -32,6 +34,7 @@ export interface CreateBookingDto{
     guestPhone: string;
     totalAmount: number;
     note: string;
+    promotionCode?: string;
     items: CreateBookingItemDto[];
 }
 export type BookingStatus= "PENDING" | "CONFIRMED" | "CANCELLED" | "CHECKED_IN" | "NO_SHOW" | "COMPLETED";
@@ -49,6 +52,7 @@ export interface Booking{
     guestPhone: string;
 
     totalAmount: number;
+    discountAmount: number | null;
     note: string;
 
     createdAt: string;
@@ -56,6 +60,7 @@ export interface Booking{
 
     items: BookingItem[];
     payments: Payment[];
+    promotion?: Promotion | null;
 }
 
 export interface BookingQueryParams {

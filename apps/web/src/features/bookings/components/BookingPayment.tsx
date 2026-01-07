@@ -1,11 +1,12 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, differenceInDays } from "date-fns";
 import { Loader2 } from "lucide-react";
+import { useDebounce } from '@/hooks/useDebounce';
 
 import PageTitle from "@/components/sections/PageTitle";
 import { 
@@ -19,6 +20,8 @@ import { useCreateBookingMutation } from "@/features/bookings/mutations";
 import { boookingFormSchema, BoookingFormValues } from "@/features/bookings/validator";
 import { CreateBookingDto, CreateBookingItemDto } from "@/features/bookings/types";
 import { RoomType } from "@/features/room-types/types";
+import { usePublicPromotionsQuery } from "@/features/promotion/queries";
+import { Promotion } from "@/features/promotion/types";
 
 // UI Components
 import { Input } from "@/components/ui/input";
@@ -79,13 +82,51 @@ export default function BookingPayment() {
       guestName: "",
       guestEmail: "",
       guestPhone: "",
-      note: ""
+      note: "",
+      promotionCode: ""
     }
   });
 
-  // 6. Calculations
+  // 6. Promotion Logic (Add this block)
+  const promotionCodeWatch = form.watch('promotionCode');
+  const debouncedPromotionCode = useDebounce(promotionCodeWatch, 500);
+  const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(null);
+
+  const { data: promotionsData } = usePublicPromotionsQuery({ 
+      search: debouncedPromotionCode, 
+      // hotelId: hotel_id || undefined
+  });
+
+  // Calculate raw total before discount
   const nights = Math.max(1, differenceInDays(checkOut, checkIn));
-  const calculatedTotal = bookedRooms.reduce((acc, item) => acc + (item.type.price_per_night * item.quantity * nights), 0);
+  const rawTotal = useMemo(() => {
+    return bookedRooms.reduce((acc, item) => acc + (item.type.price_per_night * item.quantity * nights), 0);
+  }, [bookedRooms, nights]);
+
+  const discountAmount = useMemo(() => {
+     if (!selectedPromotion) return 0;
+     
+     // 1. Basic validation
+     if (selectedPromotion.minBookingAmount && rawTotal < parseFloat(selectedPromotion.minBookingAmount)) {
+         return 0; 
+     }
+
+     let discount = 0;
+     if (selectedPromotion.discountType === 'PERCENT') {
+          discount = rawTotal * (selectedPromotion.discountValue / 100);
+          if (selectedPromotion.maxDiscountAmount) {
+              const maxDisc = parseFloat(selectedPromotion.maxDiscountAmount);
+              if (discount > maxDisc) discount = maxDisc;
+          }
+     } else {
+          discount = selectedPromotion.discountValue;
+     }
+
+     if (discount > rawTotal) return rawTotal;
+     return discount;
+  }, [selectedPromotion, rawTotal]);
+
+  const finalTotal = rawTotal - discountAmount;
   
   // 7. Submit Handler
   const onSubmit = (values: BoookingFormValues) => {
@@ -104,7 +145,8 @@ export default function BookingPayment() {
       guestEmail: values.guestEmail,
       guestPhone: values.guestPhone,
       note: values.note || "",
-      totalAmount: calculatedTotal, // Backend should verify this usually
+      promotionCode: values.promotionCode,
+      totalAmount: finalTotal, // Use final/discounted total
       items
     };
 
@@ -120,6 +162,12 @@ export default function BookingPayment() {
         alert("Failed to create booking. Please try again.");
       }
     });
+  };
+
+  const handleApplyPromotion = (promo: Promotion) => {
+      form.setValue('promotionCode', promo.code);
+      setSelectedPromotion(promo);
+      // Clear suggestion list? (handled by logic: if selected matches search, hide list - or just let user click)
   };
 
   if (isLoadingHotel || isLoadingRooms) {
@@ -138,6 +186,9 @@ export default function BookingPayment() {
       </div>
     );
   }
+
+  const foundPromotions = promotionsData?.data || [];
+  const showPromotionList = debouncedPromotionCode && foundPromotions.length > 0 && (!selectedPromotion || selectedPromotion.code !== debouncedPromotionCode);
 
   return (
       <div className="min-h-screen bg-gray-50 pb-20">
@@ -236,6 +287,56 @@ export default function BookingPayment() {
                         )}
                       />
 
+                       <div className="relative">
+                           <FormField
+                            control={form.control}
+                            name="promotionCode"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Promotion Code</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                      placeholder="Enter promotion code" 
+                                      {...field} 
+                                      onChange={(e) => {
+                                          field.onChange(e);
+                                          if (selectedPromotion && e.target.value !== selectedPromotion.code) {
+                                              setSelectedPromotion(null);
+                                          }
+                                      }}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          {/* Promotion Search Results */}
+                          {showPromotionList && (
+                              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-60 overflow-y-auto">
+                                  {foundPromotions.map((promo) => (
+                                      <div 
+                                          key={promo.id}
+                                          className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-0"
+                                          onClick={() => handleApplyPromotion(promo)}
+                                      >
+                                          <div className="font-semibold">{promo.code} - {promo.name}</div>
+                                          <div className="text-sm text-gray-500">
+                                              {promo.discountType === 'PERCENT' ? `${promo.discountValue}% off` : `${promo.discountValue} VND off`}
+                                              {promo.minBookingAmount && ` (Min: ${promo.minBookingAmount})`}
+                                          </div>
+                                      </div>
+                                  ))}
+                              </div>
+                          )}
+
+                          {selectedPromotion && (
+                              <div className="mt-2 text-sm text-green-600 font-medium">
+                                  Applied: {selectedPromotion.code} - Save {discountAmount.toLocaleString()} VND
+                              </div>
+                          )}
+                       </div>
+
                     </CardContent>
                   </Card>
 
@@ -245,11 +346,18 @@ export default function BookingPayment() {
                 <div className="lg:col-span-1">
                   <BookingSummary 
                       bookedRooms={bookedRooms}
-                      finalPrice={calculatedTotal}
+                      finalPrice={finalTotal}
+                      discountAmount={discountAmount}
 
                       onConfirm={form.handleSubmit(onSubmit)}
                       isPending={isPending}
                   />
+                  {selectedPromotion && (
+                      <div className="mt-4 p-4 bg-green-50 border border-green-100 rounded-lg text-sm text-green-800">
+                          <div className="font-bold mb-1">Promotion Applied!</div>
+                          <div>You are saving {discountAmount.toLocaleString()} VND with code {selectedPromotion.code}</div>
+                      </div>
+                  )}
                 </div>
 
               </div>

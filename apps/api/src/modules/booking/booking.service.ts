@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { Prisma, BookingStatus, PaymentStatus, Gender, NotificationType } from '@prisma/client';
+import { Prisma, BookingStatus, PaymentStatus, Gender, NotificationType, DiscountType } from '@prisma/client';
 import { NotificationService } from '../notification/notification.service';
 import { ListMyBookingDto } from './dto/list-my-bookings.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
@@ -233,7 +233,96 @@ export class BookingService {
         new Prisma.Decimal(0),
       );
 
-      const commissionAmount = totalAmount
+      let discountAmount = new Prisma.Decimal(0);
+      let finalTotal = totalAmount;
+      let promotionId: string | null = null;
+
+      if (dto.promotionCode) {
+        const promotion = await tx.promotion.findUnique({
+          where: { code: dto.promotionCode },
+        });
+
+        if (!promotion) {
+          throw new BadRequestException('Invalid promotion code');
+        }
+
+        if (!promotion.isActive) {
+          throw new BadRequestException('Promotion is inactive');
+        }
+
+        const now = new Date();
+        if (now < promotion.startAt || now > promotion.endAt) {
+          throw new BadRequestException('Promotion is expired or not started');
+        }
+
+        if (promotion.hotelId && promotion.hotelId !== hotelId) {
+          throw new BadRequestException('Promotion not valid for this hotel');
+        }
+
+        if (
+          promotion.totalUsageLimit !== null &&
+          promotion.usedCount >= promotion.totalUsageLimit
+        ) {
+          throw new BadRequestException('Promotion usage limit exceeded');
+        }
+
+        if (promotion.perUserLimit !== null) {
+          if (!userId) {
+            throw new BadRequestException(
+              'Login required to use this promotion',
+            );
+          }
+          const userUsage = await tx.booking.count({
+            where: {
+              userId,
+              promotionId: promotion.id,
+              status: { not: BookingStatus.CANCELLED },
+            },
+          });
+          if (userUsage >= promotion.perUserLimit) {
+            throw new BadRequestException(
+              'You have exceeded the usage limit for this promotion',
+            );
+          }
+        }
+
+        if (
+          promotion.minBookingAmount &&
+          totalAmount.lt(promotion.minBookingAmount)
+        ) {
+          throw new BadRequestException(
+            `Minimum booking amount of ${promotion.minBookingAmount} required`,
+          );
+        }
+
+        if (promotion.discountType === DiscountType.PERCENT) {
+          const percent = new Prisma.Decimal(promotion.discountValue).div(100);
+          let discount = totalAmount.mul(percent);
+          if (
+            promotion.maxDiscountAmount &&
+            discount.gt(promotion.maxDiscountAmount)
+          ) {
+            discount = promotion.maxDiscountAmount;
+          }
+          discountAmount = discount;
+        } else {
+          discountAmount = new Prisma.Decimal(promotion.discountValue);
+        }
+
+        if (discountAmount.gt(totalAmount)) {
+          discountAmount = totalAmount;
+        }
+
+        finalTotal = totalAmount.sub(discountAmount);
+        promotionId = promotion.id;
+
+        await tx.promotion.update({
+          where: { id: promotion.id },
+          data: { usedCount: { increment: 1 } },
+        });
+      }
+
+      const commissionAmount = finalTotal
         .mul(new Prisma.Decimal(commissionRate))
         .toDecimalPlaces(0, Prisma.Decimal.ROUND_HALF_UP);
 
@@ -248,7 +337,9 @@ export class BookingService {
           guestEmail: dto.guestEmail,
           guestPhone: dto.guestPhone,
           note: dto.note,
-          totalAmount,
+          totalAmount: finalTotal, // Use finalTotal
+          discountAmount,
+          promotionId,
 
           commissionRateSnapshot: commissionRate,
           commissionAmount: Number(commissionAmount.toString()),

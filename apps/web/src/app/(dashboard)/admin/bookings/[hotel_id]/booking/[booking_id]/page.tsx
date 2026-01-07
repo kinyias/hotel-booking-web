@@ -163,9 +163,31 @@ export default function BookingDetailPage() {
                       </CardTitle>
                   </CardHeader>
                   <CardContent>
-                      <div className="flex justify-between items-center mb-6 bg-gray-50 p-4 rounded-lg">
-                          <span className="font-medium text-gray-600">Total Amount</span>
-                          <span className="text-2xl font-bold text-primary">{formatCurrency(booking.totalAmount)}</span>
+                      <div className="space-y-3 mb-6 bg-gray-50 p-4 rounded-lg">
+                          {booking.discountAmount && Number(booking.discountAmount) > 0 ? (
+                              <>
+                                  <div className="flex justify-between items-center text-sm text-gray-600">
+                                      <span>Subtotal</span>
+                                      <span>{formatCurrency(Number(booking.totalAmount) + Number(booking.discountAmount))}</span>
+                                  </div>
+                                  <div className="flex justify-between items-center text-sm text-green-600">
+                                      <div className="flex items-center gap-2">
+                                          <span>Discount</span>
+                                          {booking.promotion && (
+                                              <Badge variant="outline" className="text-[10px] px-1 py-0 border-green-200 text-green-700 bg-green-50">
+                                                  {booking.promotion.code}
+                                              </Badge>
+                                          )}
+                                      </div>
+                                      <span>-{formatCurrency(Number(booking.discountAmount))}</span>
+                                  </div>
+                                  <Separator className="my-2" />
+                              </>
+                          ) : null}
+                          <div className="flex justify-between items-center">
+                              <span className="font-bold text-gray-900">Total Amount</span>
+                              <span className="text-2xl font-bold text-primary">{formatCurrency(Number(booking.totalAmount))}</span>
+                          </div>
                       </div>
                       
                       {booking.payments && booking.payments.length > 0 ? (
