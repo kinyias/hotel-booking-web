@@ -67,4 +67,8 @@ export class ListHotelsQueryDto {
   @Transform(({ value }) => (value ? new Date(value) : undefined))
   @IsDate()
   checkOut?: Date;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: 'recommended' | 'price_asc' | 'price_desc';
 }

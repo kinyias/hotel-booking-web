@@ -57,5 +57,6 @@ export interface HotelsQueryParams {
   checkIn?: string; // ISO date string
   checkOut?: string; // ISO date string
   city?: string;
+  sortBy?: 'recommended' | 'price_asc' | 'price_desc';
 }
 

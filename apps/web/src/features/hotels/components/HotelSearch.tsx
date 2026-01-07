@@ -33,6 +33,7 @@ export function HotelSearch() {
     urlMaxPrice ? Number(urlMaxPrice) : MAX_PRICE
   ]);
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<string>('recommended');
   
   // Fetch public hotels with URL params
   const { data: hotelsData, isLoading, isFetching } = usePublicHotelsQuery({
@@ -43,12 +44,13 @@ export function HotelSearch() {
     checkIn: urlCheckIn || undefined,
     checkOut: urlCheckOut || undefined,
     city: urlCity || undefined,
+    sortBy: sortBy as any,
   });
 
   // Reset page to 1 when filters change
   useEffect(() => {
     setPage(1);
-  }, [urlMinPrice, urlMaxPrice, urlCheckIn, urlCheckOut, urlCity]);
+  }, [urlMinPrice, urlMaxPrice, urlCheckIn, urlCheckOut, urlCity, sortBy]);
   
   const hotels = hotelsData?.data || [];
   const meta = hotelsData?.meta;
@@ -137,10 +139,14 @@ export function HotelSearch() {
               </h2>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span>Sort by:</span>
-                <select className="bg-white border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary">
-                  <option>Recommended</option>
-                  <option>Price: Low to High</option>
-                  <option>Price: High to Low</option>
+                <select 
+                  className="bg-white border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="recommended">Recommended</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
                 </select>
               </div>
             </div>

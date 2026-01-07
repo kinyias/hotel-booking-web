@@ -457,50 +457,126 @@ export class HotelService {
       }
     }
 
-    const where: Prisma.HotelWhereInput = { AND: andWhere };
+    // 🔑 SORT BY PRICE STRATEGY
+    // If we need to sort by price (which is an aggregate of roomTypes), we cannot use simple findMany.
+    // Strategy:
+    // 1. Fetch matching Hotel IDs + RoomTypes.price_per_night (without limit/offset)
+    // 2. Calculate minPrice for each hotel in memory
+    // 3. Sort the list of IDs
+    // 4. Apply pagination (slice) on the list of IDs
+    // 5. Fetch full details for the sliced IDs
+    // 6. Return data sorted to match the slice
 
-    const [total, items] = await this.prisma.$transaction([
-      this.prisma.hotel.count({ where }),
-
-      this.prisma.hotel.findMany({
-        where,
-        skip: offset,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-
-        include: {
-          images: true,
-
+    if (query.sortBy === 'price_asc' || query.sortBy === 'price_desc') {
+      const allMatchingHotels = await this.prisma.hotel.findMany({
+        where: { AND: andWhere },
+        select: {
+          id: true,
           roomTypes: {
             where: { deletedAt: null },
-            select: {
-              price_per_night: true,
-            },
+            select: { price_per_night: true },
           },
         },
-      }),
-    ]);
+      });
 
-    // 🔑 TÍNH MIN PRICE
-    const data = items.map((hotel) => {
-      const prices = hotel.roomTypes.map((rt) => Number(rt.price_per_night));
+      // Calculate minPrice and sort
+      const hotelsWithPrice = allMatchingHotels.map((h) => {
+        const prices = h.roomTypes.map((rt) => Number(rt.price_per_night));
+        const minPrice = prices.length > 0 ? Math.min(...prices) : Infinity;
+        return { id: h.id, minPrice };
+      });
 
-      const minPrice = prices.length > 0 ? Math.min(...prices) : null;
+      hotelsWithPrice.sort((a, b) => {
+        if (query.sortBy === 'price_asc') {
+          return a.minPrice - b.minPrice;
+        } else {
+          return b.minPrice - a.minPrice;
+        }
+      });
+
+      // Pagination
+      const total = hotelsWithPrice.length;
+      const sliced = hotelsWithPrice.slice(offset, offset + limit);
+      const slicedIds = sliced.map((h) => h.id);
+
+      // Fetch details
+      const items = await this.prisma.hotel.findMany({
+        where: { id: { in: slicedIds } },
+        include: {
+          images: true,
+          roomTypes: {
+            where: { deletedAt: null },
+            select: { price_per_night: true },
+          },
+        },
+      });
+
+      // Re-map to preserve order and structure
+      const data = sliced.map((item) => {
+        const hotel = items.find((i) => i.id === item.id);
+        if (!hotel) return null; // Should not happen
+        return {
+          ...hotel,
+          minPrice: item.minPrice === Infinity ? null : item.minPrice,
+          roomTypes: undefined,
+        };
+      }).filter(Boolean);
 
       return {
-        ...hotel,
-        minPrice,
-        roomTypes: undefined, // không cần trả
+        data,
+        meta: {
+          limit,
+          offset,
+          total,
+        },
       };
-    });
 
-    return {
-      data,
-      meta: {
-        limit,
-        offset,
-        total,
-      },
-    };
+    } else {
+      // Normal flow (recommended / no sort)
+      const where: Prisma.HotelWhereInput = { AND: andWhere };
+
+      const [total, items] = await this.prisma.$transaction([
+        this.prisma.hotel.count({ where }),
+  
+        this.prisma.hotel.findMany({
+          where,
+          skip: offset,
+          take: limit,
+          orderBy: { createdAt: 'desc' },
+  
+          include: {
+            images: true,
+            roomTypes: {
+              where: { deletedAt: null },
+              select: {
+                price_per_night: true,
+              },
+            },
+          },
+        }),
+      ]);
+  
+      // 🔑 TÍNH MIN PRICE
+      const data = items.map((hotel) => {
+        const prices = hotel.roomTypes.map((rt) => Number(rt.price_per_night));
+  
+        const minPrice = prices.length > 0 ? Math.min(...prices) : null;
+  
+        return {
+          ...hotel,
+          minPrice,
+          roomTypes: undefined, // không cần trả
+        };
+      });
+  
+      return {
+        data,
+        meta: {
+          limit,
+          offset,
+          total,
+        },
+      };
+    }
   }
 }
