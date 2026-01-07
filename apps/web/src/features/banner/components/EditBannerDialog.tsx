@@ -14,8 +14,12 @@ import { useUpdateBannerMutation } from '../mutations';
 import { updateBannerSchema, UpdateBannerFormData } from '../validator';
 import { Banner, BannerLinkType } from '../types';
 import { toast } from 'react-hot-toast';
-import { X, ImagePlus } from 'lucide-react';
+import { X, ImagePlus, Calendar as CalendarIcon } from 'lucide-react';
 import GalleryImagesDialog from '@/components/common/GalleryImagesDialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface EditBannerDialogProps {
   open: boolean;
@@ -52,12 +56,15 @@ export function EditBannerDialog({ open, onOpenChange, banner }: EditBannerDialo
         linkType: banner.linkType,
         position: banner.position,
         isActive: banner.isActive,
-        startAt: banner.startAt ? new Date(banner.startAt).toISOString().slice(0, 16) : '',
-        endAt: banner.endAt ? new Date(banner.endAt).toISOString().slice(0, 16) : '',
+        startAt: banner.startAt ? new Date(banner.startAt).toISOString() : '',
+        endAt: banner.endAt ? new Date(banner.endAt).toISOString() : '',
       });
       setImageUrls(banner.images.map((img) => img.url));
     }
   }, [banner, reset]);
+
+  const startAt = watch('startAt');
+  const endAt = watch('endAt');
 
   const onSubmit = async (data: UpdateBannerFormData) => {
     if (!banner) return;
@@ -242,14 +249,57 @@ export function EditBannerDialog({ open, onOpenChange, banner }: EditBannerDialo
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startAt">Start Date (Optional)</Label>
-                <Input id="startAt" type="datetime-local" {...register('startAt')} />
+                <Label>Start Date (Optional)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !startAt && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {startAt ? format(new Date(startAt), "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={startAt ? new Date(startAt) : undefined}
+                      onSelect={(date) => setValue('startAt', date ? date.toISOString() : '')}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 {errors.startAt && <p className="text-sm text-red-500">{errors.startAt.message}</p>}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="endAt">End Date (Optional)</Label>
-                <Input id="endAt" type="datetime-local" {...register('endAt')} />
+                <Label>End Date (Optional)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !endAt && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {endAt ? format(new Date(endAt), "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={endAt ? new Date(endAt) : undefined}
+                      onSelect={(date) => setValue('endAt', date ? date.toISOString() : '')}
+                      initialFocus
+                      disabled={startAt ? { before: new Date(startAt) } : undefined}
+                    />
+                  </PopoverContent>
+                </Popover>
                 {errors.endAt && <p className="text-sm text-red-500">{errors.endAt.message}</p>}
               </div>
             </div>

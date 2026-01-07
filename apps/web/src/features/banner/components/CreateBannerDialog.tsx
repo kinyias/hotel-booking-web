@@ -14,8 +14,12 @@ import { useCreateBannerMutation } from '../mutations';
 import { createBannerSchema, CreateBannerFormData } from '../validator';
 import { BannerLinkType } from '../types';
 import { toast } from 'react-hot-toast';
-import { X, ImagePlus } from 'lucide-react';
+import { X, ImagePlus, Calendar as CalendarIcon } from 'lucide-react';
 import GalleryImagesDialog from '@/components/common/GalleryImagesDialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface CreateBannerDialogProps {
   open: boolean;
@@ -98,6 +102,9 @@ export function CreateBannerDialog({ open, onOpenChange }: CreateBannerDialogPro
     setCurrentImageIndex(null);
   };
 
+  const startAt = watch('startAt');
+  const endAt = watch('endAt');
+
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -107,6 +114,8 @@ export function CreateBannerDialog({ open, onOpenChange }: CreateBannerDialogPro
           </DialogHeader>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* ... other fields ... */}
+            
             <div className="space-y-2">
               <Label htmlFor="title">Title (Optional)</Label>
               <Input id="title" {...register('title')} placeholder="Enter banner title" />
@@ -118,8 +127,8 @@ export function CreateBannerDialog({ open, onOpenChange }: CreateBannerDialogPro
               <Textarea id="subtitle" {...register('subtitle')} placeholder="Enter banner subtitle" rows={2} />
               {errors.subtitle && <p className="text-sm text-red-500">{errors.subtitle.message}</p>}
             </div>
-
-            <div className="space-y-2">
+            
+             <div className="space-y-2">
               {imageUrls.length === 0 && (
                 <div className="border-2 border-dashed rounded-lg p-8 text-center">
                   <ImagePlus className="h-12 w-12 mx-auto text-gray-400 mb-2" />
@@ -224,17 +233,61 @@ export function CreateBannerDialog({ open, onOpenChange }: CreateBannerDialogPro
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startAt">Start Date (Optional)</Label>
-                <Input id="startAt" type="datetime-local" {...register('startAt')} />
+                <Label>Start Date (Optional)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !startAt && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {startAt ? format(new Date(startAt), "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={startAt ? new Date(startAt) : undefined}
+                      onSelect={(date) => setValue('startAt', date ? date.toISOString() : '')}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 {errors.startAt && <p className="text-sm text-red-500">{errors.startAt.message}</p>}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="endAt">End Date (Optional)</Label>
-                <Input id="endAt" type="datetime-local" {...register('endAt')} />
+                <Label>End Date (Optional)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !endAt && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {endAt ? format(new Date(endAt), "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={endAt ? new Date(endAt) : undefined}
+                      onSelect={(date) => setValue('endAt', date ? date.toISOString() : '')}
+                      initialFocus
+                      disabled={startAt ? { before: new Date(startAt) } : undefined}
+                    />
+                  </PopoverContent>
+                </Popover>
                 {errors.endAt && <p className="text-sm text-red-500">{errors.endAt.message}</p>}
               </div>
             </div>
+
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
