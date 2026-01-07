@@ -8,173 +8,419 @@
    - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 2.5s
- ○ Compiling /admin/settings ...
- GET /admin/settings 200 in 7.4s (compile: 6.3s, proxy.ts: 259ms, render: 847ms)
- GET / 200 in 2.5s (compile: 2.3s, proxy.ts: 11ms, render: 271ms)
- GET / 200 in 208ms (compile: 25ms, proxy.ts: 24ms, render: 160ms)
- GET /hero-bg-3.jpg 404 in 1445ms (compile: 1011ms, proxy.ts: 24ms, render: 410ms)
- GET /hero-bg-2.jpg 404 in 1453ms (compile: 1112ms, proxy.ts: 24ms, render: 317ms)
- GET /admin 200 in 852ms (compile: 740ms, proxy.ts: 6ms, render: 105ms)
- GET / 200 in 617ms (compile: 10ms, proxy.ts: 8ms, render: 598ms)
- GET / 200 in 300ms (compile: 17ms, proxy.ts: 28ms, render: 255ms)
- GET /hero-bg-2.jpg 404 in 248ms (compile: 42ms, proxy.ts: 18ms, render: 187ms)
- GET /hero-bg-3.jpg 404 in 237ms (compile: 118ms, proxy.ts: 15ms, render: 104ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 1232ms (compile: 1180ms, proxy.ts: 5ms, render: 47ms)
- GET /hotels?check_in=2025-12-31&check_out=2026-01-04 200 in 39ms (compile: 7ms, proxy.ts: 5ms, render: 27ms)
- ○ Compiling /hotels/[hotel_id] ...
- GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 6.5s (compile: 6.4s, proxy.ts: 7ms, render: 45ms)
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=3600000&rooms=cmjec563w001buhc8b16wcbyr%3A3 200 in 773ms (compile: 732ms, proxy.ts: 6ms, render: 36ms)
- GET / 200 in 50ms (compile: 7ms, proxy.ts: 6ms, render: 37ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 45ms (compile: 7ms, proxy.ts: 6ms, render: 32ms)
- GET /hotels?check_in=2026-01-03&check_out=2026-01-05 200 in 37ms (compile: 6ms, proxy.ts: 5ms, render: 26ms)
- GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 63ms (compile: 20ms, proxy.ts: 6ms, render: 37ms)
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=2400000&rooms=cmjec563w001buhc8b16wcbyr%3A2 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
- GET / 200 in 51ms (compile: 8ms, proxy.ts: 9ms, render: 34ms)
- GET /admin 200 in 85ms (compile: 6ms, proxy.ts: 6ms, render: 73ms)
- GET /admin 200 in 87ms (compile: 6ms, proxy.ts: 6ms, render: 75ms)
- GET / 200 in 230ms (compile: 7ms, proxy.ts: 7ms, render: 217ms)
- GET / 200 in 222ms (compile: 26ms, proxy.ts: 13ms, render: 184ms)
- GET /hero-bg-2.jpg 404 in 238ms (compile: 30ms, proxy.ts: 17ms, render: 192ms)
- GET /hero-bg-3.jpg 404 in 232ms (compile: 136ms, proxy.ts: 13ms, render: 82ms)
- GET /admin 200 in 76ms (compile: 5ms, proxy.ts: 6ms, render: 64ms)
- GET /admin/hotels/cmjebq0hz000muhc8pmqpvzd9/bookings/cmk3c2yus000buhlczx44o0iz 404 in 38ms (compile: 9ms, proxy.ts: 6ms, render: 23ms)
- GET /admin/hotels/cmjebq0hz000muhc8pmqpvzd9/bookings/cmk3c2yus000buhlczx44o0iz 404 in 73ms (compile: 15ms, proxy.ts: 5ms, render: 53ms)
- GET /admin 200 in 84ms (compile: 6ms, proxy.ts: 7ms, render: 72ms)
- GET /admin/bookings 200 in 664ms (compile: 619ms, proxy.ts: 5ms, render: 40ms)
- GET /admin/bookings/cmjmui57q000nktvwiqi67117 200 in 1703ms (compile: 1654ms, proxy.ts: 7ms, render: 42ms)
- GET /admin/bookings/cmjmui57q000nktvwiqi67117/booking/cmk2prxcb000cvv4gt4kpv025 200 in 1641ms (compile: 1585ms, proxy.ts: 6ms, render: 50ms)
- GET /forbidden 200 in 544ms (compile: 417ms, proxy.ts: 5ms, render: 122ms)
- GET /admin/bookings/cmjmui57q000nktvwiqi67117/booking/cmk2prxcb000cvv4gt4kpv025 200 in 248ms (compile: 20ms, proxy.ts: 9ms, render: 219ms)
- GET /forbidden 200 in 74ms (compile: 6ms, proxy.ts: 6ms, render: 63ms)
- GET / 200 in 200ms (compile: 6ms, proxy.ts: 5ms, render: 189ms)
- GET / 200 in 203ms (compile: 6ms, proxy.ts: 6ms, render: 192ms)
- GET /hero-bg-2.jpg 404 in 218ms (compile: 30ms, proxy.ts: 22ms, render: 166ms)
- GET /hero-bg-3.jpg 404 in 207ms (compile: 101ms, proxy.ts: 17ms, render: 90ms)
- GET /admin/room-types 200 in 901ms (compile: 773ms, proxy.ts: 19ms, render: 109ms)
- GET /admin/bookings 200 in 41ms (compile: 5ms, proxy.ts: 6ms, render: 30ms)
- GET /admin/bookings/cmjebq0hz000muhc8pmqpvzd9 200 in 51ms (compile: 17ms, proxy.ts: 5ms, render: 29ms)
- GET /admin/bookings/cmjebq0hz000muhc8pmqpvzd9/booking/cmk3c2yus000buhlczx44o0iz 200 in 60ms (compile: 16ms, proxy.ts: 5ms, render: 38ms)
- GET /admin/bookings/cmjebq0hz000muhc8pmqpvzd9/booking/cmk3c2yus000buhlczx44o0iz 200 in 113ms (compile: 21ms, proxy.ts: 8ms, render: 84ms)
- GET /hotels 200 in 41ms (compile: 6ms, proxy.ts: 5ms, render: 30ms)
- GET /hotels/cmjmui57q000nktvwiqi67117 200 in 58ms (compile: 17ms, proxy.ts: 6ms, render: 35ms)
- GET /hotels/cmjecalbp0028uhc8afej6v2s 200 in 54ms (compile: 17ms, proxy.ts: 5ms, render: 32ms)
- GET /booking?hotel_id=cmjecalbp0028uhc8afej6v2s&check_in=2026-01-07&check_out=2026-01-08&total_price=6000000&rooms=cmjfqdzvs0001uhdo3748zb4o%3A1%2Ccmjecci0c002fuhc8e4xb92wg%3A1 200 in 36ms (compile: 5ms, proxy.ts: 5ms, render: 26ms)
- GET / 200 in 46ms (compile: 6ms, proxy.ts: 6ms, render: 35ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 37ms (compile: 5ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels 200 in 38ms (compile: 7ms, proxy.ts: 5ms, render: 26ms)
- GET /hotels/cmjmari380009vvmwqf2ougpp 200 in 58ms (compile: 17ms, proxy.ts: 7ms, render: 34ms)
- GET /booking?hotel_id=cmjmari380009vvmwqf2ougpp&check_in=2026-01-07&check_out=2026-01-08&total_price=11000000&rooms=cmjmazuo8000xvvmw4npfxuhe%3A1%2Ccmjmb14iw0010vvmwqv6s2zo4%3A1 200 in 36ms (compile: 5ms, proxy.ts: 5ms, render: 26ms)
- GET / 200 in 48ms (compile: 6ms, proxy.ts: 6ms, render: 37ms)
- GET /admin/inventory 200 in 774ms (compile: 728ms, proxy.ts: 5ms, render: 41ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 43ms (compile: 6ms, proxy.ts: 5ms, render: 32ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 5ms, proxy.ts: 5ms, render: 29ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 7ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 6ms, proxy.ts: 5ms, render: 28ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 35ms (compile: 5ms, proxy.ts: 6ms, render: 24ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 38ms (compile: 5ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 37ms (compile: 5ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 36ms (compile: 5ms, proxy.ts: 5ms, render: 25ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 56ms (compile: 12ms, proxy.ts: 8ms, render: 37ms)
- GET /admin 200 in 40ms (compile: 6ms, proxy.ts: 5ms, render: 29ms)
- GET /admin 200 in 80ms (compile: 4ms, proxy.ts: 7ms, render: 69ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 62ms (compile: 19ms, proxy.ts: 6ms, render: 37ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 110ms (compile: 18ms, proxy.ts: 8ms, render: 84ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 60ms (compile: 16ms, proxy.ts: 6ms, render: 37ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 58ms (compile: 16ms, proxy.ts: 5ms, render: 36ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 52ms (compile: 10ms, proxy.ts: 6ms, render: 36ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 49ms (compile: 9ms, proxy.ts: 7ms, render: 33ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 58ms (compile: 16ms, proxy.ts: 6ms, render: 36ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 49ms (compile: 9ms, proxy.ts: 6ms, render: 35ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 53ms (compile: 8ms, proxy.ts: 6ms, render: 39ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 53ms (compile: 8ms, proxy.ts: 8ms, render: 36ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 56ms (compile: 16ms, proxy.ts: 5ms, render: 34ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 47ms (compile: 8ms, proxy.ts: 5ms, render: 34ms)
- GET /admin 200 in 33ms (compile: 5ms, proxy.ts: 5ms, render: 23ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 59ms (compile: 19ms, proxy.ts: 6ms, render: 35ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 78ms (compile: 22ms, proxy.ts: 8ms, render: 48ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 60ms (compile: 17ms, proxy.ts: 6ms, render: 38ms)
- GET /hotels 200 in 39ms (compile: 6ms, proxy.ts: 5ms, render: 28ms)
- GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 56ms (compile: 17ms, proxy.ts: 5ms, render: 33ms)
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=1200000&rooms=cmjec563w001buhc8b16wcbyr%3A1 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 28ms)
- GET / 200 in 49ms (compile: 5ms, proxy.ts: 6ms, render: 38ms)
- GET /hero-bg-2.jpg 404 in 229ms (compile: 21ms, proxy.ts: 15ms, render: 194ms)
- GET /hero-bg-3.jpg 404 in 229ms (compile: 78ms, proxy.ts: 13ms, render: 137ms)
- GET /admin/bookings/cmjecalbp0028uhc8afej6v2s/booking/cmk3c82fp0001uh2095qp1y1z 200 in 102ms (compile: 17ms, proxy.ts: 5ms, render: 80ms)
- GET /admin/bookings/cmjebq0hz000muhc8pmqpvzd9/booking/cmk3cig7k0001uhj8u4bikcw5 200 in 71ms (compile: 20ms, proxy.ts: 7ms, render: 44ms)
- GET /hotels?city=H%E1%BB%93+Ch%C3%AD+Minh&check_in=2026-01-07&check_out=2026-01-07 200 in 50ms (compile: 8ms, proxy.ts: 9ms, render: 33ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 6ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 7ms, proxy.ts: 6ms, render: 26ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 46ms (compile: 5ms, proxy.ts: 7ms, render: 34ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 7ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 39ms (compile: 5ms, proxy.ts: 6ms, render: 28ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 37ms (compile: 5ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 36ms (compile: 5ms, proxy.ts: 6ms, render: 24ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 37ms (compile: 7ms, proxy.ts: 6ms, render: 25ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 42ms (compile: 6ms, proxy.ts: 6ms, render: 30ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 213ms (compile: 7ms, proxy.ts: 5ms, render: 201ms)
- GET /hotels 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 28ms)
- GET /hotels 200 in 67ms (compile: 7ms, proxy.ts: 9ms, render: 51ms)
- GET /hotels 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 28ms)
- GET /hotels 200 in 146ms (compile: 6ms, proxy.ts: 7ms, render: 133ms)
- GET / 200 in 50ms (compile: 6ms, proxy.ts: 5ms, render: 38ms)
- GET /hero-bg-2.jpg 404 in 154ms (compile: 16ms, proxy.ts: 14ms, render: 124ms)
- GET /hero-bg-3.jpg 404 in 154ms (compile: 70ms, proxy.ts: 13ms, render: 71ms)
- GET / 200 in 286ms (compile: 13ms, proxy.ts: 9ms, render: 265ms)
- GET /hero-bg-2.jpg 404 in 322ms (compile: 56ms, proxy.ts: 29ms, render: 237ms)
- GET /hero-bg-3.jpg 404 in 321ms (compile: 111ms, proxy.ts: 42ms, render: 168ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-07 200 in 45ms (compile: 6ms, proxy.ts: 6ms, render: 33ms)
- GET /hotels 200 in 57ms (compile: 9ms, proxy.ts: 8ms, render: 39ms)
- GET /hotels?check_in=2026-01-08&check_out=2026-01-15 200 in 42ms (compile: 6ms, proxy.ts: 6ms, render: 30ms)
- GET /hotels?check_in=2026-01-06&check_out=2026-01-06 200 in 44ms (compile: 6ms, proxy.ts: 5ms, render: 32ms)
- GET /admin/inventory 200 in 44ms (compile: 6ms, proxy.ts: 5ms, render: 33ms)
- GET /hotels?check_in=2026-01-06&check_out=2026-01-07 200 in 49ms (compile: 7ms, proxy.ts: 7ms, render: 35ms)
- GET / 200 in 48ms (compile: 5ms, proxy.ts: 6ms, render: 37ms)
- GET /hotels?check_in=2026-01-06&check_out=2026-01-07 200 in 39ms (compile: 7ms, proxy.ts: 5ms, render: 27ms)
- ✓ Compiled in 375ms
- GET / 200 in 328ms (compile: 255ms, proxy.ts: 5ms, render: 68ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-08 200 in 283ms (compile: 210ms, proxy.ts: 6ms, render: 66ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-08&minPrice=12330000 200 in 54ms (compile: 8ms, proxy.ts: 7ms, render: 39ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08 200 in 46ms (compile: 7ms, proxy.ts: 6ms, render: 33ms)
- GET / 200 in 47ms (compile: 5ms, proxy.ts: 5ms, render: 36ms)
- GET /hotels?city=66&check_in=2026-01-07&check_out=2026-01-08 200 in 46ms (compile: 7ms, proxy.ts: 8ms, render: 31ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-08 200 in 40ms (compile: 7ms, proxy.ts: 6ms, render: 27ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 40ms (compile: 5ms, proxy.ts: 5ms, render: 30ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 59ms (compile: 7ms, proxy.ts: 6ms, render: 46ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 40ms (compile: 5ms, proxy.ts: 6ms, render: 29ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 44ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 41ms (compile: 5ms, proxy.ts: 5ms, render: 31ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 48ms (compile: 7ms, proxy.ts: 9ms, render: 33ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 27ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 39ms (compile: 5ms, proxy.ts: 5ms, render: 28ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 39ms (compile: 6ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 38ms (compile: 5ms, proxy.ts: 5ms, render: 28ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08 200 in 44ms (compile: 5ms, proxy.ts: 6ms, render: 32ms)
- GET / 200 in 49ms (compile: 5ms, proxy.ts: 6ms, render: 37ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08 200 in 47ms (compile: 8ms, proxy.ts: 6ms, render: 34ms)
- GET / 200 in 55ms (compile: 5ms, proxy.ts: 8ms, render: 42ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08 200 in 47ms (compile: 6ms, proxy.ts: 5ms, render: 35ms)
- GET /hotels 200 in 38ms (compile: 6ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08 200 in 41ms (compile: 5ms, proxy.ts: 6ms, render: 29ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-13 200 in 51ms (compile: 7ms, proxy.ts: 10ms, render: 34ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-13 200 in 41ms (compile: 8ms, proxy.ts: 5ms, render: 28ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-13 200 in 40ms (compile: 6ms, proxy.ts: 6ms, render: 28ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-13 200 in 39ms (compile: 6ms, proxy.ts: 5ms, render: 28ms)
- ✓ Compiled in 432ms
- ✓ Compiled in 393ms
+ ✓ Ready in 4.3s
+ ○ Compiling / ...
+ GET / 200 in 11.2s (compile: 9.4s, proxy.ts: 384ms, render: 1444ms)
+ GET /hero-bg-3.jpg 404 in 1415ms (compile: 1151ms, proxy.ts: 42ms, render: 222ms)
+ GET /hero-bg-2.jpg 404 in 1454ms (compile: 1118ms, proxy.ts: 31ms, render: 305ms)
+ GET /admin 200 in 1960ms (compile: 1508ms, proxy.ts: 7ms, render: 445ms)
+ GET /admin/users/permissions 200 in 1117ms (compile: 1057ms, proxy.ts: 7ms, render: 53ms)
+ GET /admin/users/actions 200 in 1603ms (compile: 1509ms, proxy.ts: 9ms, render: 86ms)
+ GET /admin/users/actions 200 in 217ms (compile: 8ms, proxy.ts: 7ms, render: 202ms)
+ ⚠ Fast Refresh had to perform a full reload when ./apps/web/src/components/layouts/AdminSidebar.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 403ms
+ GET /admin/users/actions 200 in 563ms (compile: 192ms, proxy.ts: 7ms, render: 364ms)
+ ✓ Compiled in 382ms
+ ⚠ Fast Refresh had to perform a full reload when ./apps/web/src/components/layouts/AdminSidebar.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /admin/users/actions 200 in 673ms (compile: 205ms, proxy.ts: 13ms, render: 456ms)
+ GET /admin/users/actions 200 in 407ms (compile: 6ms, proxy.ts: 8ms, render: 393ms)
+ ⚠ Fast Refresh had to perform a full reload when ./apps/web/src/components/layouts/AdminSidebar.tsx changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 333ms
+ GET /admin/users/actions 200 in 383ms (compile: 134ms, proxy.ts: 6ms, render: 243ms)
+ GET /admin/users/roles 200 in 850ms (compile: 751ms, proxy.ts: 5ms, render: 94ms)
+ GET /admin/users/roles 200 in 189ms (compile: 5ms, proxy.ts: 6ms, render: 177ms)
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_next_dist_5abb5746._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: The default export is not a React Component in "/admin/promotions/page"
+    at ignore-listed frames
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_next_dist_5abb5746._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: The default export is not a React Component in "/admin/promotions/page"
+    at ignore-listed frames {
+  page: '/admin/promotions'
+}
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\pages-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_c69ae102._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.
+    at new Promise (<anonymous>)
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\pages-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_c69ae102._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.
+    at new Promise (<anonymous>)
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\pages-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_c69ae102._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.
+    at new Promise (<anonymous>)
+ GET /admin/promotions 500 in 2.8s (compile: 2.8s, proxy.ts: 6ms, render: 46ms)
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_next_dist_5abb5746._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: The default export is not a React Component in "/admin/promotions/page"
+    at ignore-listed frames
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_next_dist_5abb5746._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: The default export is not a React Component in "/admin/promotions/page"
+    at ignore-listed frames {
+  page: '/admin/promotions'
+}
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\pages-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_c69ae102._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.
+    at new Promise (<anonymous>)
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\pages-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_c69ae102._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.
+    at new Promise (<anonymous>)
+D:\Workspace\hotelbooking\node_modules\next\dist\compiled\next-server\pages-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\apps\web\.next\dev\server\chunks\ssr\node_modules_c69ae102._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\Workspace\hotelbooking\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: Objects are not valid as a React child (found: object with keys {$$typeof, type, key, props, _owner, _store}). If you meant to render a collection of children, use an array instead.
+    at new Promise (<anonymous>)
+ GET /admin/promotions 500 in 118ms (compile: 103ms, proxy.ts: 7ms, render: 9ms)
+ ✓ Compiled in 417ms
+ GET /admin/promotions 200 in 572ms (compile: 291ms, proxy.ts: 10ms, render: 271ms)
+ ✓ Compiled in 350ms
+ GET /admin/promotions 200 in 395ms (compile: 244ms, proxy.ts: 99ms, render: 52ms)
+ GET /admin/promotions 200 in 54ms (compile: 4ms, proxy.ts: 6ms, render: 44ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 55ms (compile: 5ms, proxy.ts: 9ms, render: 41ms)
+ GET /admin/promotions 200 in 86ms (compile: 5ms, proxy.ts: 7ms, render: 74ms)
+ GET /admin/promotions 200 in 48ms (compile: 5ms, proxy.ts: 6ms, render: 37ms)
+ GET /admin/promotions 200 in 50ms (compile: 5ms, proxy.ts: 7ms, render: 38ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 7ms, render: 35ms)
+ GET /admin/promotions 200 in 60ms (compile: 5ms, proxy.ts: 6ms, render: 49ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 57ms (compile: 6ms, proxy.ts: 6ms, render: 46ms)
+ GET /admin/promotions 200 in 53ms (compile: 5ms, proxy.ts: 6ms, render: 42ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 77ms (compile: 14ms, proxy.ts: 8ms, render: 56ms)
+ GET /admin/promotions 200 in 52ms (compile: 7ms, proxy.ts: 7ms, render: 38ms)
+ GET /admin/promotions 200 in 54ms (compile: 6ms, proxy.ts: 7ms, render: 41ms)
+ GET /admin/promotions 200 in 51ms (compile: 4ms, proxy.ts: 5ms, render: 42ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 63ms (compile: 6ms, proxy.ts: 5ms, render: 52ms)
+ GET /admin/promotions 200 in 45ms (compile: 6ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 46ms (compile: 6ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 49ms (compile: 11ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 52ms (compile: 4ms, proxy.ts: 5ms, render: 43ms)
+ GET /admin/promotions 200 in 69ms (compile: 8ms, proxy.ts: 7ms, render: 54ms)
+ GET /admin/promotions 200 in 68ms (compile: 8ms, proxy.ts: 6ms, render: 55ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 49ms (compile: 6ms, proxy.ts: 6ms, render: 37ms)
+ GET /admin/promotions 200 in 51ms (compile: 4ms, proxy.ts: 5ms, render: 42ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 55ms (compile: 4ms, proxy.ts: 6ms, render: 44ms)
+ GET /admin/promotions 200 in 57ms (compile: 5ms, proxy.ts: 8ms, render: 44ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 6ms, render: 36ms)
+ GET /admin/promotions 200 in 56ms (compile: 4ms, proxy.ts: 5ms, render: 47ms)
+ GET /admin/promotions 200 in 50ms (compile: 7ms, proxy.ts: 8ms, render: 36ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 50ms (compile: 4ms, proxy.ts: 5ms, render: 40ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 32ms)
+ GET /admin/promotions 200 in 47ms (compile: 5ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 49ms (compile: 5ms, proxy.ts: 6ms, render: 38ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 48ms (compile: 5ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 41ms (compile: 5ms, proxy.ts: 5ms, render: 31ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 6ms, render: 37ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 6ms, render: 37ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 31ms)
+ GET /admin/promotions 200 in 46ms (compile: 9ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 7ms, render: 32ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 31ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 6ms, render: 37ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 42ms (compile: 5ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 6ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 48ms (compile: 4ms, proxy.ts: 5ms, render: 39ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 6ms, render: 32ms)
+ ✓ Compiled in 518ms
+ GET /admin/promotions/create 200 in 893ms (compile: 837ms, proxy.ts: 8ms, render: 47ms)
+ ✓ Compiled in 340ms
+ GET /admin/promotions 200 in 39ms (compile: 5ms, proxy.ts: 7ms, render: 27ms)
+ GET /admin/promotions 200 in 234ms (compile: 81ms, proxy.ts: 91ms, render: 63ms)
+ GET /admin/promotions 200 in 75ms (compile: 7ms, proxy.ts: 8ms, render: 60ms)
+ GET /admin/promotions 200 in 73ms (compile: 5ms, proxy.ts: 29ms, render: 39ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 50ms (compile: 5ms, proxy.ts: 7ms, render: 39ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 59ms (compile: 5ms, proxy.ts: 6ms, render: 48ms)
+ GET /admin/promotions 200 in 50ms (compile: 6ms, proxy.ts: 8ms, render: 36ms)
+ GET /admin/promotions 200 in 45ms (compile: 5ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 48ms (compile: 5ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 50ms (compile: 4ms, proxy.ts: 7ms, render: 39ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 50ms (compile: 5ms, proxy.ts: 6ms, render: 39ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 48ms (compile: 5ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 51ms (compile: 4ms, proxy.ts: 5ms, render: 42ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 49ms (compile: 4ms, proxy.ts: 7ms, render: 37ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 6ms, render: 32ms)
+ GET /admin/promotions 200 in 46ms (compile: 5ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 50ms (compile: 4ms, proxy.ts: 5ms, render: 40ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 41ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 45ms (compile: 5ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 54ms (compile: 4ms, proxy.ts: 6ms, render: 44ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 6ms, render: 33ms)
+ GET /admin/promotions 200 in 50ms (compile: 4ms, proxy.ts: 6ms, render: 40ms)
+ GET /admin/promotions 200 in 50ms (compile: 5ms, proxy.ts: 6ms, render: 38ms)
+ GET /admin/promotions 200 in 49ms (compile: 4ms, proxy.ts: 5ms, render: 40ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 44ms (compile: 5ms, proxy.ts: 6ms, render: 34ms)
+ GET /admin/promotions 200 in 69ms (compile: 4ms, proxy.ts: 6ms, render: 59ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 6ms, render: 36ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 43ms (compile: 5ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 82ms (compile: 6ms, proxy.ts: 5ms, render: 71ms)
+ GET /admin/promotions 200 in 54ms (compile: 5ms, proxy.ts: 7ms, render: 42ms)
+ GET /admin/promotions 200 in 53ms (compile: 6ms, proxy.ts: 5ms, render: 42ms)
+ GET /admin/promotions 200 in 55ms (compile: 4ms, proxy.ts: 6ms, render: 45ms)
+ GET /admin/promotions 200 in 49ms (compile: 4ms, proxy.ts: 6ms, render: 39ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 49ms (compile: 5ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 67ms (compile: 6ms, proxy.ts: 7ms, render: 54ms)
+ GET /admin/promotions 200 in 109ms (compile: 5ms, proxy.ts: 8ms, render: 96ms)
+ GET /admin/promotions 200 in 48ms (compile: 5ms, proxy.ts: 7ms, render: 36ms)
+ GET /admin/promotions 200 in 64ms (compile: 6ms, proxy.ts: 5ms, render: 53ms)
+ GET /admin/promotions 200 in 58ms (compile: 6ms, proxy.ts: 6ms, render: 46ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 6ms, render: 36ms)
+ GET /admin/promotions 200 in 71ms (compile: 7ms, proxy.ts: 9ms, render: 55ms)
+ GET /admin/promotions 200 in 150ms (compile: 8ms, proxy.ts: 8ms, render: 134ms)
+ GET /admin/promotions 200 in 50ms (compile: 4ms, proxy.ts: 6ms, render: 40ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 6ms, render: 37ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 56ms (compile: 6ms, proxy.ts: 5ms, render: 45ms)
+ GET /admin/promotions 200 in 47ms (compile: 4ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 60ms (compile: 6ms, proxy.ts: 6ms, render: 49ms)
+ GET /admin/promotions 200 in 56ms (compile: 6ms, proxy.ts: 8ms, render: 42ms)
+ GET /admin/promotions 200 in 52ms (compile: 5ms, proxy.ts: 7ms, render: 40ms)
+ GET /admin/promotions 200 in 56ms (compile: 5ms, proxy.ts: 6ms, render: 45ms)
+ GET /admin/promotions 200 in 52ms (compile: 5ms, proxy.ts: 5ms, render: 41ms)
+ GET /admin/promotions 200 in 57ms (compile: 6ms, proxy.ts: 6ms, render: 45ms)
+ GET /admin/promotions 200 in 56ms (compile: 5ms, proxy.ts: 7ms, render: 43ms)
+ GET /admin/promotions 200 in 66ms (compile: 6ms, proxy.ts: 7ms, render: 53ms)
+ GET /admin/promotions 200 in 52ms (compile: 5ms, proxy.ts: 6ms, render: 41ms)
+ GET /admin/promotions 200 in 52ms (compile: 5ms, proxy.ts: 12ms, render: 35ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 6ms, render: 36ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 48ms (compile: 4ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 42ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 48ms (compile: 5ms, proxy.ts: 5ms, render: 38ms)
+ GET /admin/promotions 200 in 55ms (compile: 5ms, proxy.ts: 9ms, render: 41ms)
+ GET /admin/promotions 200 in 53ms (compile: 5ms, proxy.ts: 13ms, render: 35ms)
+ GET /admin/promotions 200 in 44ms (compile: 4ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 5ms, render: 36ms)
+ GET /admin/promotions 200 in 53ms (compile: 4ms, proxy.ts: 7ms, render: 41ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 6ms, render: 36ms)
+ GET /admin/promotions 200 in 44ms (compile: 6ms, proxy.ts: 6ms, render: 32ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 5ms, render: 37ms)
+ GET /admin/promotions 200 in 54ms (compile: 6ms, proxy.ts: 6ms, render: 42ms)
+ GET /admin/promotions 200 in 46ms (compile: 4ms, proxy.ts: 6ms, render: 36ms)
+ GET /admin/promotions 200 in 50ms (compile: 4ms, proxy.ts: 6ms, render: 40ms)
+ GET /admin/promotions 200 in 53ms (compile: 6ms, proxy.ts: 6ms, render: 42ms)
+ GET /admin/promotions 200 in 50ms (compile: 7ms, proxy.ts: 7ms, render: 36ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 33ms)
+ GET /admin/promotions 200 in 54ms (compile: 5ms, proxy.ts: 11ms, render: 39ms)
+ GET /admin/promotions 200 in 43ms (compile: 4ms, proxy.ts: 5ms, render: 34ms)
+ GET /admin/promotions 200 in 45ms (compile: 5ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 51ms (compile: 5ms, proxy.ts: 5ms, render: 41ms)
+ GET /admin/promotions 200 in 45ms (compile: 4ms, proxy.ts: 6ms, render: 35ms)
+ GET /admin/promotions 200 in 45ms (compile: 5ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 49ms (compile: 5ms, proxy.ts: 7ms, render: 37ms)
+ GET /admin/promotions/create 200 in 1823ms (compile: 1777ms, proxy.ts: 5ms, render: 41ms)
+ GET /admin/promotions/create 200 in 573ms (compile: 33ms, proxy.ts: 11ms, render: 529ms)
+ ✓ Compiled in 423ms
+ ✓ Compiled in 341ms
+ ✓ Compiled in 324ms
+ ✓ Compiled in 340ms
+ GET /admin/promotions 200 in 40ms (compile: 5ms, proxy.ts: 6ms, render: 29ms)
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 226ms (compile: 180ms, proxy.ts: 6ms, render: 40ms)
+ GET /admin/promotions 200 in 35ms (compile: 4ms, proxy.ts: 5ms, render: 26ms)
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 57ms (compile: 20ms, proxy.ts: 6ms, render: 32ms)
+ GET /admin/promotions 200 in 38ms (compile: 4ms, proxy.ts: 5ms, render: 29ms)
+ GET /admin/promotions/create 200 in 60ms (compile: 20ms, proxy.ts: 5ms, render: 35ms)
+ GET /admin/promotions 200 in 39ms (compile: 4ms, proxy.ts: 7ms, render: 28ms)
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 55ms (compile: 18ms, proxy.ts: 5ms, render: 32ms)
+ GET /admin/promotions 200 in 38ms (compile: 6ms, proxy.ts: 6ms, render: 27ms)
+ ✓ Compiled in 426ms
+ ✓ Compiled in 353ms
+ ✓ Compiled in 368ms
+ ✓ Compiled in 334ms
+ ✓ Compiled in 321ms
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 186ms (compile: 142ms, proxy.ts: 7ms, render: 37ms)
+ ✓ Compiled in 383ms
+ ✓ Compiled in 328ms
+ ✓ Compiled in 310ms
  ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 394ms
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-13 200 in 907ms (compile: 265ms, proxy.ts: 7ms, render: 635ms)
- GET /login?session=expired 200 in 1067ms (compile: 742ms, proxy.ts: 7ms, render: 318ms)
- GET /hotels 200 in 312ms (compile: 247ms, proxy.ts: 7ms, render: 57ms)
- GET / 200 in 386ms (compile: 245ms, proxy.ts: 6ms, render: 135ms)
- GET /hero-bg-2.jpg 404 in 239ms (compile: 20ms, proxy.ts: 18ms, render: 202ms)
- GET /hero-bg-3.jpg 404 in 233ms (compile: 102ms, proxy.ts: 13ms, render: 118ms)
- GET /hotels?check_in=2026-01-07&check_out=2026-01-08&rooms=1&adults=1&children=0 200 in 39ms (compile: 5ms, proxy.ts: 5ms, render: 28ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08&rooms=1&adults=1&children=0 200 in 44ms (compile: 6ms, proxy.ts: 6ms, render: 32ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08&rooms=1&adults=1&children=0&minPrice=9350000 200 in 37ms (compile: 5ms, proxy.ts: 5ms, render: 27ms)
- GET /hotels?city=66+tran+thi+noi&check_in=2026-01-07&check_out=2026-01-08&rooms=1&adults=1&children=0&minPrice=9350000 200 in 461ms (compile: 5ms, proxy.ts: 6ms, render: 450ms)
- GET /hotels?city=108+Cao+l%E1%BB%97&check_in=2026-01-07&check_out=2026-01-08&rooms=1&adults=1&children=0&minPrice=9350000 200 in 48ms (compile: 9ms, proxy.ts: 7ms, render: 32ms)
- GET /hotels?city=H%C3%A0+n%E1%BB%99i&check_in=2026-01-07&check_out=2026-01-08&rooms=1&adults=1&children=0&minPrice=9350000 200 in 42ms (compile: 8ms, proxy.ts: 6ms, render: 29ms)
- GET /hotels/cmjm9047s000hkt7krt6l6kch 200 in 59ms (compile: 20ms, proxy.ts: 6ms, render: 33ms)
+ ✓ Compiled in 313ms
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 664ms (compile: 151ms, proxy.ts: 7ms, render: 505ms)
+ ✓ Compiled in 364ms
+ ✓ Compiled in 314ms
+ ✓ Compiled in 335ms
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 262ms (compile: 186ms, proxy.ts: 10ms, render: 66ms)
+ ✓ Compiled in 341ms
+ ✓ Compiled in 313ms
+ ✓ Compiled in 309ms
+ GET /admin/promotions/cmk3u3uxd0002uhuohz1xmeok 200 in 248ms (compile: 169ms, proxy.ts: 8ms, render: 71ms)
+ ✓ Compiled in 329ms
+ GET /admin/promotions 200 in 202ms (compile: 154ms, proxy.ts: 6ms, render: 42ms)
+ ✓ Compiled in 433ms
+ ✓ Compiled in 384ms

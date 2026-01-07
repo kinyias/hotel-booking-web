@@ -90,15 +90,12 @@ export const navItems: NavItem[] = [
     icon: Star,
     action: "reviews.moderate",
   },
-  // {
-  //   title: 'Promotions',
-  //   href: ROUTES.ADMIN_PROMOTIONS,
-  //   icon: Tags,
-  //   submenu: [
-  //     { title: 'Promotions', href: ROUTES.ADMIN_PROMOTIONS },
-  //     { title: 'Promotion types', href: ROUTES.ADMIN_PROMOTION_TYPES },
-  //   ]
-  // },
+  {
+    title: 'Promotions',
+    href: ROUTES.ADMIN_PROMOTIONS,
+    icon: Tags,
+    action: "promotions.list",
+  },
   {
     title: 'Commissions',
     href: ROUTES.ADMIN_COMMISSIONS,

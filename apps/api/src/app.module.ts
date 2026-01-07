@@ -30,6 +30,7 @@ import { ContactModule } from './modules/contact/contact.module';
 import { PolicyModule } from './modules/policy/policy.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NotificationModule } from './modules/notification/notification.module';
+import { PromotionModule } from './modules/promotion/promotion.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { NotificationModule } from './modules/notification/notification.module';
     ContactModule,
     PolicyModule,
     NotificationModule,
+    PromotionModule,
   ],
   controllers: [AppController],
   providers: [

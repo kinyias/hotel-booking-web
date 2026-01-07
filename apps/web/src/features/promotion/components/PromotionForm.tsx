@@ -2,26 +2,17 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { CalendarIcon, Loader2 } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -30,85 +21,106 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { promotionFormSchema, PromotionFormValues } from '../validator';
-import { formatNumber, parseCurrency } from '@/utils/currency';
-
-const PROMOTION_TYPES = [
-  { id: 't1', name: 'Seasonal', description: 'Seasonal promotions', status: 'ACTIVE' },
-  { id: 't2', name: 'Flash Deal', description: 'Limited time offers', status: 'ACTIVE' },
-  { id: 't3', name: 'New Year', description: 'New Year specials', status: 'INACTIVE' },
-  { id: 't4', name: 'Early Bird', description: 'Advance booking discounts', status: 'ACTIVE' },
-];
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { createPromotionSchema, CreatePromotionFormValues, updatePromotionSchema, UpdatePromotionFormValues } from '../validator';
+import { Promotion } from '../types';
 
 interface PromotionFormProps {
-  initialData?: PromotionFormValues;
-  onSubmit: (data: PromotionFormValues) => void;
+  initialData?: Promotion;
+  onSubmit: (data: CreatePromotionFormValues | UpdatePromotionFormValues) => void;
   isLoading?: boolean;
 }
 
-export function PromotionForm({ initialData, onSubmit, isLoading }: PromotionFormProps) {
-  const form = useForm<PromotionFormValues>({
-    resolver: zodResolver(promotionFormSchema),
-    defaultValues: initialData || {
-      title: '',
-      description: '',
-      type_id: '',
-      discount_type: 'PERCENTAGE',
-      discount_value: 0,
-      start_date: new Date(),
-      end_date: new Date(),
-      status: 'DRAFT',
-      hotel_id: '1', 
-    },
+export default function PromotionForm({ initialData, onSubmit, isLoading }: PromotionFormProps) {
+  const isEditing = !!initialData;
+
+  const form = useForm<CreatePromotionFormValues | UpdatePromotionFormValues>({
+    resolver: zodResolver(isEditing ? updatePromotionSchema : createPromotionSchema),
+    defaultValues: initialData
+      ? {
+          code: initialData.code,
+          name: initialData.name,
+          description: initialData.description || '',
+          discountType: initialData.discountType,
+          discountValue: initialData.discountValue,
+          maxDiscountAmount: initialData.maxDiscountAmount ? parseFloat(initialData.maxDiscountAmount) : undefined,
+          minBookingAmount: initialData.minBookingAmount ? parseFloat(initialData.minBookingAmount) : undefined,
+          totalUsageLimit: initialData.totalUsageLimit || undefined,
+          perUserLimit: initialData.perUserLimit || undefined,
+          startAt: initialData.startAt,
+          endAt: initialData.endAt,
+          isActive: initialData.isActive,
+        }
+      : {
+          code: '',
+          name: '',
+          description: '',
+          discountType: 'PERCENT',
+          discountValue: 0,
+          maxDiscountAmount: undefined,
+          minBookingAmount: undefined,
+          totalUsageLimit: undefined,
+          perUserLimit: undefined,
+          startAt: new Date().toISOString(),
+          endAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          isActive: true,
+        },
   });
-  
+
+  const discountType = form.watch('discountType');
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Title */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Promotion title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Promotion Code *</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="SUMMER2026"
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Unique code customers will use
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            {/* Type */}
-             <FormField
-              control={form.control}
-              name="type_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a promotion type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {PROMOTION_TYPES.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
-                          {type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Promotion Name *</FormLabel>
+                <FormControl>
+                  <Input placeholder="Summer Sale 2026" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Promotion name will be displayed on the website
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        {/* Description */}
         <FormField
           control={form.control}
           name="description"
@@ -117,9 +129,11 @@ export function PromotionForm({ initialData, onSubmit, isLoading }: PromotionFor
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Promotion description"
+                  placeholder="Describe this promotion..."
+                  rows={3}
                   className="resize-none"
                   {...field}
+                  value={field.value ?? ''}
                 />
               </FormControl>
               <FormMessage />
@@ -127,170 +141,259 @@ export function PromotionForm({ initialData, onSubmit, isLoading }: PromotionFor
           )}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             {/* Discount Type */}
-            <FormField
-              control={form.control}
-              name="discount_type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Discount Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select discount type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="PERCENTAGE">Percentage</SelectItem>
-                      <SelectItem value="FIXED_AMOUNT">Fixed Amount</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Discount Value */}
-            <FormField
-              control={form.control}
-              name="discount_value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Discount Value</FormLabel>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="discountType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Discount Type *</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <Input 
-                     type="text" 
-                     placeholder="100000"
-                    value={formatNumber(Number(field.value))}
-                    onChange={(e) => field.onChange(parseCurrency(e.target.value))}
-                    />
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select discount type" />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-        </div>
+                  <SelectContent>
+                    <SelectItem value="PERCENT">Percentage (%)</SelectItem>
+                    <SelectItem value="FIXED">Fixed Amount (VND)</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             {/* Start Date */}
-            <FormField
-              control={form.control}
-              name="start_date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Start Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-             {/* End Date */}
-            <FormField
-              control={form.control}
-              name="end_date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>End Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                            (date < new Date()) || (form.getValues("start_date") && date < form.getValues("start_date"))
-                          }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-        </div>
-
-        {/* Status */}
-         <FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Status</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormField
+            control={form.control}
+            name="discountValue"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Discount Value *</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder={discountType === 'PERCENT' ? '10' : '100000'}
+                    {...field}
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="ACTIVE">Active</SelectItem>
-                  <SelectItem value="INACTIVE">Inactive</SelectItem>
-                  <SelectItem value="DRAFT">Draft</SelectItem>
-                  <SelectItem value="EXPIRED">Expired</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
+                <FormDescription>
+                  {discountType === 'PERCENT' ? 'Percentage (0-100)' : 'Amount in VND'}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="maxDiscountAmount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Max Discount Amount</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder="500000"
+                    {...field}
+                    value={field.value || ''}
+                    onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : null)}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Maximum discount in VND (optional)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="minBookingAmount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Min Booking Amount</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder="1000000"
+                    {...field}
+                    value={field.value || ''}
+                    onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : null)}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Minimum booking amount in VND (optional)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="totalUsageLimit"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Total Usage Limit</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="100"
+                    {...field}
+                    value={field.value || ''}
+                    onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : null)}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Total times this code can be used (optional)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="perUserLimit"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Per User Limit</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="1"
+                    {...field}
+                    value={field.value || ''}
+                    onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : null)}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Times each user can use this code (optional)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="startAt"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Start Date *</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-full pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {field.value ? (
+                          format(new Date(field.value), 'PPP')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={(date) => field.onChange(date?.toISOString())}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="endAt"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>End Date *</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-full pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {field.value ? (
+                          format(new Date(field.value), 'PPP')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={(date) => field.onChange(date?.toISOString())}
+                      initialFocus
+                        disabled={(date) => {
+                          const startAt = form.getValues('startAt');
+                          return startAt ? date < new Date(startAt) : false;
+                        }}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="isActive"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Active Status</FormLabel>
+                <FormDescription>
+                  Enable or disable this promotion
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
-        
-        <div className="flex justify-end space-x-4">
-             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save Promotion
-             </Button>
-        </div>
+
+        <Button type="submit" disabled={isLoading} className="w-full">
+          {isLoading ? 'Saving...' : isEditing ? 'Update Promotion' : 'Create Promotion'}
+        </Button>
       </form>
     </Form>
   );
