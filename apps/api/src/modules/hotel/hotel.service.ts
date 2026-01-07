@@ -436,7 +436,10 @@ export class HotelService {
 
     if (query.city) {
       andWhere.push({
-        city: { contains: query.city, mode: 'insensitive' },
+        OR: [
+          { city: { contains: query.city, mode: 'insensitive' } },
+          { address: { contains: query.city, mode: 'insensitive' } },
+        ],
       });
     }
 

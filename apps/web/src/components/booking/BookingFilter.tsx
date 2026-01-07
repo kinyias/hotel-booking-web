@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, User, ArrowRight, MapPin } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -9,21 +9,62 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DateRange } from "react-day-picker";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 const BookingFilter = () => {
-  const [location, setLocation] = useState("");
-  const [rooms, setRooms] = useState(1);
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
-  const [isGuestPopoverOpen, setIsGuestPopoverOpen] = useState(false);
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
+
+  const [location, setLocation] = useState(searchParams.get('city') || "");
+  const [rooms, setRooms] = useState(Number(searchParams.get('rooms')) || 1);
+  const [adults, setAdults] = useState(Number(searchParams.get('adults')) || 1);
+  const [children, setChildren] = useState(Number(searchParams.get('children')) || 0);
+  const [isGuestPopoverOpen, setIsGuestPopoverOpen] = useState(false);
+  
+  const [date, setDate] = useState<DateRange | undefined>(() => {
+    const checkIn = searchParams.get('check_in');
+    const checkOut = searchParams.get('check_out');
+
+    if (checkIn && checkOut) {
+      return {
+        from: parseISO(checkIn),
+        to: parseISO(checkOut),
+      };
+    }
+
+    const today = new Date();
+    const to = new Date(today);
+    to.setDate(today.getDate() + 1);
+
+    return {
+      from: today,
+      to,
+    };
   });
+
+  // Sync state with URL changes
+  useEffect(() => {
+    const city = searchParams.get('city');
+    if (city !== null) setLocation(city);
+
+    const checkIn = searchParams.get('check_in');
+    const checkOut = searchParams.get('check_out');
+    if (checkIn && checkOut) {
+      setDate({
+        from: parseISO(checkIn),
+        to: parseISO(checkOut),
+      });
+    }
+    
+    setRooms(Number(searchParams.get('rooms')) || 1);
+    setAdults(Number(searchParams.get('adults')) || 1);
+    setChildren(Number(searchParams.get('children')) || 0);
+  }, [searchParams]);
+
   const handleApplyGuests = () => {
     setIsGuestPopoverOpen(false);
   };
+
   // Format date range for display
   const formatDateRange = () => {
     if (!date?.from) {
@@ -36,20 +77,31 @@ const BookingFilter = () => {
   };
   
   const handleApplyFilter = () => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     
     // Add location if provided
     if (location) {
       params.set('city', location);
+    } else {
+      params.delete('city');
     }
     
     // Add date range if both dates are selected
     if (date?.from) {
-      params.set('check_in', date.from.toISOString().split('T')[0]);
+      params.set('check_in', format(date.from, 'yyyy-MM-dd'));
+    } else {
+      params.delete('check_in');
     }
+    
     if (date?.to) {
-      params.set('check_out', date.to.toISOString().split('T')[0]);
+      params.set('check_out', format(date.to, 'yyyy-MM-dd'));
+    } else {
+      params.delete('check_out');
     }
+
+    params.set('rooms', rooms.toString());
+    params.set('adults', adults.toString());
+    params.set('children', children.toString());
     
     // Navigate to hotels page with params
     router.push(`/hotels?${params.toString()}`);

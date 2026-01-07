@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import PageTitle from "@/components/sections/PageTitle";
 import BookingFilter from "@/components/booking/BookingFilter";
@@ -35,7 +35,7 @@ export function HotelSearch() {
   const [page, setPage] = useState(1);
   
   // Fetch public hotels with URL params
-  const { data: hotelsData, isLoading } = usePublicHotelsQuery({
+  const { data: hotelsData, isLoading, isFetching } = usePublicHotelsQuery({
     page,
     limit: PAGE_LIMIT,
     minPrice: urlMinPrice ? Number(urlMinPrice) : undefined,
@@ -44,6 +44,11 @@ export function HotelSearch() {
     checkOut: urlCheckOut || undefined,
     city: urlCity || undefined,
   });
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [urlMinPrice, urlMaxPrice, urlCheckIn, urlCheckOut, urlCity]);
   
   const hotels = hotelsData?.data || [];
   const meta = hotelsData?.meta;
@@ -53,6 +58,7 @@ export function HotelSearch() {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
 
   const handleApplyFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -139,7 +145,7 @@ export function HotelSearch() {
               </div>
             </div>
 
-            {isLoading ? (
+            {isLoading || isFetching ? (
                 <div className="flex justify-center py-20">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
