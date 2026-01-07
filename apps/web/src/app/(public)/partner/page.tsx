@@ -1,8 +1,5 @@
 'use client';
-
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { MapPin, Phone, Clock, Send } from 'lucide-react';
+import { Building2, TrendingUp, ShieldCheck, Mail, Phone, Send } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -18,8 +15,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import PageTitle from '@/components/sections/PageTitle';
 import { useCreateContactMutation } from '@/features/contact/mutations';
 import { createContactSchema, CreateContactFormValues } from '@/features/contact/validator';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function ContactPage() {
+export default function PartnerPage() {
   const mutation = useCreateContactMutation();
 
   const form = useForm<CreateContactFormValues>({
@@ -44,30 +43,27 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <PageTitle
-        title="Contact Us"
+        title="Become our Partner"
         breadcrumbs={[
           { label: 'Home', href: '/' },
-          { label: 'Contact', href: '/contact' },
+          { label: 'Partner', href: '/partner' },
         ]}
-        description="We'd love to hear from you. Get in touch with us today!"
+        description="Join our global network of hotels and reach more guests than ever before."
       />
 
       <div className="container mx-auto py-16 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          {/* Contact Information Cards */}
+          {/* Benefit Cards */}
           <Card className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <MapPin className="w-8 h-8 text-primary" />
+                <Building2 className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">Our Location</CardTitle>
+              <CardTitle className="text-xl">Global Network</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground leading-relaxed">
-                123 Luxury Avenue<br />
-                Times Square<br />
-                New York, NY 10036<br />
-                United States
+                Reach millions of travelers worldwide and increase your hotel's visibility across different markets and demographics.
               </p>
             </CardContent>
           </Card>
@@ -75,18 +71,13 @@ export default function ContactPage() {
           <Card className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <Phone className="w-8 h-8 text-primary" />
+                <TrendingUp className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">Phone & Email</CardTitle>
+              <CardTitle className="text-xl">Revenue Growth</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-2">
-              <p className="text-muted-foreground">
-                <strong className="text-foreground">Phone:</strong><br />
-                +1 (555) 123-4567
-              </p>
-              <p className="text-muted-foreground">
-                <strong className="text-foreground">Email:</strong><br />
-                reservations@hotelo.com
+              <p className="text-muted-foreground leading-relaxed">
+                Leverage our advanced pricing tools, marketing insights, and loyalty programs to maximize your occupancy and revenue.
               </p>
             </CardContent>
           </Card>
@@ -94,28 +85,25 @@ export default function ContactPage() {
           <Card className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <Clock className="w-8 h-8 text-primary" />
+                <ShieldCheck className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">Business Hours</CardTitle>
+              <CardTitle className="text-xl">Dedicated Support</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground leading-relaxed">
-                <strong className="text-foreground">Mon - Fri:</strong> 9:00 AM - 6:00 PM<br />
-                <strong className="text-foreground">Saturday:</strong> 10:00 AM - 4:00 PM<br />
-                <strong className="text-foreground">Sunday:</strong> Closed
+                Our partnership team is available to help you optimize your listings, manage bookings, and provide expert industry advice.
               </p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Contact Form Section */}
+        {/* Partnership Form Section */}
         <div className="max-w-4xl mx-auto">
           <Card className="border-none shadow-xl">
             <CardHeader className="text-center pb-8">
-              <CardTitle className="text-3xl font-bold">Send Us a Message</CardTitle>
+              <CardTitle className="text-3xl font-bold">Partner With Us</CardTitle>
               <CardDescription className="text-base mt-2">
-                Fill out the form below and we'll get back to you as soon as possible.
-                Please provide either an email or phone number so we can reach you.
+                Tell us about your property and our dedicated partnership team will reach out to you within 24 hours.
               </CardDescription>
             </CardHeader>
             <CardContent className="px-6 pb-8">
@@ -147,10 +135,10 @@ export default function ContactPage() {
                       name="subject"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base">Subject</FormLabel>
+                          <FormLabel className="text-base">Hotel/Property Name</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="What is this regarding?"
+                              placeholder="Your Luxury Hotel Name"
                               className="h-11"
                               {...field}
                             />
@@ -168,12 +156,12 @@ export default function ContactPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base">
-                            Email Address
+                            Work Email Address
                           </FormLabel>
                           <FormControl>
                             <Input
                               type="email"
-                              placeholder="john.doe@example.com"
+                              placeholder="management@yourhotel.com"
                               className="h-11"
                               {...field}
                             />
@@ -189,7 +177,7 @@ export default function ContactPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base">
-                            Phone Number
+                            Contact Phone Number
                           </FormLabel>
                           <FormControl>
                             <Input
@@ -211,11 +199,11 @@ export default function ContactPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-base">
-                          Message <span className="text-destructive">*</span>
+                          Property Details <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Tell us more about your inquiry, questions, or feedback..."
+                            placeholder="Tell us about your property (location, number of rooms, star rating, etc.)..."
                             rows={6}
                             className="resize-none"
                             {...field}
@@ -239,12 +227,12 @@ export default function ContactPage() {
                       {mutation.isPending ? (
                         <>
                           <span className="animate-spin">⏳</span>
-                          Sending...
+                          Applying...
                         </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          Send Message
+                          Apply for Partnership
                         </>
                       )}
                     </Button>
@@ -255,34 +243,37 @@ export default function ContactPage() {
           </Card>
         </div>
 
-        {/* Map Section (Optional) */}
-        <div className="max-w-4xl mx-auto mt-12">
-          <Card className="border-none shadow-xl overflow-hidden">
-            <CardHeader>
-              <CardTitle className="text-2xl">Find Us Here</CardTitle>
-              <CardDescription>
-                Visit our office during business hours or schedule an appointment
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="w-full h-[400px] bg-muted relative">
-                {/* Placeholder for map - you can integrate Google Maps or other map services */}
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.6174339374953!2d-73.98823492346468!3d40.75797097138558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1703234567890!5m2!1sen!2sus"
-                  width="100%"
-                  height="400"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Office Location Map"
-                  className="w-full h-full"
-                />
-              </div>
-            </CardContent>
-          </Card>
+        {/* Contact Info Section */}
+        <div className="max-w-4xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+           <Card className="border-none shadow-xl">
+             <CardHeader>
+               <CardTitle className="text-xl flex items-center gap-2">
+                 <Mail className="w-5 h-5 text-primary" />
+                 Partnership Inquiries
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <p className="text-muted-foreground">
+                 partners@hotelo.com
+               </p>
+             </CardContent>
+           </Card>
+           <Card className="border-none shadow-xl">
+             <CardHeader>
+               <CardTitle className="text-xl flex items-center gap-2">
+                 <Phone className="w-5 h-5 text-primary" />
+                 Partner Support Line
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <p className="text-muted-foreground">
+                 +1 (555) 987-6543
+               </p>
+             </CardContent>
+           </Card>
         </div>
       </div>
     </div>
   );
 }
+

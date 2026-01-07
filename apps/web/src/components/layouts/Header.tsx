@@ -40,6 +40,12 @@ const navigationItems = [
     hasDropdown: false,
     subcategories: [],
   },
+  {
+    name: 'PARTNER',
+    href: '/partner',
+    hasDropdown: false,
+    subcategories: [],
+  },
 ];
 function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
