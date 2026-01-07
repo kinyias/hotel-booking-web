@@ -143,7 +143,7 @@ export function RoomTable({ rooms, hotelId, roomTypeId }: RoomTableProps) {
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         {hotelId && (roomTypeId || room.roomTypeId) ? (
-                            <Link href={`/admin/hotels/${hotelId}/room-types/${roomTypeId || room.roomTypeId}/room/${room.id}`}>
+                            <Link href={`/admin/room-types/${room.hotelId}/manage/${room.roomTypeId || room.roomTypeId}/room/${room.id}`}>
                                 <Button
                                   variant="ghost"
                                   size="icon"

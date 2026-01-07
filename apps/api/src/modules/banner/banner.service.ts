@@ -21,13 +21,26 @@ export class BannerService {
       throw new BadRequestException('startAt must be <= endAt');
     }
 
+    const position = dto.position ?? 0;
+
+    const existingBanner = await this.prisma.banner.findFirst({
+      where: { position },
+    });
+
+    if (existingBanner) {
+      const total = await this.prisma.banner.count();
+      throw new BadRequestException(
+        `Position ${position} is already taken. Total banners: ${total}`,
+      );
+    }
+
     return this.prisma.banner.create({
       data: {
         title: dto.title,
         subtitle: dto.subtitle,
         link: dto.link,
         linkType: dto.linkType,
-        position: dto.position ?? 0,
+        position,
         isActive: dto.isActive ?? true,
         startAt: dto.startAt ? new Date(dto.startAt) : undefined,
         endAt: dto.endAt ? new Date(dto.endAt) : undefined,
@@ -50,6 +63,22 @@ export class BannerService {
       new Date(dto.startAt) > new Date(dto.endAt)
     ) {
       throw new BadRequestException('startAt must be <= endAt');
+    }
+
+    if (dto.position !== undefined) {
+      const existingBanner = await this.prisma.banner.findFirst({
+        where: {
+          position: dto.position,
+          id: { not: id },
+        },
+      });
+
+      if (existingBanner) {
+        const total = await this.prisma.banner.count();
+        throw new BadRequestException(
+          `Position ${dto.position} is already taken. Total banners: ${total}. Please choose a different position.`,
+        );
+      }
     }
 
     // Nếu truyền images => replace toàn bộ images
