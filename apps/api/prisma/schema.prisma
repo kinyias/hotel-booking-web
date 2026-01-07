@@ -45,6 +45,7 @@ model User {
   handledContacts  ContactMessage[]     @relation("ContactHandledBy")
   bookingGuests    BookingGuest[]
   checkInsHandled  CheckIn[]            @relation("CheckInHandledBy")
+  notifications    Notification[]
 }
 
 model Hotel {
@@ -71,6 +72,7 @@ model Hotel {
   policies            HotelPolicy[]
 
   inventories Inventory[]
+  notifications Notification[]
 
   deletedAt DateTime?
   createdAt DateTime  @default(now())
@@ -362,6 +364,7 @@ model Booking {
   payments      Payment[]
   review        Review?
   guests        BookingGuest[]
+  notifications Notification[]
   checkInRecord CheckIn?
 
   @@index([hotelId])
@@ -664,7 +667,50 @@ model HotelPolicy {
   @@index([hotelId])
 }
 
+model Notification {
+  id String @id @default(cuid())
+
+  // Người nhận thông báo (owner / staff)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Khách sạn liên quan
+  hotelId String?
+  hotel   Hotel? @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  // Booking liên quan (đơn đặt phòng mới)
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  type NotificationType
+
+  title   String
+  message String
+
+  // Dùng cho redirect frontend
+  actionUrl String?
+
+  isRead  Boolean  @default(false)
+  readAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@index([hotelId])
+  @@index([bookingId])
+}
+
 // ==================== ENUM ====================
+enum NotificationType {
+  NEW_BOOKING        // Có đơn đặt phòng mới
+  BOOKING_CANCELLED  // Huỷ đơn
+  BOOKING_CONFIRMED  // Xác nhận đơn
+  CHECK_IN           // Khách check-in
+  CHECK_OUT
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  SYSTEM
+}
 
 enum PolicyType {
   CHECKIN

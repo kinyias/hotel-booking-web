@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { Prisma, BookingStatus, PaymentStatus, Gender } from '@prisma/client';
-import { parseISO, startOfDay } from 'date-fns';
+import { Prisma, BookingStatus, PaymentStatus, Gender, NotificationType } from '@prisma/client';
+import { NotificationService } from '../notification/notification.service';
 import { ListMyBookingDto } from './dto/list-my-bookings.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -39,7 +39,11 @@ function toDateOnly(d: string) {
 
 @Injectable()
 export class BookingService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly notificationService: NotificationService,
+  ) {}
+
   private readonly PENDING_TTL_MINUTES = 15;
   private readonly logger = new Logger(BookingService.name);
 
@@ -132,11 +136,13 @@ export class BookingService {
     const hotelCommission = await this.prisma.hotel.findUnique({
       where: { id: hotelId },
       select: {
+        ownerId: true,
         commissionPackage: {
           select: { commissionRate: true, isActive: true },
         },
       },
     });
+
 
     const commissionRate = hotelCommission?.commissionPackage?.isActive
       ? hotelCommission.commissionPackage.commissionRate
@@ -147,7 +153,7 @@ export class BookingService {
       throw new BadRequestException('Invalid commissionRate on hotel package');
     }
 
-    return this.prisma.$transaction(async (tx) => {
+    const result = await this.prisma.$transaction(async (tx) => {
       // 1) Check inventory đủ cho từng item, từng ngày
       for (const item of dto.items) {
         for (const day of nights) {
@@ -254,6 +260,20 @@ export class BookingService {
 
       return booking;
     });
+
+    if (hotelCommission?.ownerId) {
+      await this.notificationService.create({
+        userId: hotelCommission.ownerId,
+        hotelId: hotelId,
+        bookingId: result.id,
+        type: NotificationType.NEW_BOOKING,
+        title: 'New Booking',
+        message: `You have a new booking from ${dto.guestName}`,
+        actionUrl: `/admin/bookings/${hotelId}/booking/${result.id}`,
+      });
+    }
+
+    return result;
   }
 
   async cancel(hotelId: string, bookingId: string) {

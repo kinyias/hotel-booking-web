@@ -29,6 +29,7 @@ import { BannerModule } from './modules/banner/banner.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { PolicyModule } from './modules/policy/policy.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     BannerModule,
     ContactModule,
     PolicyModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [
