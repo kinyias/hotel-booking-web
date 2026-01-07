@@ -48,7 +48,7 @@ export default function HotelTable({ hotels }: HotelTableProps) {
     setConfirmOpen(false);
     setSelectedHotel(null);
   };
-
+  
   return (
     <>
       <Card className="bg-card border-border overflow-hidden">
@@ -59,6 +59,7 @@ export default function HotelTable({ hotels }: HotelTableProps) {
               <TableHead className="text-foreground">Name</TableHead>
               <TableHead className="text-foreground">Email Owner</TableHead>
               <TableHead className="text-foreground">Status</TableHead>
+              <TableHead className="text-foreground">Commission Package</TableHead>
               <TableHead className="text-right text-foreground">
                 Actions
               </TableHead>
@@ -97,6 +98,22 @@ export default function HotelTable({ hotels }: HotelTableProps) {
                     >
                       {hotel.status}
                     </Badge>
+                  </TableCell>
+                   <TableCell>
+                    {hotel.commissionPackage ? (
+                      <div className="flex flex-col">
+                        <span className="text-foreground font-medium">
+                          {hotel.commissionPackage.name}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          {hotel.commissionPackage.commissionRate * 100}%
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground italic">
+                        Not assigned
+                      </span>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
