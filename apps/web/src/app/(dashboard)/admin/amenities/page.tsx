@@ -27,7 +27,7 @@ export default function AmenitiesPage() {
   // Pass pagination and search params to the query
   const { data, isLoading, isError } = useGetAmenitiesQuery({
     limit: pageSize,
-    offset: (page - 1) * pageSize,
+    page,
     q: search || undefined,
   });
 

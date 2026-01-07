@@ -47,7 +47,7 @@ export class AmenityService {
     const [items, total] = await this.prisma.$transaction([
       this.prisma.amenity.findMany({
         where,
-        orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+        orderBy: [{ sortOrder: 'desc' }, { createdAt: 'desc' }],
         take: limit,
         skip: offset,
       }),
