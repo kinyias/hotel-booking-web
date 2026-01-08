@@ -10,9 +10,11 @@ import { ApiError } from '@/types';
 import { Search } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useDebounce } from '@/hooks/useDebounce';
 
 function ActionsPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const { data, isLoading, isError } = useActionsQuery();
   const [actionToEdit, setActionToEdit] = useState<RoleAction | null>(null);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
@@ -86,7 +88,7 @@ function ActionsPage() {
           <ActionManagementTable
             actions={actions}
             onAssign={handleAssign}
-            searchTerm={searchTerm}
+            searchTerm={debouncedSearchTerm}
           />
 
           {/* Permission Assign Action Dialog */}

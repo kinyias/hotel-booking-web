@@ -22,8 +22,7 @@ interface ActionTableProps {
 function ActionManagementTable({ actions, onAssign, searchTerm }: ActionTableProps) {
   // Filter actions based on search term
   const filteredActions = actions.filter(action => 
-    action.key.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    action.description.toLowerCase().includes(searchTerm.toLowerCase())
+    action.key.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

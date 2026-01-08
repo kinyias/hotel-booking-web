@@ -7,14 +7,16 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { ListContactDto } from './dto/list-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
-import { Prisma } from '@prisma/client';
+import { Prisma, NotificationType } from '@prisma/client';
 import { MailService } from '../mail/mail.service'; // nếu bạn đã có mail module
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class ContactService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mail: MailService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(
@@ -39,6 +41,7 @@ export class ContactService {
       },
     });
 
+
     // Gửi mail thông báo cho support/admin (best-effort)
     await this.mail.sendContactNotification({
       id: row.id,
@@ -49,6 +52,32 @@ export class ContactService {
       message: row.message,
       createdAt: row.createdAt,
     });
+
+    // Send notification to admins
+    const recipients = await this.prisma.user.findMany({
+      where: {
+        roles: {
+          some: {
+            role: {
+              name: { in: ['ADMIN', 'OWNER', 'STAFF'] },
+            },
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    await Promise.all(
+      recipients.map((user) =>
+        this.notificationService.create({
+          userId: user.id,
+          type: NotificationType.SYSTEM,
+          title: 'New Contact Message',
+          message: `New contact message from ${dto.name}`,
+          actionUrl: `/admin/contacts/${row.id}`,
+        }),
+      ),
+    );
 
     return { id: row.id, ok: true };
   }

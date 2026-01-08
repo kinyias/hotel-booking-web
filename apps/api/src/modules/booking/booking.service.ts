@@ -140,6 +140,9 @@ export class BookingService {
         commissionPackage: {
           select: { commissionRate: true, isActive: true },
         },
+        members: {
+          select: { userId: true },
+        },
       },
     });
 
@@ -352,16 +355,26 @@ export class BookingService {
       return booking;
     });
 
-    if (hotelCommission?.ownerId) {
-      await this.notificationService.create({
-        userId: hotelCommission.ownerId,
-        hotelId: hotelId,
-        bookingId: result.id,
-        type: NotificationType.NEW_BOOKING,
-        title: 'New Booking',
-        message: `You have a new booking from ${dto.guestName}`,
-        actionUrl: `/admin/bookings/${hotelId}/booking/${result.id}`,
-      });
+    if (hotelCommission) {
+      const recipients = new Set<string>();
+      if (hotelCommission.ownerId) recipients.add(hotelCommission.ownerId);
+      if (hotelCommission.members) {
+        hotelCommission.members.forEach((m) => recipients.add(m.userId));
+      }
+
+      await Promise.all(
+        Array.from(recipients).map((recipientId) =>
+          this.notificationService.create({
+            userId: recipientId,
+            hotelId: hotelId,
+            bookingId: result.id,
+            type: NotificationType.NEW_BOOKING,
+            title: 'New Booking',
+            message: `You have a new booking from ${dto.guestName}`,
+            actionUrl: `/admin/bookings/${hotelId}/booking/${result.id}`,
+          }),
+        ),
+      );
     }
 
     return result;

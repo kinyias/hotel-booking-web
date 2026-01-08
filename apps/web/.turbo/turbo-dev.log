@@ -8,46 +8,29 @@
    - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 2.5s
+ ✓ Ready in 4.5s
  ○ Compiling / ...
- GET / 200 in 8.1s (compile: 6.7s, proxy.ts: 293ms, render: 1055ms)
- GET /hero-bg-2.jpg 404 in 1007ms (compile: 841ms, proxy.ts: 12ms, render: 154ms)
- GET /hero-bg-3.jpg 404 in 1006ms (compile: 923ms, proxy.ts: 13ms, render: 70ms)
- ✓ Compiled in 523ms
- GET /hotels 200 in 1761ms (compile: 1682ms, proxy.ts: 12ms, render: 67ms)
+ GET / 200 in 9.6s (compile: 8.1s, proxy.ts: 431ms, render: 1045ms)
+ GET /hero-bg-3.jpg 404 in 1536ms (compile: 1140ms, proxy.ts: 25ms, render: 370ms)
+ GET /hero-bg-2.jpg 404 in 1549ms (compile: 1253ms, proxy.ts: 25ms, render: 272ms)
+ GET /admin 200 in 1695ms (compile: 1438ms, proxy.ts: 10ms, render: 247ms)
+ GET /admin/users/actions 200 in 1049ms (compile: 991ms, proxy.ts: 15ms, render: 44ms)
+ ✓ Compiled in 405ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 373ms
+ GET /admin/users/actions 200 in 551ms (compile: 188ms, proxy.ts: 13ms, render: 350ms)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 444ms
+ GET /admin/users/actions 200 in 452ms (compile: 201ms, proxy.ts: 7ms, render: 244ms)
+ ✓ Compiled in 356ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 337ms
+ GET /admin/users/actions 200 in 446ms (compile: 158ms, proxy.ts: 18ms, render: 270ms)
+ GET / 200 in 327ms (compile: 12ms, proxy.ts: 10ms, render: 305ms)
+ GET /hero-bg-2.jpg 404 in 242ms (compile: 41ms, proxy.ts: 34ms, render: 167ms)
+ GET /hero-bg-3.jpg 404 in 230ms (compile: 115ms, proxy.ts: 28ms, render: 87ms)
+ GET /hotels 200 in 1713ms (compile: 1644ms, proxy.ts: 6ms, render: 63ms)
  ○ Compiling /hotels/[hotel_id] ...
- GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 7.0s (compile: 6.9s, proxy.ts: 8ms, render: 44ms)
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=1200000&rooms=cmjec563w001buhc8b16wcbyr%3A1 200 in 897ms (compile: 842ms, proxy.ts: 5ms, render: 50ms)
- ✓ Compiled in 370ms
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=1200000&rooms=cmjec563w001buhc8b16wcbyr%3A1 200 in 923ms (compile: 293ms, proxy.ts: 11ms, render: 619ms)
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=1200000&rooms=cmjec563w001buhc8b16wcbyr%3A1 200 in 203ms (compile: 7ms, proxy.ts: 7ms, render: 188ms)
- ✓ Compiled in 404ms
- ✓ Compiled in 392ms
- ✓ Compiled in 395ms
- GET / 200 in 75ms (compile: 12ms, proxy.ts: 6ms, render: 57ms)
- GET /hero-bg-3.jpg 404 in 294ms (compile: 84ms, proxy.ts: 22ms, render: 187ms)
- GET /hero-bg-2.jpg 404 in 307ms (compile: 180ms, proxy.ts: 23ms, render: 105ms)
- GET /me/my-bookings 200 in 1213ms (compile: 991ms, proxy.ts: 5ms, render: 217ms)
- GET /me/my-bookings/cmk3wbm6r0001uhpkyp70p77o 200 in 2.1s (compile: 2.1s, proxy.ts: 5ms, render: 47ms)
- ✓ Compiled in 601ms
- GET / 200 in 50ms (compile: 9ms, proxy.ts: 6ms, render: 36ms)
- GET /hero-bg-2.jpg 404 in 245ms (compile: 43ms, proxy.ts: 12ms, render: 190ms)
- GET /hero-bg-3.jpg 404 in 246ms (compile: 98ms, proxy.ts: 14ms, render: 134ms)
- GET /me/my-bookings 200 in 56ms (compile: 8ms, proxy.ts: 6ms, render: 41ms)
- GET /me/my-bookings/cmk3wbm6r0001uhpkyp70p77o 200 in 319ms (compile: 245ms, proxy.ts: 8ms, render: 66ms)
- GET /admin 200 in 1456ms (compile: 1017ms, proxy.ts: 9ms, render: 430ms)
- GET /admin/bookings 200 in 693ms (compile: 636ms, proxy.ts: 7ms, render: 50ms)
- GET /admin/bookings/cmjebq0hz000muhc8pmqpvzd9 200 in 1754ms (compile: 1698ms, proxy.ts: 5ms, render: 51ms)
- GET /admin/bookings/cmjebq0hz000muhc8pmqpvzd9/booking/cmk3wbm6r0001uhpkyp70p77o 200 in 1706ms (compile: 1649ms, proxy.ts: 6ms, render: 51ms)
- GET /admin/promotions 200 in 658ms (compile: 606ms, proxy.ts: 5ms, render: 47ms)
- GET /admin/promotions/create 200 in 1871ms (compile: 1826ms, proxy.ts: 5ms, render: 40ms)
- GET /admin/promotions 200 in 42ms (compile: 6ms, proxy.ts: 6ms, render: 30ms)
- GET / 200 in 263ms (compile: 7ms, proxy.ts: 10ms, render: 246ms)
- GET /hero-bg-2.jpg 404 in 226ms (compile: 46ms, proxy.ts: 20ms, render: 161ms)
- GET /hero-bg-3.jpg 404 in 219ms (compile: 103ms, proxy.ts: 29ms, render: 87ms)
- GET /hotels 200 in 146ms (compile: 33ms, proxy.ts: 24ms, render: 89ms)
- GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 76ms (compile: 36ms, proxy.ts: 6ms, render: 35ms)
- GET /booking?hotel_id=cmjebq0hz000muhc8pmqpvzd9&check_in=2026-01-07&check_out=2026-01-08&total_price=3000000&rooms=cmjec5rrk001guhc8p6gij729%3A2 200 in 324ms (compile: 248ms, proxy.ts: 6ms, render: 71ms)
- GET / 200 in 69ms (compile: 9ms, proxy.ts: 9ms, render: 51ms)
- GET /me/my-bookings 200 in 69ms (compile: 6ms, proxy.ts: 7ms, render: 57ms)
- GET /me/my-bookings/cmk3wymcx0002uh9ovfrn3wnn 200 in 63ms (compile: 19ms, proxy.ts: 5ms, render: 39ms)
+ GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 10.2s (compile: 10.2s, proxy.ts: 6ms, render: 62ms)
+ GET /admin/users/actions 200 in 93ms (compile: 5ms, proxy.ts: 6ms, render: 83ms)
+ GET /contact 200 in 811ms (compile: 746ms, proxy.ts: 8ms, render: 56ms)
