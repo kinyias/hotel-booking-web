@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCommissionPackageDto } from 'src/modules/commission-package/dto/create-commission-package.dto';
-import { UpdateCommissionPackageDto } from 'src/modules/commission-package/dto/update-commission-package.dto';
-import { CommissionRevenueQueryDto } from 'src/modules/commission-package/dto/commission-revenue-query.dto';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { CreateCommissionPackageDto } from './dto/create-commission-package.dto';
+import { UpdateCommissionPackageDto } from './dto/update-commission-package.dto';
+import { CommissionRevenueQueryDto } from './dto/commission-revenue-query.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CommissionPackageService {

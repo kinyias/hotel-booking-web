@@ -1,4 +1,3 @@
-// src/modules/booking/dto/check-in.dto.ts
 import {
   ArrayMaxSize,
   IsArray,

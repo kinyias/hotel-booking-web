@@ -23,7 +23,7 @@ function ContactsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const page = Number(searchParams.get('page')) || 1;
   const status = searchParams.get('status') as ContactStatus | undefined;
   const q = searchParams.get('q') || '';
@@ -92,7 +92,9 @@ function ContactsContent() {
   if (isError) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-destructive">Unable to load contacts</h2>
+        <h2 className="text-2xl font-bold text-destructive">
+          Unable to load contacts
+        </h2>
         <p className="text-muted-foreground mt-2">Please try again later.</p>
         <Button
           variant="outline"

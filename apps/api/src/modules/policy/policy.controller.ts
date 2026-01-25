@@ -12,9 +12,9 @@ import {
 import { PolicyService } from './policy.service';
 import { CreatePolicyDto } from './dto/create-policy.dto';
 import { UpdatePolicyDto } from './dto/update-policy.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ActionGuard } from '../auth/guards/action.guard';
+import { Action } from '../auth/decorator/action.decorator';
 
 @Controller()
 export class PolicyController {

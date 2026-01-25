@@ -15,7 +15,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import {
   CheckInDto,
   CheckInGuestDto,
-} from 'src/modules/booking/dto/check-in.dto';
+} from './dto/check-in.dto';
 
 function eachDateFixed(from: Date, to: Date) {
   const dates: Date[] = [];

@@ -8,13 +8,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { Action } from 'src/modules/auth/decorator/action.decorator';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-import { CommissionPackageService } from 'src/modules/commission-package/commission-package.service';
-import { CreateCommissionPackageDto } from 'src/modules/commission-package/dto/create-commission-package.dto';
-import { UpdateCommissionPackageDto } from 'src/modules/commission-package/dto/update-commission-package.dto';
-import { CommissionRevenueQueryDto } from 'src/modules/commission-package/dto/commission-revenue-query.dto';
+import { Action } from '../auth/decorator/action.decorator';
+import { ActionGuard } from '../auth/guards/action.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CommissionPackageService } from './commission-package.service';
+import { CreateCommissionPackageDto } from './dto/create-commission-package.dto';
+import { UpdateCommissionPackageDto } from './dto/update-commission-package.dto';
+import { CommissionRevenueQueryDto } from './dto/commission-revenue-query.dto';
 
 @Controller('/admin/commission-packages')
 @UseGuards(JwtAuthGuard, ActionGuard)

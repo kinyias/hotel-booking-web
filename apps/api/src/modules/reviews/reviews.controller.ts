@@ -15,8 +15,8 @@ import { ListReviewsDto } from './dto/list-reviews.dto';
 import { ModerateReviewDto, UpdateReviewDto } from './dto/update-review.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Action } from '../auth/decorator/action.decorator';
-import { ReviewService } from 'src/modules/reviews/reviews.service';
-import { ActionGuard } from 'src/modules/auth/guards/action.guard';
+import { ReviewService } from './reviews.service';
+import { ActionGuard } from '../auth/guards/action.guard';
 
 @Controller()
 export class ReviewController {

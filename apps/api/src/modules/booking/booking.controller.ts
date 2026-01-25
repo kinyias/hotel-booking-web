@@ -15,7 +15,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ListMyBookingDto } from './dto/list-my-bookings.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { Action } from '../auth/decorator/action.decorator';
-import { CheckInDto } from 'src/modules/booking/dto/check-in.dto';
+import { CheckInDto } from './dto/check-in.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller()
