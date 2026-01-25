@@ -1,19 +1,22 @@
 # 🏨 Hotel Booking Platform (Next.js + NestJS + Turborepo)
 
-Dự án **đặt phòng khách sạn trực tuyến** được xây dựng với **Next.js** (frontend) và **NestJS** (backend) trong kiến trúc **monorepo sử dụng Turborepo**.
+Dự án **đặt phòng khách sạn trực tuyến** hiện đại, mạnh mẽ được xây dựng với **Next.js 15** (frontend) và **NestJS 10** (backend) trong kiến trúc **monorepo sử dụng Turborepo**. Hệ thống hỗ trợ đầy đủ quy trình từ tìm kiếm, đặt phòng, thanh toán đến quản lý khách sạn và quản trị hệ thống.
 
 ## ⚙️ Công nghệ sử dụng
 
-| Thành phần        | Công nghệ                             |
-| ----------------- | ------------------------------------- |
-| **Frontend**      | [Next.js 15+](https://nextjs.org/)    |
-| **Backend**       | [NestJS 10+](https://nestjs.com/)     |
-| **Monorepo**      | [Turborepo](https://turbo.build/repo) |
-| **Ngôn ngữ**      | TypeScript                            |
-| **Cơ sở dữ liệu** |                                       |
-| **ORM**           | Prisma                                |
-| **UI**            | Tailwind CSS, shadcn/ui               |
-| **Auth**          | JWT / OAuth2                          |
+| Thành phần           | Công nghệ                                           |
+| -------------------- | --------------------------------------------------- |
+| **Frontend**         | [Next.js 15+](https://nextjs.org/) (App Router)     |
+| **Backend**          | [NestJS 10+](https://nestjs.com/)                   |
+| **Monorepo**         | [Turborepo](https://turbo.build/repo)               |
+| **Database**         | PostgreSQL                                          |
+| **ORM**              | [Prisma](https://www.prisma.io/)                    |
+| **UI Library**       | [Shadcn/ui](https://ui.shadcn.com/), Tailwind CSS   |
+| **State Management** | React Query (TanStack Query)                        |
+| **Form Management**  | React Hook Form, Zod                                |
+| **Authentication**   | JWT (Access/Refresh Token), Passport (Google OAuth) |
+| **Payment Gateway**  | **VNPAY**                                           |
+| **File Storage**     | Cloudinary (Image Gallery)                          |
 
 ---
 
@@ -32,86 +35,98 @@ cd hotel-booking-web
 npm install
 ```
 
-### 3️⃣ Chạy dự án
+### 3️⃣ Cài đặt biến môi trường
 
-✅ Chạy cả frontend + backend cùng lúc
+Copy file `.env.example` thành `.env` ở cả thư mục `apps/web` và `apps/api` (nếu có) và điền các thông số cấu hình database, JWT, VNPAY, Cloudinary...
+
+### 4️⃣ Chạy dự án
+
+✅ **Chạy cả frontend + backend cùng lúc:**
 
 ```bash
 npm run dev
 ```
 
-🔹 Chạy riêng frontend (Next.js)
+🔹 **Chạy riêng frontend (Next.js):**
 
 ```bash
 npm run dev --filter=web
 ```
 
-🔹 Chạy riêng backend (NestJS)
+🔹 **Chạy riêng backend (NestJS):**
 
 ```bash
 npm run dev --filter=api
 ```
 
-## 🧠 Chức năng chính
+---
 
-### 👤 Module Auth (Xác thực & Quản lý người dùng)
+## 🧠 Chức năng chính (Features)
 
-#### 🔐 1. Đăng ký tài khoản
+Hệ thống được chia thành các phân hệ chức năng phong phú:
 
--   Đăng ký bằng email & mật khẩu (hash bằng **Argon2**)
--   Validate mật khẩu mạnh (bao gồm confirmPassword)
--   Tự động tạo **verifyToken** và gửi email xác minh
--   Lưu trạng thái `emailVerified = false` cho đến khi xác minh thành công
+### � 1. Authentication & Users (Xác thực & Người dùng)
 
-#### 📧 2. Xác minh email
+Hệ thống bảo mật và quản lý phiên người dùng chặt chẽ:
 
--   Người dùng nhận email có link chứa token
--   Endpoint `/v1/auth/verify-email/:token` xác minh và cập nhật `emailVerified = true`
--   Hỗ trợ **resend verify email**
+- **Đăng ký/Đăng nhập**: Email/Password (Argon2 hash) & **Google OAuth2**.
+- **Xác minh Email**: Gửi token qua email để kích hoạt tài khoản.
+- **Quản lý Token**: Cơ chế **Access Token** (ngắn hạn) & **Refresh Token** (dài hạn, xoay vòng).
+- **Quản lý Session**: Theo dõi thiết bị, IP đăng nhập, thu hồi session từ xa.
+- **Phân quyền (RBAC)**: Hệ thống Roles & Permissions linh hoạt (Admin, Hotel Member, User).
+- **Hồ sơ cá nhân**: Cập nhật thông tin, đổi mật khẩu.
 
-#### 🔑 3. Đăng nhập
+### 🏨 2. Hotel Management (Quản lý Khách sạn)
 
--   Đăng nhập bằng email + mật khẩu
--   Kiểm tra tình trạng `emailVerified`
--   Sinh **Access Token (ngắn hạn)** và **Refresh Token (dài hạn)**
--   Lưu session vào bảng `AuthSession` gồm:
-    -   `userId`, `jti`, `ip`, `userAgent`, `expiresAt`
--   Mã hoá refreshToken bằng **Argon2 hash**
+Dành cho Admin và Chủ khách sạn để vận hành kinh doanh:
 
-#### 🔁 4. Làm mới token (Refresh Token Flow)
+- **Quản lý Khách sạn**: CRUD thông tin khách sạn, địa chỉ, mô tả, hạng sao.
+- **Tiện nghi (Amenities)**: Quản lý danh sách tiện nghi khách sạn và tiện nghi phòng.
+- **Chính sách (Policies)**: Thiết lập giờ nhận/trả phòng, quy định hủy phòng.
+- **Hình ảnh (Gallery)**: Upload và quản lý thư viện ảnh cho khách sạn/phòng thông qua Cloudinary.
+- **Thành viên (Hotel Members)**: Quản lý nhân viên/quản lý cho từng khách sạn cụ thể.
 
--   Endpoint `/v1/auth/refresh` xác thực refresh token còn hiệu lực
--   Tạo access token mới, cập nhật `AuthSession`
--   Xoá hoặc vô hiệu hoá session cũ khi logout
+### �️ 3. Room & Inventory (Phòng & Kho phòng)
 
-#### 🚪 5. Đăng xuất
+- **Loại phòng (Room Types)**: Định nghĩa các hạng phòng (Standard, Deluxe, Suite...).
+- **Danh sách phòng**: Quản lý từng phòng cụ thể, trạng thái phòng.
+- **Kho phòng (Inventory)**: Quản lý số lượng phòng trống theo ngày, tránh overbooking.
 
--   Xoá `AuthSession` tương ứng với `jti` hiện tại
--   Ngăn chặn reuse refresh token cũ
+### � 4. Booking & Payment (Đặt phòng & Thanh toán)
 
-#### 🌐 6. Đăng nhập bằng Google (OAuth2)
+Quy trình đặt phòng hoàn chỉnh cho khách hàng:
 
--   Tích hợp Google OAuth (Passport Strategy)
--   Endpoint `/v1/auth/google` → `/v1/auth/google/callback`
--   Tự động tạo hoặc liên kết user theo `providerId`
--   Sinh token đăng nhập và redirect về frontend
+- **Tìm kiếm & Lọc**: Tìm khách sạn theo địa điểm, ngày tháng, tiện nghi, giá.
+- **Quy trình đặt phòng**: Chọn phòng -> Điền thông tin -> Thanh toán.
+- **Thanh toán trực tuyến**: Tích hợp cổng thanh toán **VNPAY**.
+- **Quản lý Đặt phòng**:
+  - Khách hàng: Xem lịch sử đặt phòng, hủy phòng (theo chính sách).
+  - Admin/Hotel: Xem danh sách booking, check-in, check-out, và xử lý hoàn tiền.
+- **Hoa hồng (Commissions)**: Hệ thống tính toán và xuất báo cáo hoa hồng cho nền tảng.
 
-#### 🧩 7. Cấu trúc & bảo mật
+### 📢 5. Marketing & Content (Nội dung & Quảng bá)
 
--   Sử dụng **JwtService** của NestJS để ký & xác thực token
--   Tách biệt rõ **AccessToken** và **RefreshToken**
--   Áp dụng **Guards**: `JwtAuthGuard`, `GoogleAuthGuard`
--   Dùng **Zod Validation Pipe** để validate DTO mạnh mẽ
--   Log IP & thiết bị để theo dõi đăng nhập bất thường
+- **Tin tức (News)**: Trang blog/tin tức du lịch.
+- **Khuyến mãi (Promotions)**: Tạo mã giảm giá, chương trình ưu đãi cho khách sạn.
+- **Banner**: Quản lý banner quảng cáo trang chủ và các trang con.
+- **Đánh giá (Reviews)**: Khách hàng đánh giá và bình luận về khách sạn sau khi lưu trú.
+
+### 🛠️ 6. System & Dashboard (Hệ thống & Quản trị)
+
+Trang quản trị tập trung `(dashboard)`:
+
+- **Thống kê (Dashboard)**: Báo cáo tổng quan về doanh thu, booking, người dùng mới.
+- **Liên hệ (Contact)**: Quản lý form liên hệ từ khách hàng.
+- **Cài đặt (Settings)**: Cấu hình hệ thống chung.
 
 ---
 
-✅ **Module Auth hiện đã hoàn thiện đầy đủ:**
+## 📂 Cấu trúc dự án (Monorepo)
 
--   [x] Register / Login / Logout
--   [x] Email Verification
--   [x] Google OAuth
--   [x] Refresh Token & Session Management
--   [x] Strong Password Validation
--   [x] JWT Guards + Error Handling
--   [x] Device & IP tracking
+- `apps/web`: Source code Frontend (Next.js).
+  - `src/app/(public)`: Các trang dành cho khách vãng lai (Home, Search, Booking...).
+  - `src/app/(dashboard)`: Các trang quản trị (Admin, Hotel Manager).
+  - `src/features`: Chứa logic nghiệp vụ (Components, Hooks, Services) chia theo domain.
+- `apps/api`: Source code Backend (NestJS).
+  - `src/modules`: Các module API (Auth, Booking, Hotel, Payment...).
+  - `prisma`: Schema cơ sở dữ liệu.
