@@ -2,35 +2,38 @@
 > web@0.1.0 dev
 > next dev --turbopack
 
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
    ▲ Next.js 16.0.10 (Turbopack)
    - Local:         http://localhost:3000
    - Network:       http://192.168.1.140:3000
    - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 4.5s
- ○ Compiling / ...
- GET / 200 in 9.6s (compile: 8.1s, proxy.ts: 431ms, render: 1045ms)
- GET /hero-bg-3.jpg 404 in 1536ms (compile: 1140ms, proxy.ts: 25ms, render: 370ms)
- GET /hero-bg-2.jpg 404 in 1549ms (compile: 1253ms, proxy.ts: 25ms, render: 272ms)
- GET /admin 200 in 1695ms (compile: 1438ms, proxy.ts: 10ms, render: 247ms)
- GET /admin/users/actions 200 in 1049ms (compile: 991ms, proxy.ts: 15ms, render: 44ms)
- ✓ Compiled in 405ms
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 373ms
- GET /admin/users/actions 200 in 551ms (compile: 188ms, proxy.ts: 13ms, render: 350ms)
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 444ms
- GET /admin/users/actions 200 in 452ms (compile: 201ms, proxy.ts: 7ms, render: 244ms)
- ✓ Compiled in 356ms
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ✓ Compiled in 337ms
- GET /admin/users/actions 200 in 446ms (compile: 158ms, proxy.ts: 18ms, render: 270ms)
- GET / 200 in 327ms (compile: 12ms, proxy.ts: 10ms, render: 305ms)
- GET /hero-bg-2.jpg 404 in 242ms (compile: 41ms, proxy.ts: 34ms, render: 167ms)
- GET /hero-bg-3.jpg 404 in 230ms (compile: 115ms, proxy.ts: 28ms, render: 87ms)
- GET /hotels 200 in 1713ms (compile: 1644ms, proxy.ts: 6ms, render: 63ms)
+ ✓ Ready in 2.4s
  ○ Compiling /hotels/[hotel_id] ...
- GET /hotels/cmjebq0hz000muhc8pmqpvzd9 200 in 10.2s (compile: 10.2s, proxy.ts: 6ms, render: 62ms)
- GET /admin/users/actions 200 in 93ms (compile: 5ms, proxy.ts: 6ms, render: 83ms)
- GET /contact 200 in 811ms (compile: 746ms, proxy.ts: 8ms, render: 56ms)
+ GET /hotels/cmjecalbp0028uhc8afej6v2s 200 in 14.1s (compile: 12.3s, proxy.ts: 255ms, render: 1578ms)
+ GET /hotels/cmjecalbp0028uhc8afej6v2s 200 in 198ms (compile: 37ms, proxy.ts: 6ms, render: 155ms)
+ GET /admin 200 in 1310ms (compile: 1078ms, proxy.ts: 8ms, render: 224ms)
+ GET /admin/inventory 200 in 1097ms (compile: 1047ms, proxy.ts: 6ms, render: 44ms)
+ GET /login?session=expired 200 in 1042ms (compile: 769ms, proxy.ts: 6ms, render: 267ms)
+ GET /me 200 in 788ms (compile: 729ms, proxy.ts: 7ms, render: 52ms)
+ GET /admin 200 in 82ms (compile: 6ms, proxy.ts: 6ms, render: 70ms)
+ GET /admin/inventory 200 in 40ms (compile: 6ms, proxy.ts: 5ms, render: 29ms)
+ GET / 200 in 2.2s (compile: 1741ms, proxy.ts: 9ms, render: 424ms)
+ GET /hero-bg-2.jpg 404 in 1215ms (compile: 954ms, proxy.ts: 33ms, render: 228ms)
+ GET /hero-bg-3.jpg 404 in 1217ms (compile: 1034ms, proxy.ts: 36ms, render: 146ms)
+ GET /hotels 200 in 1429ms (compile: 1362ms, proxy.ts: 6ms, render: 61ms)
+ GET /hotels/cmjecalbp0028uhc8afej6v2s 200 in 104ms (compile: 36ms, proxy.ts: 7ms, render: 62ms)
+ GET /booking?hotel_id=cmjecalbp0028uhc8afej6v2s&check_in=2026-03-01&check_out=2026-03-02&total_price=1000000&rooms=cmjfqdzvs0001uhdo3748zb4o%3A1 200 in 763ms (compile: 715ms, proxy.ts: 6ms, render: 43ms)
+ GET / 200 in 56ms (compile: 10ms, proxy.ts: 7ms, render: 39ms)
+ GET /me/my-bookings 200 in 1017ms (compile: 815ms, proxy.ts: 6ms, render: 196ms)
+ GET /me/my-bookings 200 in 161ms (compile: 44ms, proxy.ts: 11ms, render: 106ms)
+ GET /me/my-bookings/cmm7lmpau000luhpktbpk60v0 200 in 1550ms (compile: 1504ms, proxy.ts: 5ms, render: 40ms)
+ GET /me/my-bookings/cmm7lmpau000luhpktbpk60v0 200 in 210ms (compile: 19ms, proxy.ts: 7ms, render: 184ms)
+ GET /me/my-bookings/cmm7lmpau000luhpktbpk60v0 200 in 155ms (compile: 22ms, proxy.ts: 8ms, render: 126ms)
+ GET / 200 in 216ms (compile: 8ms, proxy.ts: 10ms, render: 199ms)
+ GET /hero-bg-2.jpg 404 in 231ms (compile: 35ms, proxy.ts: 11ms, render: 185ms)
+ GET /hero-bg-3.jpg 404 in 220ms (compile: 98ms, proxy.ts: 14ms, render: 109ms)
+ GET /hotels 200 in 227ms (compile: 7ms, proxy.ts: 7ms, render: 213ms)
+ GET /news 200 in 987ms (compile: 719ms, proxy.ts: 6ms, render: 262ms)
+ GET /contact 200 in 1029ms (compile: 801ms, proxy.ts: 11ms, render: 217ms)

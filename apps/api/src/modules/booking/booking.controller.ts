@@ -41,7 +41,7 @@ export class BookingController {
     @Req() req: any,
   ) {
     const userId = req.user?.id;
-    this.service.create(hotelId, userId, dto);
+    return this.service.create(hotelId, userId, dto);
   }
 
   @Get('hotels/:hotelId/bookings')

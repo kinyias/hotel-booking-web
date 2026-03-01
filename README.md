@@ -121,6 +121,56 @@ Trang quản trị tập trung `(dashboard)`:
 
 ---
 
+## 📸 Giao diện ứng dụng (Screenshots)
+
+### 🌐 Trang Public (Giao diện người dùng)
+
+<details>
+<summary>Xem chi tiết các trang Public</summary>
+
+|              Trang chủ               |           Danh sách khách sạn            |
+| :----------------------------------: | :--------------------------------------: |
+| ![Home](docs/images/home_screen.png) | ![Hotels](docs/images/hotels_screen.png) |
+
+|                  Chi tiết khách sạn                  |            Thanh toán (Checkout)             |
+| :--------------------------------------------------: | :------------------------------------------: |
+| ![Hotel Detail](docs/images/hotel_detail_screen.png) | ![Checkout](docs/images/checkout_screen.png) |
+
+|            Tin tức (News)            |             Liên hệ (Contact)              |
+| :----------------------------------: | :----------------------------------------: |
+| ![News](docs/images/news_screen.png) | ![Contact](docs/images/contact_screen.png) |
+
+|             Đối tác (Partner)              |              Đơn đặt phòng của tôi               |
+| :----------------------------------------: | :----------------------------------------------: |
+| ![Partner](docs/images/partner_screen.png) | ![My Booking](docs/images/mybooking_screeen.png) |
+
+|                   Chi tiết đơn đặt phòng                    |     |
+| :---------------------------------------------------------: | :-: |
+| ![Booking Detail](docs/images/mybooking_detail_screeen.png) |     |
+
+</details>
+
+### 🛠️ Trang Quản trị (Admin/Dashboard)
+
+<details>
+<summary>Xem chi tiết các trang Dashboard</summary>
+
+|             Tổng quan (Dashboard)              |                      Quản lý khách sạn                      |
+| :--------------------------------------------: | :---------------------------------------------------------: |
+| ![Dashboard](docs/images/dashboard_screen.png) | ![Hotel Management](docs/images/hotelmanagement_screen.png) |
+
+|         Quản lý kho phòng (Inventory)          |                Quản lý khuyến mãi                |
+| :--------------------------------------------: | :----------------------------------------------: |
+| ![Inventory](docs/images/inventory_screen.png) | ![Promotions](docs/images/promotions_screen.png) |
+
+|                         Quản lý Banner                         |                         Quản lý nhân viên                          |
+| :------------------------------------------------------------: | :----------------------------------------------------------------: |
+| ![Banner Management](docs/images/banner_management_screen.png) | ![Member Management](docs/images/hotelmembermanagement_screen.png) |
+
+</details>
+
+---
+
 ## 📂 Cấu trúc dự án (Monorepo)
 
 - `apps/web`: Source code Frontend (Next.js).

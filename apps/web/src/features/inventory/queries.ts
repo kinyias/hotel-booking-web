@@ -6,5 +6,6 @@ export const useQueryInventory = (hotelId: string, params: InventoryQueryParams)
     return useQuery({
         queryKey: ["inventory", hotelId, params],
         queryFn: () => getInventory(hotelId, params),
+        enabled: !!hotelId,
     })
 }
